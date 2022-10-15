@@ -2,7 +2,7 @@
 
 ## Test pages
 
-Visit the new permanent URL: [https://zodiac.fly.dev](https://zodiac.fly.dev) to see the latest features as they become available.
+Visit the new permanent URL: [zodiac.fly.dev](https://zodiac.fly.dev) to see the latest features as they become available.
 
 An earlier work-in-progress prototype of the frontend is still viewable at its [github pages site](https://christiancasey.github.io/zodiac-routing/). This will be the future interface for the fully-connected project, but the data shown here are only for demonstration purposes.
 
