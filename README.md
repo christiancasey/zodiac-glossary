@@ -1,5 +1,9 @@
 # The Zodiac Glossary
 
+## ZODIAC – Ancient Astral Science in Transformation
+
+This glossary of ancient terms is only one facet of the [Zodiac Project](https://www.geschkult.fu-berlin.de/e/zodiac/index.html), an ERC-funded academic research project hosted at the Freie Universität Berlin.
+
 ## Work-in-Progress Webpages
 
 Visit the new permanent address of the Zodiac Glossary: [zodiac.fly.dev](https://zodiac.fly.dev) to keep up with the latest features as they become available.
