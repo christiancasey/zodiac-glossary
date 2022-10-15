@@ -1,0 +1,17 @@
+{
+  "name": "zodiac",
+  "version": "1.0.0",
+  "description": "The Zodiac Glossary of Ancient Terms",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js"
+  },
+  "author": "Christian Casey",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "nodemon": "^2.0.20",
+    "pg": "^8.8.0"
+  }
+}

@@ -1,0 +1,253 @@
+
+/* Visual elements */
+.header {
+  position: sticky;
+  top: 0;
+  width: 100vw;
+  height: 18vw;
+  background: linear-gradient(0deg, #2D3B62FF, #28365DFF);
+  overflow: hidden;
+  overflow: visible;
+  display: block;
+  
+  /* fadeIn animation */
+  opacity: 0;
+  -webkit-animation: fadeIn ease-in-out 1;
+  -moz-animation: fadeIn ease-in-out 1;
+  animation: fadeIn ease-in-out 1;
+
+  -webkit-animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+
+  -webkit-animation-duration: 2s;
+  -moz-animation-duration: 2s;
+  animation-duration: 2s;
+
+  -webkit-animation-delay: 0.2s;
+  -moz-animation-delay: 0.2s;
+  animation-delay: 0.2s;
+  
+  z-index: -2;
+}
+
+.starChart {
+  height: 300vw;
+  position: fixed;
+  margin: -65vw 0 0 -100vw;
+  opacity: 0.6;
+  filter: drop-shadow(0 0 5px #FFD4);  /* blur on stars themselves drop-shadow(offset-x offset-y blur-radius color) */
+  -webkit-animation: starSpin infinite 600s linear;
+  -moz-animation: starSpin infinite 600s linear;
+  animation: starSpin infinite 600s linear;
+  
+  /* float: left; */
+}
+
+.zodiacLogotype {
+  position: absolute;
+  width: 100vw;
+  text-align: center;
+  margin-top: 4vw;
+  
+  font: 14vw dual, "Dual", "Futura", sans-serif;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #FFD;
+  text-shadow: 0 0 8px #2D3B62FF;
+  
+  /* fadeIn animation */
+  opacity: 0;
+	-webkit-animation: fadeIn ease-in-out 1;
+	-moz-animation: fadeIn ease-in-out 1;
+	animation: fadeIn ease-in-out 1;
+
+	-webkit-animation-fill-mode: forwards;
+	-moz-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
+
+	-webkit-animation-duration: 1s;
+	-moz-animation-duration: 1s;
+	animation-duration: 1s;
+  
+  -webkit-animation-delay: 0.6s;
+  -moz-animation-delay: 0.6s;
+  animation-delay: 0.6s;
+}
+
+.headerBodyGradient {
+  position: fixed;
+  height: 2vw;
+  width: 100vw;
+  background: linear-gradient(0deg, #2D3B62AA, #2D3B6200);
+  /* background-color: linear-gradient(0deg, #F00, #FF0); */
+  /* background-color: #2D3B6233; */
+  z-index: 1;
+  
+}
+
+.playPause, .home {
+  /* position: absolute; */
+  float: right;
+  width: 5vw;
+  z-index: 2;
+  color: #ffef;
+  background: #fff0;
+  border: none;
+  outline: none;
+  margin-top: 0.5vw;
+}
+.playPause:hover, .home:hover {  
+  filter:drop-shadow(0 0 3px #ffe8);
+}
+.home {
+  float: left;
+}
+
+.bodyBackground {
+  position: fixed;
+  top: 20vw;
+  height: 400vw;
+  width: 100vw;
+  overflow: hidden;
+  background-color: #2D3B62AA;
+  z-index: -1;
+}
+
+.headerBodyGradient, .bodyBackground {
+    
+  /* fadeIn animation */
+  opacity: 0;
+	-webkit-animation: fadeIn ease-in-out 1;
+	-moz-animation: fadeIn ease-in-out 1;
+	animation: fadeIn ease-in-out 1;
+
+	-webkit-animation-fill-mode: forwards;
+	-moz-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
+
+	-webkit-animation-duration: 2s;
+	-moz-animation-duration: 2s;
+	animation-duration: 2s;
+  
+  -webkit-animation-delay: 0.4s;
+  -moz-animation-delay: 0.4s;
+  animation-delay: 0.4s;
+}
+
+/* Log in window */
+.login {
+  position: fixed;
+  width: 24vw;
+  height: 16vw;
+  left: 2vw;
+  top: 2vw;
+  overflow: scroll;
+  
+  padding: 0.5vw;
+  
+  background-color: #2D3B62F0;
+  color: #FFD;
+  
+  font: 1.4vw book-antiqua, 'Book Antiqua', serif;
+  text-shadow: 0 0 3px #FFD2;
+  
+  padding: 0.5vw 0.5vw;
+  border: 2px solid #FFDF;
+  box-shadow: 0 0 5px #2D3B62FF, 0 0 3px #2D3B62FF inset;
+  border-radius: 15px;
+  z-index: 10;
+  
+  
+  opacity: 0;
+	-webkit-animation: fadeIn ease-in-out 1;
+	-moz-animation: fadeIn ease-in-out 1;
+	animation: fadeIn ease-in-out 1;
+
+	-webkit-animation-fill-mode: forwards;
+	-moz-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
+
+	-webkit-animation-duration: 0.6s;
+	-moz-animation-duration: 0.6s;
+	animation-duration: 0.6s;
+}
+
+h1, h2, h3, h4 {
+  font-family: dual, 'Dual', 'Futura', sans-serif;
+  
+  /* text-shadow: 0 0 3px #2D3B62FF; */
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  
+  margin: 10px 0 10px 0;
+}
+
+.label {
+  display: table-cell;
+  padding: 0.5vw 1vw 0 0;
+  vertical-align: top;
+}
+
+.input {
+  font: 1.2vw book-antiqua, 'Book Antiqua', serif;
+  display: table-cell;
+  width: 14vw;
+  background-color: #2D3B6288;
+  color: #FFDC;
+  border: 0.1vw solid #FFD8;
+  border-radius: 0.5vw;
+  margin: 0.2vw;
+  padding: 0.2vw;
+  outline: none;
+  float: left;
+  height: 2vw;
+}
+.close {
+  color: #ffef;
+  background: #fff0;
+  border: none;
+  outline: none;
+  margin-top: 0.5vw;
+  float: right;
+}
+.close:hover {
+  filter: drop-shadow(0 0 3px #ffe8);
+}
+
+.username {
+  color: #ffdd;
+  font: 1.3vw book-antiqua, 'Book Antiqua', serif;
+  text-shadow: 0 0 3px #ffd2;
+  float: left;
+  margin-top: 0.2vw;
+}
+
+.loginButton {
+  color: #ffef;
+  background: #fff0;
+  border: 1px solid #FFDF;
+  border-radius: 0.5vw;
+  outline: none;
+  margin-top: 0.5vw;
+  padding: 0.5vw;
+  font: 1.2vw book-antiqua, 'Book Antiqua', serif;
+  text-shadow: 0 0 3px #FFD2;
+}
+.loginButton:hover {
+  filter: drop-shadow(0 0 3px #ffe6);
+}
+
+.invalidLogin {
+  color: red;
+}
+
+/* Fade in animation */
+@-webkit-keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@-moz-keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* Rotation animation for the stars */
+@-webkit-keyframes starSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@-moz-keyframes starSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes starSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }

@@ -1,0 +1,89 @@
+.content {
+  position: fixed;
+  width: 100vw;
+  height: calc(100% - 20vw);
+  top: 20vw;
+  overflow: scroll;
+  
+  padding: 0.5vw;
+  
+  background-color: #0000;
+  color: #FFD;
+  
+  font: 1.4vw book-antiqua, 'Book Antiqua', serif;
+  text-shadow: 0 0 3px #FFD2;
+  
+  opacity: 0;
+  -webkit-animation: fadeIn ease-in-out 1;
+  -moz-animation: fadeIn ease-in-out 1;
+  animation: fadeIn ease-in-out 1;
+
+  -webkit-animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+
+  -webkit-animation-duration: 1s;
+  -moz-animation-duration: 1s;
+  animation-duration: 1s;
+
+  -webkit-animation-delay: 1s;
+  -moz-animation-delay: 1s;
+  animation-delay: 1s;
+  
+  /* text-transform: uppercase; */
+  /* font-weight: bold; */
+}
+
+@font-face {
+  font-family: dual;
+  src: url(../Fonts/dual.woff);
+}
+
+h1, h2, h3, h4 {
+  font-family: dual, 'Dual', 'Futura', sans-serif;
+  
+  /* text-shadow: 0 0 3px #2D3B62FF; */
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  
+  margin: 10px 0 10px 0;
+}
+h1, .lemmaTitle {
+  font-size: 2vw;
+}
+h2 {
+  font-size: 1.8vw;
+}
+h3 {
+  font-size: 1.6vw;
+}
+h3 {
+  font-size: 1.4vw;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+a {
+  /* pointer-events: none; */
+  /* cursor: text; */
+  text-decoration: none;
+  color: inherit;
+}
+ol, li {
+  list-style: none;
+  padding: 2px;
+}
+ol {
+  margin: 5px 0 20px 0;
+}
+
+
+
+/* Fade in animation */
+@-webkit-keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@-moz-keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+

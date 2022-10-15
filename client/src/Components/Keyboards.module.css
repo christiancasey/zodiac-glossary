@@ -1,0 +1,156 @@
+* {
+  font-size: 1.2vw;
+  font: 1.2vw book-antiqua, 'Book Antiqua', serif;
+}
+
+.keyboard {
+  position: absolute;
+  background-color: white;
+  margin: auto;
+  left: 30vw;
+  top: 1vw;
+  width: 60vw;
+  height: 30vw;
+  
+  
+  overflow: scroll;
+  /* float: left;
+  margin: 1vw; */
+  
+  padding: 0;
+  background-color: #2D3B62F0;
+  border: 2px solid #FFDF;
+  box-shadow: 0 0 5px #2D3B62FF, 0 0 3px #2D3B62FF inset;
+  border-radius: 15px;
+  
+  
+  opacity: 0;
+	-webkit-animation: fadeIn ease-in-out 1;
+	-moz-animation: fadeIn ease-in-out 1;
+	animation: fadeIn ease-in-out 1;
+
+	-webkit-animation-fill-mode: forwards;
+	-moz-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
+
+	-webkit-animation-duration: 0.6s;
+	-moz-animation-duration: 0.6s;
+	animation-duration: 0.6s;
+}
+
+.fadeOut{
+  opacity: 1;
+  transition: height 0.1s, width 0.1s, opacity 0.5s;
+  display: none;
+}
+.fadeIn{
+  opacity: 1;
+  transition: opacity 0.5s;
+}
+
+.close {
+  color: #ffef;
+  background: #fff0;
+  border: none;
+  outline: none;
+  margin-top: 0.5vw;
+  float: right;
+}
+.close:hover {
+  filter: drop-shadow(0 0 3px #ffe8);
+}
+.key {
+  color: #ffef;
+  background: #fff0;
+  border: 0.1vw solid #FFD8;
+  margin: 0.2vw 0 0.2vw 0.2vw;
+  padding: 0.2vw;
+  border-radius: 0.5vw;
+  outline: none;
+  width: 5vw;
+  height: 5vw;
+  text-shadow: 0 0 8px #2D3B62FF;
+  font-size: 18pt;
+}
+.multipageKey {
+  color: #ffef;
+  background: #fff0;
+  border: 0.1vw solid #FFD8;
+  margin: 0.2vw 0 0.2vw 0.2vw;
+  padding: 0.2vw;
+  border-radius: 0.5vw;
+  outline: none;
+  text-shadow: 0 0 8px #2D3B62FF;
+  min-width: 3vw;
+  min-height: 3vw;
+}
+.deleteKey {
+  color: #ffef;
+  background: #fff0;
+  border: 0.1vw solid #FFD8;
+  margin: 0.2vw 0 0.2vw 0.2vw;
+  padding: 0.2vw;
+  border-radius: 0.5vw;
+  outline: none;
+  width: 10vw;
+  height: 5vw;
+  text-shadow: 0 0 8px #2D3B62FF;
+  float: right;
+}
+.pageKey {
+  color: #ffef;
+  background: #fff0;
+  border: 0.1vw solid #FFD8;
+  margin: 0;
+  padding: 0.2vw;
+  border-radius: 0.5vw;
+  text-shadow: 0 0 8px #2D3B62FF;
+}
+.spaceKey {
+  color: #ffef;
+  background: #fff0;
+  border: 0.1vw solid #FFD8;
+  margin: 0.2vw 0 0.2vw 0.2vw;
+  padding: 0.2vw;
+  border-radius: 0.5vw;
+  outline: none;
+  width: 40vw;
+  height: 5vw;
+  text-shadow: 0 0 8px #2D3B62FF;
+}
+.key:hover, .deleteKey:hover, .pageKey:hover {
+  filter: drop-shadow(0 0 2px #ffe4);
+}
+
+
+.scriptTab {
+  color: #ffe8;
+  background: #ffe0;
+  border: 0.1vw solid #FFD8;
+  border-bottom: none;
+  margin: 0;
+  padding: 0.2vw;
+  border-radius: 0.5vw 0.5vw 0 0;
+  text-shadow: 0 0 8px #2D3B62FF;
+}
+.scriptTabSelected {
+  color: #ffef;
+  background: #ffe0;
+  border: 0.1vw solid #FFD8;
+  border-bottom: none;
+  margin: 0;
+  padding: 0.2vw;
+  border-radius: 0.5vw 0.5vw 0 0;
+  text-shadow: 0 0 8px #2D3B62FF;
+}
+
+
+/* Fade in animation */
+@-webkit-keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@-moz-keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* Rotation animation for the stars */
+@-webkit-keyframes starSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@-moz-keyframes starSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes starSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
