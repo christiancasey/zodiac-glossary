@@ -1,10 +1,10 @@
 # The Zodiac Glossary
 
-## Test pages
+## Work-in-Progress Webpages
 
-Visit the new permanent URL: [zodiac.fly.dev](https://zodiac.fly.dev) to see the latest features as they become available.
+Visit the new permanent address of the Zodiac Glossary: [zodiac.fly.dev](https://zodiac.fly.dev) to keep up with the latest features as they become available.
 
-An earlier work-in-progress prototype of the frontend is still viewable at its [github pages site](https://christiancasey.github.io/zodiac-routing/). This will be the future interface for the fully-connected project, but the data shown here are only for demonstration purposes.
+An earlier prototype of the frontend is still accessible at its [github pages site](https://christiancasey.github.io/zodiac-routing/). This will become the front-facing interface for the fully-connected project. Note that the data shown here are only for demonstration purposes.
 
 ## About ZODIAC
 
