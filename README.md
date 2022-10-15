@@ -8,7 +8,7 @@ This glossary of ancient terms is only one facet of the [Zodiac Project](https:/
 
 Visit the new permanent address of the Zodiac Glossary: [zodiac.fly.dev](https://zodiac.fly.dev) to keep up with the latest features as they become available.
 
-An earlier prototype of the frontend is still accessible at its [github pages site](https://christiancasey.github.io/zodiac-routing/). This will become the front-facing interface for the fully-connected project. Note that the data shown here are only for demonstration purposes.
+An earlier prototype of the frontend is still accessible at its [github pages site](https://christiancasey.github.io/zodiac-routing/). This will become the front-facing interface for the fully-connected project. Note that the data shown here are not truly dynamic. They are for development and demonstration purposes only.
 
 ## About ZODIAC
 
