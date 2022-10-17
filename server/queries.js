@@ -1,13 +1,8 @@
 const Pool = require('pg').Pool;
 require('dotenv').config();
 
-/////////// TODO
-// Change for deployment
-// Change non-local user and password to match local version below
-
 var pool;
-var local = false;
-if (local) {
+if (process.env.LOCAL_DEV === "true") {
   pool = new Pool({
     host: process.env.DB_HOST_LOCAL,
     database: process.env.DB_NAME,
@@ -19,14 +14,33 @@ if (local) {
   pool = new Pool({
     host: process.env.DB_HOST,
     database: process.env.DB_NAME,
-    user: process.env.DB_USER2,
-    password: process.env.DB_PASS2,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
     port: process.env.DB_PORT,
   });
 }
 
+
+// Standard selection option stuff
+const getLanguages = (request, response) => {
+  pool.query("SELECT * FROM languages WHERE active ORDER BY language", (error, results) => {
+    if (error) throw error;
+    response.status(200).send(results.rows);
+  });
+};
+
+const getPartsOfSpeech = (request, response) => {
+  pool.query("SELECT * FROM partsofspeech WHERE active ORDER BY partsofspeech", (error, results) => {
+    if (error) throw error;
+    response.status(200).send(results.rows);
+  });
+};
+
+
+// User creation, login, etc.
+// NOT PRODUCTION READY!!!!
 const getUsers = (request, response) => {
-  pool.query('SELECT * FROM users ORDER BY id ASC', (error, results) => {
+  pool.query('SELECT * FROM users', (error, results) => {
     if (error) throw error;
     response.status(200).json(results.rows);
   });
@@ -35,7 +49,7 @@ const getUsers = (request, response) => {
 const getUserById = (request, response) => {
   const id = parseInt(request.params.id);
 
-  pool.query('SELECT * FROM users WHERE id = $1', [id], (error, results) => {
+  pool.query('SELECT * FROM users WHERE user_id = $1', [id], (error, results) => {
     if (error) throw error;
     response.status(200).json(results.rows);
   });
@@ -55,7 +69,7 @@ const updateUser = (request, response) => {
   const { name, email } = request.body;
 
   pool.query(
-    'UPDATE users SET name = $1, email = $2 WHERE id = $3',
+    'UPDATE users SET name = $1, email = $2 WHERE user_id = $3',
     [name, email, id],
     (error, results) => {
       if (error) throw error;
@@ -67,13 +81,15 @@ const updateUser = (request, response) => {
 const deleteUser = (request, response) => {
   const id = parseInt(request.params.id);
 
-  pool.query('DELETE FROM users WHERE id = $1', [id], (error, results) => {
+  pool.query('DELETE FROM users WHERE user_id = $1', [id], (error, results) => {
     if (error) throw error;
     response.status(200).send(`User deleted with id: ${id}`);
   });
 };
 
 module.exports = {
+  getLanguages,
+  getPartsOfSpeech,
   getUsers,
   getUserById,
   createUser,
