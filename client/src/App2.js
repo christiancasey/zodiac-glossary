@@ -13,24 +13,12 @@ import GetDataTests from './Components/GetDataTests';   // for development
 import UserContext from './Contexts/UserContext';
 
 
-function App() {
+function App2() {
   const [user, setUser] = React.useState({token: localStorage.getItem('token')});
 
   return (
     <div className="App">
-      {/*<UserContext.Provider value={{
-        user,
-        setUser
-      }}>*/}
-        <StarHeader />
-        <Content />
-        {/*<Routes>
-          <Route path="/zodiac-routing/" element={<Content />}>
-            <Route className={styles.lemma} index element={<Lemma />} />
-            <Route className={styles.lemma} path=":lemmaId" element={<Lemma />} />
-          </Route>
-        </Routes>*/}
-      {/*</UserContext.Provider>*/}
+      App
       <div>
         <GetDataTests />
       </div>
@@ -38,4 +26,4 @@ function App() {
   );
 }
 
-export default App;
+export default App2;

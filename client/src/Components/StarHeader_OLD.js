@@ -11,32 +11,29 @@ import zodiacConstellations from '../Graphics/zodiac_constellations.svg';
 // import zodiacLogo from '../Graphics/zodiac_logo.svg';
 
 const StarHeader = () => {
-  // const {user, setUser} = React.useContext(UserContext);
-  // let navigate = useNavigate();
-  // const [loginVisible, setLoginVisible] = React.useState(false);
+  const {user, setUser} = React.useContext(UserContext);
+  let navigate = useNavigate();
+  const [loginVisible, setLoginVisible] = React.useState(false);
   
-  // let startStyle;
-  // if (localStorage.getItem('pauseStarChart') === 'true') {
-  //   startStyle = {animationPlayState: 'paused'};
-  // } else {
-  //   startStyle = {animationPlayState: 'running'};
-  // }
-  // const [style, setStyle] = React.useState(startStyle);
-  const [style, setStyle] = React.useState({animationPlayState: 'running'});
+  let startStyle;
+  if (localStorage.getItem('pauseStarChart') === 'true') {
+    startStyle = {animationPlayState: 'paused'};
+  } else {
+    startStyle = {animationPlayState: 'running'};
+  }
+  const [style, setStyle] = React.useState(startStyle);
   
-  // function logout() {
-  //   setUser({token: null});
-  //   localStorage.removeItem('token');
-  //   setLoginVisible(false);
-  // }
+  function logout() {
+    setUser({token: null});
+    localStorage.removeItem('token');
+    setLoginVisible(false);
+  }
   
-  // function login() {
-  //   setLoginVisible(true);
-  // }
+  function login() {
+    setLoginVisible(true);
+  }
   
   const playPause = () => {
-  //   console.log('playPause()');
-  // };
     setStyle(prevStyle => {
       if (prevStyle.animationPlayState === 'running') {
         localStorage.setItem('pauseStarChart', true);
@@ -47,13 +44,13 @@ const StarHeader = () => {
     });
   };
   
-  // const goHome = () => {
-  //   navigate('/zodiac-routing/');
-  // }
+  const goHome = () => {
+    navigate('/zodiac-routing/');
+  }
   
   return (
     <>
-      {/* <button className={styles.home} onClick={goHome}>
+      <button className={styles.home} onClick={goHome}>
         <IoIosHome />
       </button>
       {!user.token && (
@@ -71,11 +68,11 @@ const StarHeader = () => {
       )}
       <button className={styles.playPause} onClick={playPause}>
         {(style.animationPlayState === 'running') ? (<IoIosPause />) : <IoIosPlay />}
-      </button> */}
-      {/* <LogIn
+      </button>
+      <LogIn
         visible={loginVisible}
         setLoginVisible={setLoginVisible}
-      /> */}
+      />
       <header className={styles.header} onClick={() => playPause()}>
         <img
           style={style}
