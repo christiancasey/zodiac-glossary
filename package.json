@@ -4,12 +4,16 @@
   "description": "The Zodiac Glossary of Ancient Terms",
   "main": "server/server.js",
   "scripts": {
-    "start": "nodemon server/server.js"
+    "start": "nodemon server/server.js",
+    "client": "npm start --prefix client",
+    "server": "nodemon server/server.js",
+    "dev": "concurrently \"npm run client\" \"npm run server\""
   },
   "author": "Christian Casey",
   "license": "ISC",
   "dependencies": {
     "axios": "^1.1.3",
+    "concurrently": "^7.4.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "nodemon": "^2.0.20",
