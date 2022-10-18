@@ -7,7 +7,7 @@
     "start": "nodemon server/server.js",
     "client": "npm start --prefix client",
     "server": "nodemon server/server.js",
-    "dev": "concurrently \"npm run client\" \"npm run server\""
+    "dev": "concurrently \"flyctl proxy 5432 -a zodiac-db\" \"npm run client\" \"npm run server\""
   },
   "author": "Christian Casey",
   "license": "ISC",
