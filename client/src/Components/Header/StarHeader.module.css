@@ -223,7 +223,7 @@ h1, h2, h3, h4 {
   margin-top: 0.2vw;
 }
 
-.loginButton {
+.loginButton, .signupButton {
   color: #ffef;
   background: #fff0;
   border: 1px solid #FFDF;
@@ -234,8 +234,13 @@ h1, h2, h3, h4 {
   font: 1.2vw book-antiqua, 'Book Antiqua', serif;
   text-shadow: 0 0 3px #FFD2;
 }
-.loginButton:hover {
+.loginButton:hover, .signupButton:hover {
   filter: drop-shadow(0 0 3px #ffe6);
+}
+.signupButton {
+  border: none;
+  opacity: 0.7;
+  float: right;
 }
 
 .invalidLogin {

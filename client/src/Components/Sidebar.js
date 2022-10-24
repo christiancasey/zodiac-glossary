@@ -13,17 +13,17 @@ import { addNewLemma } from '../Data/sample-data';
 import styles from './Lemma.module.css';
 
 const Sidebar = props => {
-  // let [searchParams, setSearchParams] = useSearchParams();
-  // let navigate = useNavigate();
-  // let location = useLocation();
+  let [searchParams, setSearchParams] = useSearchParams();
+  let navigate = useNavigate();
+  let location = useLocation();
   const [languages, setLanguages] = React.useState(getLanguageList(languageOptions));
-  // const {user} = React.useContext(UserContext);
+  const {user} = React.useContext(UserContext);
   
   // // Force language list to update on location change
   // // Needed to keep the values current when some action strips away the query string
-  // React.useEffect(() => {
-  //   setLanguages(getLanguageList(languageOptions))
-  // }, [location])
+  React.useEffect(() => {
+    setLanguages(getLanguageList(languageOptions))
+  }, [location])
   
   // Get language list from search params
   // Language is active by default if the language is not yet defined in the query string
@@ -57,14 +57,14 @@ const Sidebar = props => {
       return language;
     });
     
-  //   // Add language values to search params while keeping existing search value
-  //   let newSearchParams = Object.fromEntries([...searchParams]);
-  //   for (const language of newLanguages) {
-  //     newSearchParams[language.value] = language.active;
-  //   }
-  //   setSearchParams(newSearchParams);
+    // Add language values to search params while keeping existing search value
+    let newSearchParams = Object.fromEntries([...searchParams]);
+    for (const language of newLanguages) {
+      newSearchParams[language.value] = language.active;
+    }
+    setSearchParams(newSearchParams);
     
-  //   setLanguages(newLanguages);
+    setLanguages(newLanguages);
   }
   
   function addNewLemmaButton() {
@@ -75,7 +75,7 @@ const Sidebar = props => {
   
   return (
     <nav className={styles.sidebar}>
-      {/* <Search /> */}
+      <Search />
       <LanguageList languages={languages} selectLanguage={selectLanguage} />
       {/* <LemmataList languages={languages} /> */}
       {/* <div style={{display: (user.token ? 'block' : 'none')}}>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { IoIosCloseCircle } from "react-icons/io";
 import axios from 'axios';
 
@@ -85,6 +86,7 @@ const LogIn = props => {
             <button className={styles.loginButton} type="submit">Log in</button>
           </td>
           <td>
+            <Link className={styles.signupButton} href="/zodiac-routing/signup">Sign up</Link>
             <div className={styles.invalidLogin} style={{display: invalidLogin ? 'block' : 'none'}}>
               Incorrect login.<br />
               {/*<a href="#">Forgot password?</a>*/}
