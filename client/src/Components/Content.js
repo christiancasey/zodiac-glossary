@@ -1,5 +1,5 @@
 import React from 'react';
-// import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
 import Sidebar from './Sidebar';
@@ -21,10 +21,10 @@ const Content = props => {
   
   return (
     <section style={{height: '80vh'}}>
-    {/* <div className={styles.content}> */}
+    <div className={styles.content}>
       <Sidebar sidebarUpdate={sidebarUpdate} setChanged={setChanged} />
-      {/* <Outlet context={[updateLemmataList, changed, setChanged]} /> */}
-    {/* </div> */}
+      <Outlet context={[updateLemmataList, changed, setChanged]} />
+    </div>
     </section>
   );
 };

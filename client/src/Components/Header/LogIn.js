@@ -2,7 +2,7 @@ import React from 'react';
 import { IoIosCloseCircle } from "react-icons/io";
 import axios from 'axios';
 
-import UserContext from '../Contexts/UserContext';
+import UserContext from '../../Contexts/UserContext';
 
 import styles from './StarHeader.module.css';
 

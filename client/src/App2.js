@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 
 import styles from './Components/Content.module.css';
 
-import StarHeader from './Components/StarHeader';
+import StarHeader from './Components/Header/StarHeader';
 import Content from './Components/Content';
 import Lemma from './Components/Lemma';
 
@@ -17,12 +17,23 @@ function App2() {
   const [user, setUser] = React.useState({token: localStorage.getItem('token')});
 
   return (
-    <div className="App">
-      App
-      <div>
-        <GetDataTests />
+    <UserContext.Provider value={{
+      user,
+      setUser
+    }}>
+      <div className="App">
+        <StarHeader />
+        <Routes>
+          <Route path="/zodiac-routing/" element={<Content />}>
+            <Route className={styles.lemma} index element={<Lemma />} />
+            <Route className={styles.lemma} path=":lemmaId" element={<Lemma />} />
+          </Route>
+        </Routes>
+        <div>
+          <GetDataTests />
+        </div>
       </div>
-    </div>
+    </UserContext.Provider>
   );
 }
 

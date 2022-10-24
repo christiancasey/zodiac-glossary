@@ -2,37 +2,41 @@ import React from 'react';
 import { useNavigate } from "react-router-dom";
 import { IoIosPlay, IoIosPause, IoIosHome, IoIosLogIn, IoIosLogOut } from 'react-icons/io';
 
-import UserContext from '../Contexts/UserContext';
+import UserContext from '../../Contexts/UserContext';
 import LogIn from './LogIn.js';
 
 import styles from './StarHeader.module.css';
 
-import zodiacConstellations from '../Graphics/zodiac_constellations.svg';
+import zodiacConstellations from '../../Graphics/zodiac_constellations.svg';
 // import zodiacLogo from '../Graphics/zodiac_logo.svg';
 
 const StarHeader = () => {
-  // const {user, setUser} = React.useContext(UserContext);
-  // let navigate = useNavigate();
-  // const [loginVisible, setLoginVisible] = React.useState(false);
+  const {user, setUser} = React.useContext(UserContext);
+  let navigate = useNavigate();
+  const [loginVisible, setLoginVisible] = React.useState(false);
   
-  // let startStyle;
-  // if (localStorage.getItem('pauseStarChart') === 'true') {
-  //   startStyle = {animationPlayState: 'paused'};
-  // } else {
-  //   startStyle = {animationPlayState: 'running'};
-  // }
-  // const [style, setStyle] = React.useState(startStyle);
-  const [style, setStyle] = React.useState({animationPlayState: 'running'});
-  
-  // function logout() {
+  // React.useEffect(() => {
   //   setUser({token: null});
-  //   localStorage.removeItem('token');
-  //   setLoginVisible(false);
-  // }
+  // }, []);
+
+  let startStyle;
+  if (localStorage.getItem('pauseStarChart') === 'true') {
+    startStyle = {animationPlayState: 'paused'};
+  } else {
+    startStyle = {animationPlayState: 'running'};
+  }
+  const [style, setStyle] = React.useState(startStyle);
+  // const [style, setStyle] = React.useState({animationPlayState: 'running'});
   
-  // function login() {
-  //   setLoginVisible(true);
-  // }
+  function logout() {
+    setUser({token: null});
+    localStorage.removeItem('token');
+    setLoginVisible(false);
+  }
+  
+  function login() {
+    setLoginVisible(true);
+  }
   
   const playPause = () => {
   //   console.log('playPause()');
@@ -47,35 +51,35 @@ const StarHeader = () => {
     });
   };
   
-  // const goHome = () => {
-  //   navigate('/zodiac-routing/');
-  // }
+  const goHome = () => {
+    navigate('/zodiac-routing/');
+  }
   
   return (
     <>
-      {/* <button className={styles.home} onClick={goHome}>
+      <button className={styles.home} onClick={goHome}>
         <IoIosHome />
       </button>
-      {!user.token && (
+      {(user && user.token) ? null : (
         <button className={styles.home} onClick={login}>
           <IoIosLogIn />
         </button>
       )}
-      {user.token && (
+      {(user && user.token) ? (
         <button className={styles.home} onClick={logout}>
           <IoIosLogOut />
         </button>
-      )}
-      {user.token && (
+      ) : null}
+      {(user && user.token) ? (
         <div className={styles.username}>{user.username}</div>
-      )}
+      ) : null}
       <button className={styles.playPause} onClick={playPause}>
         {(style.animationPlayState === 'running') ? (<IoIosPause />) : <IoIosPlay />}
-      </button> */}
-      {/* <LogIn
+      </button>
+      <LogIn
         visible={loginVisible}
         setLoginVisible={setLoginVisible}
-      /> */}
+      />
       <header className={styles.header} onClick={() => playPause()}>
         <img
           style={style}
