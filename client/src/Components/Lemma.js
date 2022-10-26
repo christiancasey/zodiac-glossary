@@ -364,9 +364,9 @@ const Lemma = props => {
     <main className={styles.lemma}>
       <h1>
         {changed ? <i>Lemma (unsaved)</i> : 'Lemma'}
-        {user.token && (
+        {(user && user.token) ? (
           <button className={styles.delete} onClick={() => saveLemma()}>SAVE</button>
-        )}
+        ) : null}
       </h1>
       
       <fieldset disabled={user.token===null} style={{border: 'none', margin: 0, padding: 0}}>

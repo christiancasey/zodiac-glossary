@@ -80,7 +80,20 @@ ol {
   margin: 5px 0 20px 0;
 }
 
-
+.container {
+  height: calc(100% - 2vw);
+  width: 96vw;
+  
+  overflow: scroll;
+  float: left;
+  margin: 1vw;
+  
+  padding: 0 0.5vw;
+  background-color: #2D3B62CC;
+  border: 2px solid #FFDF;
+  box-shadow: 0 0 5px #2D3B62FF, 0 0 3px #2D3B62FF inset;
+  border-radius: 15px;
+}
 
 /* Fade in animation */
 @-webkit-keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }

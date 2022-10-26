@@ -6,6 +6,7 @@ import styles from './Components/Content.module.css';
 import StarHeader from './Components/Header/StarHeader';
 import Content from './Components/Content';
 import Lemma from './Components/Lemma';
+import SignUp from './Components/SignUp/SignUp';
 
 import GetDataTests from './Components/GetDataTests';   // for development
 
@@ -28,10 +29,9 @@ function App() {
             <Route className={styles.lemma} index element={<Lemma />} />
             <Route className={styles.lemma} path=":lemmaId" element={<Lemma />} />
           </Route>
+          <Route path="/signup" element={<SignUp />} />
         </Routes>
-        <div>
-          <GetDataTests />
-        </div>
+        {/* <GetDataTests /> */}
       </div>
     </UserContext.Provider>
   );
