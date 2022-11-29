@@ -5,10 +5,8 @@ import styles from './Components/Content.module.css';
 
 import StarHeader from './Components/Header/StarHeader';
 import Content from './Components/Content';
-import Lemma from './Components/Lemma';
+import Lemma from './Components/Lemma/Lemma';
 import SignUp from './Components/SignUp/SignUp';
-
-import GetDataTests from './Components/GetDataTests';   // for development
 
 
 import UserContext from './Contexts/UserContext';
@@ -31,7 +29,6 @@ function App() {
           </Route>
           <Route path="/signup" element={<SignUp />} />
         </Routes>
-        {/* <GetDataTests /> */}
       </div>
     </UserContext.Provider>
   );

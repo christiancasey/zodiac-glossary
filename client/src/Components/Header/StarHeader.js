@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from "react-router-dom";
-import { IoIosPlay, IoIosPause, IoIosHome, IoIosLogIn, IoIosLogOut } from 'react-icons/io';
+// import { IoIosPlay, IoIosPause, IoIosHome, IoIosLogIn, IoIosLogOut } from 'react-icons/io';
+import { IoIosPlay, IoIosPause, IoIosHome } from 'react-icons/io';
 
 import UserContext from '../../Contexts/UserContext';
 import LogIn from './LogIn.js';
@@ -26,17 +27,24 @@ const StarHeader = () => {
     startStyle = {animationPlayState: 'running'};
   }
   const [style, setStyle] = React.useState(startStyle);
-  // const [style, setStyle] = React.useState({animationPlayState: 'running'});
+
+  React.useEffect(() => {
+    setUser({token: true});
+    localStorage.setItem('token', true);
+  }, []);
   
-  function logout() {
-    setUser({token: null});
-    localStorage.removeItem('token');
-    setLoginVisible(false);
-  }
+  // Commented out to suppress annoying React warning that clutters up the console
+  // Reinstate when authentication stuff is ready
+  // CDC 2022-11-08
+  // function logout() {
+  //   setUser({token: null});
+  //   localStorage.removeItem('token');
+  //   setLoginVisible(false);
+  // }
   
-  function login() {
-    setLoginVisible(true);
-  }
+  // function login() {
+  //   setLoginVisible(true);
+  // }
   
   const playPause = () => {
   //   console.log('playPause()');
@@ -60,7 +68,7 @@ const StarHeader = () => {
       <button className={styles.home} onClick={goHome}>
         <IoIosHome />
       </button>
-      {(user && user.token) ? null : (
+      {/* {(user && user.token) ? null : (
         <button className={styles.home} onClick={login}>
           <IoIosLogIn />
         </button>
@@ -69,7 +77,7 @@ const StarHeader = () => {
         <button className={styles.home} onClick={logout}>
           <IoIosLogOut />
         </button>
-      ) : null}
+      ) : null} */}
       {(user && user.token) ? (
         <div className={styles.username}>{user.username}</div>
       ) : null}

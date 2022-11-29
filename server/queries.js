@@ -20,25 +20,10 @@ if (process.env.LOCAL_DEV === "true") {
   });
 }
 
+////////////////////////////////////////////////////////////////////////////////
+// USER creation and authentication
+////////////////////////////////////////////////////////////////////////////////
 
-// Standard selection option stuff
-const getLanguages = (request, response) => {
-  pool.query("SELECT * FROM languages WHERE active ORDER BY language", (error, results) => {
-    if (error) throw error;
-    response.status(200).send(results.rows);
-  });
-};
-
-const getPartsOfSpeech = (request, response) => {
-  pool.query("SELECT * FROM partsofspeech WHERE active ORDER BY partsofspeech", (error, results) => {
-    if (error) throw error;
-    response.status(200).send(results.rows);
-  });
-};
-
-
-// User creation, login, etc.
-// NOT PRODUCTION READY!!!!
 const getUsers = (request, response) => {
   pool.query('SELECT * FROM users', (error, results) => {
     if (error) throw error;
@@ -87,6 +72,98 @@ const deleteUser = (request, response) => {
   });
 };
 
+
+////////////////////////////////////////////////////////////////////////////////
+// LANGUAGES and PARTS OF SPEECH
+////////////////////////////////////////////////////////////////////////////////
+
+const getLanguages = (request, response) => {
+  const sql = "SELECT * FROM languages WHERE active ORDER BY language";
+  pool.query(sql, (error, results) => {
+    if (error) throw error;
+    response.status(200).send(results.rows);
+  });
+};
+
+const getPartsOfSpeech = (request, response) => {
+  const sql = "SELECT * FROM partsofspeech WHERE active ORDER BY partsofspeech";
+  pool.query(sql, (error, results) => {
+    if (error) throw error;
+    response.status(200).send(results.rows);
+  });
+};
+
+////////////////////////////////////////////////////////////////////////////////
+// LEMMATA LIST
+////////////////////////////////////////////////////////////////////////////////
+
+const getLemmataList = (request, response) => {
+  const token = request.query.token;
+  const sql = `
+    SELECT lemma_id AS lemmaId, published, original, translation, transliteration, languages.value AS language 
+    FROM lemmata 
+    LEFT JOIN languages USING (language_id) 
+    LEFT JOIN partsofspeech USING (partofspeech_id)`;
+
+  if (token) {
+    pool.query(sql, (error, results) => {
+      if (error) throw error;
+      response.status(200).json(results.rows);
+    });
+  } else {
+    pool.query(sql + ' WHERE published = TRUE', (error, results) => {
+      if (error) throw error;
+      response.status(200).json(results.rows);
+    });
+  }
+};
+
+const addNewLemma = (request, response) => {
+  const token = request.query.token; // Will need this later for authentication
+  const sql = 'INSERT INTO lemmata VALUES (DEFAULT) RETURNING lemma_id';
+
+  pool.query(sql, (error, results) => {
+    if (error) throw error;
+    response.status(200).json(results.rows[0].lemma_id);
+  });
+};
+
+////////////////////////////////////////////////////////////////////////////////
+// LEMMA
+////////////////////////////////////////////////////////////////////////////////
+
+const getLemma = (request, response) => {
+  const lemmaId = request.query.lemmaId; // Will need this later for authentication
+  const sql = `
+    SELECT lemma_id AS lemmaId, published, original, translation, transliteration, languages.value AS language 
+    FROM lemmata 
+    LEFT JOIN languages USING (language_id) 
+    LEFT JOIN partsofspeech USING (partofspeech_id)
+    WHERE lemma_id = $1`;
+
+  pool.query(sql, [lemmaId], (error, results) => {
+    if (error) throw error;
+    let lemma = results.rows;
+    if (!lemma.length) {
+      response.status(404);
+      return;
+    }
+    lemma = lemma[0];
+
+    lemma.lemmaId = lemma.lemmaid;
+    delete lemma.lemmaid;
+
+    
+
+    console.log(lemma);
+    response.status(200).json(lemma);
+  });
+};
+
+
+////////////////////////////////////////////////////////////////////////////////
+// EXPORTS
+////////////////////////////////////////////////////////////////////////////////
 module.exports = {
   getLanguages,
   getPartsOfSpeech,
@@ -95,4 +172,7 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
+  getLemmataList,
+  addNewLemma,
+  getLemma,
 };

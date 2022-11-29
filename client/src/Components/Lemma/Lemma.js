@@ -2,16 +2,18 @@ import React from "react";
 import { useParams, useNavigate, useLocation, useOutletContext } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
-import { getLemma, saveLemmaToDB, deleteLemmaFromDB } from "../Data/sample-data";
+import { getLemma, saveLemmaToDB, deleteLemmaFromDB } from "../../Data/sample-data";
+import { getLemmaDB } from "../../Data/api";
 
 import BasicInfo from './BasicInfo';
-import Meanings from './Meanings';
-import Variants from './Variants';
-import Quotations from './Quotations';
-import CrossLinks from './CrossLinks';
-import ExternalLinks from './ExternalLinks';
-import DeleteLemma from './DeleteLemma';
-import UserContext from '../Contexts/UserContext';
+// import Meanings from './Meanings';
+// import Variants from './Variants';
+// import Quotations from './Quotations';
+// import CrossLinks from './CrossLinks';
+// import ExternalLinks from './ExternalLinks';
+// import DeleteLemma from './DeleteLemma';
+
+import UserContext from '../../Contexts/UserContext';
 
 import styles from './Lemma.module.css';
 
@@ -25,14 +27,22 @@ const Lemma = props => {
   let [updateLemmataList, changed, setChanged] = useOutletContext(); 
   
   let params = useParams();
+  let [lemma, setLemma] = React.useState({});
   
-  // A little convoluted, but this is the only way I've found to get the lemma state variable
-  // to update when the URL params change.
-  let [lemma, setLemma] = React.useState(getLemma(params.lemmaId));
-  // let [changed, setChanged] = React.useState(lemma ? lemma.changed : false);
   React.useEffect(() => {
-    setLemma(getLemma(params.lemmaId));
+    // setLemma(getLemma(params.lemmaId));
+    const lemmaId = parseInt(params.lemmaId);
+    console.log(params.lemmaId);
+
+    if(lemmaId) {
+      getLemmaDB(setLemma, lemmaId);
+    }
   }, [params.lemmaId]);
+
+
+  React.useEffect(() => {
+    console.log(lemma);
+  }, [lemma]);
   
   // Keyboard shortcuts
   const handleKeyPress = e => {
@@ -372,7 +382,7 @@ const Lemma = props => {
       <fieldset disabled={user.token===null} style={{border: 'none', margin: 0, padding: 0}}>
         
         <BasicInfo lemma={lemma} onChange={onChange} />
-        <Meanings
+        {/* <Meanings
           meanings={lemma.meanings}
           updateMeaning={updateMeaning}
           addNewMeaning={addNewMeaning}
@@ -407,7 +417,7 @@ const Lemma = props => {
           deleteExternalLink={deleteExternalLink}
         />
         
-        <DeleteLemma lemma={lemma} deleteLemma={deleteLemma} />
+        <DeleteLemma lemma={lemma} deleteLemma={deleteLemma} /> */}
       </fieldset>
       
     </main>

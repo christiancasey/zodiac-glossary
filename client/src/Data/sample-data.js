@@ -250,10 +250,6 @@ export function getLemmataList(token) {
   return lemmataList;
 }
 
-export function getLemma(lemmaId) {
-  return lemmata.find(lemma => lemma.lemmaId === lemmaId);
-}
-
 export function addNewLemma() {
   // Move some of this back into <Sidebar />
   // esp. the creation of the new object and the id
@@ -282,6 +278,10 @@ export function addNewLemma() {
   localStorage.setItem("lemmata", JSON.stringify(lemmata));
   
   return newLemmaId;
+}
+
+export function getLemma(lemmaId) {
+  return lemmata.find(lemma => lemma.lemmaId === lemmaId);
 }
 
 export function saveLemmaToDB(newLemma) {

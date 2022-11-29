@@ -1,7 +1,7 @@
 import React from "react";
 import { IoIosTrash } from "react-icons/io";
 
-import UserContext from '../Contexts/UserContext';
+import UserContext from '../../Contexts/UserContext';
 
 import styles from './Lemma.module.css';
 

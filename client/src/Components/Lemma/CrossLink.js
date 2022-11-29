@@ -2,10 +2,10 @@ import React from 'react';
 import ReactTooltip from 'react-tooltip';
 import { IoIosTrash, IoIosOpen } from "react-icons/io";
 
-import { getLemma, getLemmataList } from "../Data/sample-data";
+import { getLemma, getLemmataList } from "../../Data/sample-data";
 
-import QueryNavLink from './QueryNavLink';
-import UserContext from '../Contexts/UserContext';
+import QueryNavLink from '../QueryNavLink';
+import UserContext from '../../Contexts/UserContext';
 
 import styles from './Lemma.module.css';
 

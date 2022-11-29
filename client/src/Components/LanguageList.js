@@ -6,7 +6,7 @@ const LanguageList = props => {
   return (
     <>
       <h2>Languages</h2>
-      {/* <ol className="language-list">
+      <ol className="language-list">
         {props.languages.map(language => {
           return (
             <LanguageItem 
@@ -16,7 +16,7 @@ const LanguageList = props => {
             />
           );
         })}
-      </ol> */}
+      </ol>
     </>
   );
 };

@@ -28,6 +28,13 @@ app.delete('/api/users/:id', db.deleteUser);
 app.get('/api/languages', db.getLanguages);
 app.get('/api/partsofspeech', db.getPartsOfSpeech);
 
+// Lemmata list
+app.get('/api/lemmata/list', db.getLemmataList);
+app.get('/api/lemmata/add', db.addNewLemma);
+
+// Lemma
+app.get('/api/lemma/get', db.getLemma);
+
 
 app.get('*', (request, response) => {
   response.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
