@@ -12,6 +12,8 @@ const BasicInfo = props => {
   let lemma = props.lemma;
   let onChange = props.onChange;
   const {user} = React.useContext(UserContext);
+
+  console.log(lemma);
   
   return (
     <div className={styles.basic}>
@@ -47,14 +49,16 @@ const BasicInfo = props => {
           name="language"
           label="Language"
           value={lemma.language}
-          options={[{id: 0, value: ''}, ...languageOptions]}
+          // options={[{id: 0, value: ''}, ...languageOptions]} // Old way of adding a blank space
+          options={languageOptions}
           onChange={onChange} 
         />
         <Dropdown
           name="partOfSpeech"
           label="Part of Speech"
           value={lemma.partOfSpeech}
-          options={[{id: 0, value: ''}, ...partOfSpeechOptions]}
+          // options={[{id: 0, value: ''}, ...partOfSpeechOptions]} // Old way of adding a blank space
+          options={partOfSpeechOptions}
           onChange={onChange} 
         />
         <tr>

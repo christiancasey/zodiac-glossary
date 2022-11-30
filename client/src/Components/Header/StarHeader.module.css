@@ -37,9 +37,9 @@
   margin: -65vw 0 0 -100vw;
   opacity: 0.6;
   filter: drop-shadow(0 0 5px #FFD4);  /* blur on stars themselves drop-shadow(offset-x offset-y blur-radius color) */
-  -webkit-animation: starSpin infinite 600s linear;
-  -moz-animation: starSpin infinite 600s linear;
-  animation: starSpin infinite 600s linear;
+  -webkit-animation: starSpin infinite 12000s linear;
+  -moz-animation: starSpin infinite 12000s linear;
+  animation: starSpin infinite 12000s linear;
   
   /* float: left; */
 }

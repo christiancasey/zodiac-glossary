@@ -134,12 +134,22 @@ const addNewLemma = (request, response) => {
 
 const getLemma = (request, response) => {
   const lemmaId = request.query.lemmaId; // Will need this later for authentication
+  console.log(lemmaId);
+
+  // Temporary patch to deal with React Router making lemmaId = null in URL
+  // Needs a proper fix on client side –CDC 2022-11-29
+  if (!lemmaId || lemmaId == "null") {
+    response.status(404);
+    return;
+  }
+
   const sql = `
-    SELECT lemma_id AS lemmaId, published, original, translation, transliteration, languages.value AS language 
+    SELECT lemma_id AS lemmaId, published, original, translation, transliteration, languages.value AS language, partsofspeech.value AS partofspeech
     FROM lemmata 
-    LEFT JOIN languages USING (language_id) 
-    LEFT JOIN partsofspeech USING (partofspeech_id)
-    WHERE lemma_id = $1`;
+      JOIN languages USING (language_id) 
+      JOIN partsofspeech USING (partofspeech_id)
+    WHERE lemma_id = $1;
+    `;
 
   pool.query(sql, [lemmaId], (error, results) => {
     if (error) throw error;
@@ -151,12 +161,48 @@ const getLemma = (request, response) => {
     lemma = lemma[0];
 
     lemma.lemmaId = lemma.lemmaid;
+    lemma.partOfSpeech = lemma.partofspeech;
+    delete lemma.partofspeech;
     delete lemma.lemmaid;
 
     
 
     console.log(lemma);
     response.status(200).json(lemma);
+  });
+};
+
+const saveLemma = (request, response) => {
+  const lemma = request.body;
+
+  console.log(`\n\nSAVE LEMMA CALL:`);
+  console.log(lemma);
+
+  const sql = `
+    UPDATE lemmata
+      SET
+        published = $2, 
+        original = $3, 
+        translation = $4, 
+        transliteration = $5, 
+        partofspeech_id = (SELECT partofspeech_id FROM partsofspeech WHERE value = $6), 
+		    language_id = (SELECT language_id FROM languages WHERE value = $7)
+    WHERE lemma_id = $1;
+    `;
+
+    const values = [
+      lemma.lemmaId, 
+      lemma.published, 
+      lemma.original, 
+      lemma.translation, 
+      lemma.transliteration,
+      lemma.partOfSpeech,
+      lemma.language,
+    ];
+
+  pool.query(sql, values, (error, results) => {
+    if (error) throw error;
+    response.status(200).json(results.rows);
   });
 };
 
@@ -175,4 +221,5 @@ module.exports = {
   getLemmataList,
   addNewLemma,
   getLemma,
+  saveLemma,
 };

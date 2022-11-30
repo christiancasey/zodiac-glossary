@@ -1,4 +1,5 @@
 export const languageOptions = [
+  { id: 0, value: 'none', label: '' },
   { id: 1, value: 'akkadian', label: 'Akkadian' },
   { id: 2, value: 'aramaic',  label: 'Aramaic' },
   { id: 3, value: 'egyptian', label: 'Egyptian' },
@@ -8,6 +9,7 @@ export const languageOptions = [
 ];
 
 export const partOfSpeechOptions = [
+  { id: 0, value: 'none', label: '' },
   { id: 1,	value: 'adjective',		 label: 'Adjective'},
   { id: 2,	value: 'adverb',		   label: 'Adverb'},
   { id: 3,	value: 'article',		   label: 'Article'},

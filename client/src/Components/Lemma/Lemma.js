@@ -2,8 +2,8 @@ import React from "react";
 import { useParams, useNavigate, useLocation, useOutletContext } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
-import { getLemma, saveLemmaToDB, deleteLemmaFromDB } from "../../Data/sample-data";
-import { getLemmaDB } from "../../Data/api";
+import { deleteLemmaFromDB } from "../../Data/sample-data";
+import { getLemmaDB, saveLemmaToDB } from "../../Data/api";
 
 import BasicInfo from './BasicInfo';
 // import Meanings from './Meanings';
@@ -21,13 +21,14 @@ const Lemma = props => {
   let navigate = useNavigate();
   let location = useLocation();
   const {user} = React.useContext(UserContext);
+
+  let params = useParams();
+  let [lemma, setLemma] = React.useState();
   
   // Really stupid cludge that forces the sidebar to update when the user saves a new lemma
   // It's either this or raise all of the lemma state and redo the routing just for that one edge case
   let [updateLemmataList, changed, setChanged] = useOutletContext(); 
   
-  let params = useParams();
-  let [lemma, setLemma] = React.useState({});
   
   React.useEffect(() => {
     // setLemma(getLemma(params.lemmaId));
@@ -40,9 +41,9 @@ const Lemma = props => {
   }, [params.lemmaId]);
 
 
-  React.useEffect(() => {
-    console.log(lemma);
-  }, [lemma]);
+  // React.useEffect(() => {
+  //   console.log(lemma);
+  // }, [lemma]);
   
   // Keyboard shortcuts
   const handleKeyPress = e => {
@@ -83,6 +84,7 @@ const Lemma = props => {
   };
   
   const saveLemma = () => {
+    console.log('saveLemma()');
     updateLemmataList();
     setChanged(false);
     saveLemmaToDB(lemma);
@@ -357,7 +359,9 @@ const Lemma = props => {
     );
   }
   // Default display when no lemma is selected
-  if (!params.lemmaId) {
+  // Condition on "null" because refreshing the page replaces the lemma ID in URL with null
+  // Properly, this should be fixed with React Router –CDC 2022-11-29
+  if (!params.lemmaId || params.lemmaId === "null") {
     return (
       <main className={styles.lemma}>
         <h2>Lemma</h2>
@@ -389,35 +393,35 @@ const Lemma = props => {
           deleteMeaning={deleteMeaning}
         />
         
-        <Variants
+        {/* <Variants
           variants={lemma.variants}
           updateVariant={updateVariant}
           addNewVariant={addNewVariant}
           deleteVariant={deleteVariant}
         />
         
-        <Quotations
+        {/* <Quotations
           quotations={lemma.quotations}
           updateQuotation={updateQuotation}
           addNewQuotation={addNewQuotation}
           deleteQuotation={deleteQuotation}
         />
         
-        <CrossLinks
+        {/* <CrossLinks
           crosslinks={lemma.crosslinks}
           updateCrossLink={updateCrossLink}
           addNewCrossLink={addNewCrossLink}
           deleteCrossLink={deleteCrossLink}
         />
         
-        <ExternalLinks
+        {/* <ExternalLinks
           externalLinks={lemma.externalLinks}
           updateExternalLink={updateExternalLink}
           addNewExternalLink={addNewExternalLink}
           deleteExternalLink={deleteExternalLink}
         />
         
-        <DeleteLemma lemma={lemma} deleteLemma={deleteLemma} /> */}
+        {/* <DeleteLemma lemma={lemma} deleteLemma={deleteLemma} /> */}
       </fieldset>
       
     </main>

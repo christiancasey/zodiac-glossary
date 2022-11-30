@@ -1,4 +1,6 @@
 import React from 'react';
+// import ReactTooltip from 'react-tooltip'; // Maybe add a tooltip to the pause button
+
 import { useNavigate } from "react-router-dom";
 // import { IoIosPlay, IoIosPause, IoIosHome, IoIosLogIn, IoIosLogOut } from 'react-icons/io';
 import { IoIosPlay, IoIosPause, IoIosHome } from 'react-icons/io';
