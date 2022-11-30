@@ -2,7 +2,7 @@ import React from 'react';
 import { IoIosAddCircle } from "react-icons/io";
 
 import Variant from './Variant';
-import UserContext from '../Contexts/UserContext';
+import UserContext from '../../Contexts/UserContext';
 
 import styles from './Lemma.module.css';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactTooltip from 'react-tooltip';
 import { IoIosTrash, IoIosOpen } from "react-icons/io";
 
-import UserContext from '../Contexts/UserContext';
+import UserContext from '../../Contexts/UserContext';
 
 import styles from './Lemma.module.css';
 

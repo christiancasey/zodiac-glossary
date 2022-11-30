@@ -132,9 +132,9 @@ const addNewLemma = (request, response) => {
 // LEMMA
 ////////////////////////////////////////////////////////////////////////////////
 
-const getLemma = (request, response) => {
+const getLemma = async (request, response) => {
   const lemmaId = request.query.lemmaId; // Will need this later for authentication
-  console.log(lemmaId);
+  console.log('lemmaId (sent from client)', lemmaId);
 
   // Temporary patch to deal with React Router making lemmaId = null in URL
   // Needs a proper fix on client side –CDC 2022-11-29
@@ -143,7 +143,8 @@ const getLemma = (request, response) => {
     return;
   }
 
-  const sql = `
+  // Query DB and create lemma object
+  const sqlLemma = `
     SELECT lemma_id AS lemmaId, published, original, translation, transliteration, languages.value AS language, partsofspeech.value AS partofspeech
     FROM lemmata 
       JOIN languages USING (language_id) 
@@ -151,34 +152,59 @@ const getLemma = (request, response) => {
     WHERE lemma_id = $1;
     `;
 
-  pool.query(sql, [lemmaId], (error, results) => {
-    if (error) throw error;
-    let lemma = results.rows;
-    if (!lemma.length) {
-      response.status(404);
-      return;
-    }
-    lemma = lemma[0];
+  var lemmaDB = await waitQuery(sqlLemma, [lemmaId]);
 
-    lemma.lemmaId = lemma.lemmaid;
-    lemma.partOfSpeech = lemma.partofspeech;
-    delete lemma.partofspeech;
-    delete lemma.lemmaid;
+  var lemma = lemmaDB.rows;
+  if (!lemma.length) {
+    response.status(404);
+    return;
+  }
+  lemma = lemma[0];
 
-    
+  lemma.lemmaId = lemma.lemmaid;
+  lemma.partOfSpeech = lemma.partofspeech;
+  delete lemma.partofspeech;
+  delete lemma.lemmaid;
 
-    console.log(lemma);
-    response.status(200).json(lemma);
-  });
+  // Add MEANINGS to lemma object
+  const sqlMeanings = `SELECT * FROM meanings WHERE lemma_id = $1;`;
+  var meaningsDB = await waitQuery(sqlMeanings, [lemmaId]);
+  lemma.meanings = [];
+  for (meaning of meaningsDB.rows) {
+    meaning.id = meaning.meaning_id;
+    delete meaning.meaning_id;
+    delete meaning.lemma_id;
+    lemma.meanings.push(meaning);
+  }
+
+  // Add VARIANTS to lemma object
+  // Add QUOTATIONS to lemma object
+  // Add CROSS LINKS to lemma object
+  // Add EXTERNAL LINKS to lemma object
+
+  response.status(200).json(lemma);
+
+  console.log('lemma', lemma);
 };
+
+function waitQuery(query, params) {
+  return new Promise((resolve, reject) => {
+    pool.query(query, params, (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
 
 const saveLemma = (request, response) => {
   const lemma = request.body;
 
-  console.log(`\n\nSAVE LEMMA CALL:`);
-  console.log(lemma);
+  console.log(`\n\nSAVE LEMMA CALL:\n`, lemma);
 
-  const sql = `
+  const sqlLemma = `
     UPDATE lemmata
       SET
         published = $2, 
@@ -200,10 +226,31 @@ const saveLemma = (request, response) => {
       lemma.language,
     ];
 
-  pool.query(sql, values, (error, results) => {
+  pool.query(sqlLemma, values, (error, results) => {
     if (error) throw error;
-    response.status(200).json(results.rows);
   });
+
+  const sqlMeanings = `
+    UPDATE meanings
+      SET
+        value = $3
+    WHERE lemma_id = $1 AND meaning_id = $2
+  `;
+
+  for (meaning of lemma.meanings) {
+    console.log(meaning);
+    const values = [
+      lemma.lemmaId,
+      meaning.id,
+      meaning.value,
+    ];
+
+    pool.query(sqlMeanings, values, (error, results) => {
+      if (error) throw error;
+    });
+  }
+
+  response.status(200);
 };
 
 

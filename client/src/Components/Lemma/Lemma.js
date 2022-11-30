@@ -6,7 +6,7 @@ import { deleteLemmaFromDB } from "../../Data/sample-data";
 import { getLemmaDB, saveLemmaToDB } from "../../Data/api";
 
 import BasicInfo from './BasicInfo';
-// import Meanings from './Meanings';
+import Meanings from './Meanings';
 // import Variants from './Variants';
 // import Quotations from './Quotations';
 // import CrossLinks from './CrossLinks';
@@ -386,7 +386,7 @@ const Lemma = props => {
       <fieldset disabled={user.token===null} style={{border: 'none', margin: 0, padding: 0}}>
         
         <BasicInfo lemma={lemma} onChange={onChange} />
-        {/* <Meanings
+        <Meanings
           meanings={lemma.meanings}
           updateMeaning={updateMeaning}
           addNewMeaning={addNewMeaning}

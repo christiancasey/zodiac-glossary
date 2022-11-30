@@ -2,7 +2,7 @@ import React from "react";
 import { IoIosAddCircle } from "react-icons/io";
 
 import Quotation from './Quotation';
-import UserContext from '../Contexts/UserContext';
+import UserContext from '../../Contexts/UserContext';
 
 import styles from './Lemma.module.css';
 
