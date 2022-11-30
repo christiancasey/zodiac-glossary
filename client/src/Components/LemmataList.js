@@ -20,21 +20,14 @@ const LemmataList = props => {
   const [lemmataSortField, setLemmataSortField] = React.useState('original');
   
   // Forces a refresh of the list when a new lemma is added (and on load)
+  // Uses a dummy lemma variable in content to detect saves and update the list
+  // Plus location because that changes when a new lemma is added
   React.useEffect(() => {
-    // Pass state setting functions as callbacks to api functions
-    // Allows the separation of really long and cumbersome fetch calls from app code
-    // I'm not sure whether this is the "right" way to do it, but it makes sense to me
-    // CDC 2022-11-08
     getLemmataList(setLemmataList, user && user.token);
-  }, [location]);
+  }, [props.contentLemma, location]);
 
   React.useEffect(() => {
-    
-    // Why is this necessary? CDC 2022-11-08
-    // Seems to work without this even when the lemmata list returned from server is empty
-    // if (!Array.isArray(lemmataList))
-    //   return;
-    
+
     // Filter the lemmata list using both the search term and the selected languages
     let tempLemmataFiltered = [];
     tempLemmataFiltered = lemmataList;

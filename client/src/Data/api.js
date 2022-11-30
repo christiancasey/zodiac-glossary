@@ -41,11 +41,10 @@ export function getLemmaDB(setLemma, lemmaId) {
   .then(data => setLemma(data));
 }
 
-export function saveLemmaToDB(lemma) {
+export function saveLemmaToDB(setLemma, lemma) {
   let url = '/api/lemma/save';
 
-  console.log('API lemma ');
-  console.log(lemma);
+  console.log('API lemma:\n', lemma);
 
   fetch(url, {
     headers: {
@@ -56,6 +55,6 @@ export function saveLemmaToDB(lemma) {
     body: JSON.stringify(lemma),
   })
   .then(res => res.json())
-  .then(data => console.log(data))
+  .then(data => setLemma(data))
   .catch(data => console.log(data)); // Add error handling that will show the lemma as unsaved if the operation fails
 }

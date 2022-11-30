@@ -132,6 +132,18 @@ const addNewLemma = (request, response) => {
 // LEMMA
 ////////////////////////////////////////////////////////////////////////////////
 
+function waitQuery(query, params) {
+  return new Promise((resolve, reject) => {
+    pool.query(query, params, (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
+
 const getLemma = async (request, response) => {
   const lemmaId = request.query.lemmaId; // Will need this later for authentication
   console.log('lemmaId (sent from client)', lemmaId);
@@ -187,23 +199,12 @@ const getLemma = async (request, response) => {
   console.log('lemma', lemma);
 };
 
-function waitQuery(query, params) {
-  return new Promise((resolve, reject) => {
-    pool.query(query, params, (error, results) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(results);
-      }
-    });
-  });
-}
-
-const saveLemma = (request, response) => {
+const saveLemma = async (request, response) => {
   const lemma = request.body;
 
-  console.log(`\n\nSAVE LEMMA CALL:\n`, lemma);
+  console.log(`\n\nSAVE LEMMA\nBEFORE SAVE:\n`, lemma);
 
+  // LEMMA – basic info
   const sqlLemma = `
     UPDATE lemmata
       SET
@@ -229,30 +230,56 @@ const saveLemma = (request, response) => {
   pool.query(sqlLemma, values, (error, results) => {
     if (error) throw error;
   });
-
-  const sqlMeanings = `
+  
+  // MEANINGS
+  const sqlMeaningsUpdate = `
     UPDATE meanings
       SET
-        value = $3
-    WHERE lemma_id = $1 AND meaning_id = $2
+        value = $2
+      WHERE lemma_id = $1 AND meaning_id = $3
+    RETURNING *;
+  `;
+  const sqlMeaningsInsert = `
+    INSERT INTO meanings (lemma_id, value)
+      VALUES ($1, $2)
+    RETURNING meaning_id;
   `;
 
   for (meaning of lemma.meanings) {
-    console.log(meaning);
+
     const values = [
       lemma.lemmaId,
-      meaning.id,
       meaning.value,
+      isNaN(parseInt(meaning.id)) ? 0 : parseInt(meaning.id),
     ];
 
-    pool.query(sqlMeanings, values, (error, results) => {
-      if (error) throw error;
-    });
+    var meaningUpdateResults = await waitQuery(sqlMeaningsUpdate, values);
+
+    // If the meaning is not in the DB, add it
+    // Reset the id of the lemma object with the new auto value from the DB
+    if (!meaningUpdateResults.rows.length) {
+      var results = await waitQuery(sqlMeaningsInsert, values.slice(0,-1));
+      meaning.id = results.rows[0].meaning_id;
+    }
   }
 
-  response.status(200);
-};
+  // Clean up meanings in DB
+  // Check what's in there and delete any rows that are not in the lemma object anymore
+  // ... because they have been deleted by the user on the front end
+  var meaningCleanUpResults = await waitQuery('SELECT * FROM meanings WHERE lemma_id = $1', [lemma.lemmaId]);
+  let meaningIds = lemma.meanings.map(meaning => meaning.id);
+  for (meaning of meaningCleanUpResults.rows) {
+    if (!meaningIds.includes(meaning.meaning_id)) {
+      pool.query('DELETE FROM meanings WHERE meaning_id = $1', [meaning.meaning_id], (error, results) => {
+        if (error) throw error;
+      });
+    }
+  }
 
+  console.log('\nAFTER SAVE:\n', lemma);
+
+  response.status(200).json(lemma);
+};
 
 ////////////////////////////////////////////////////////////////////////////////
 // EXPORTS

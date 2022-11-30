@@ -27,13 +27,12 @@ const Lemma = props => {
   
   // Really stupid cludge that forces the sidebar to update when the user saves a new lemma
   // It's either this or raise all of the lemma state and redo the routing just for that one edge case
-  let [updateLemmataList, changed, setChanged] = useOutletContext(); 
-  
+  let [updateLemmataList, changed, setChanged, setContentLemma] = useOutletContext(); 
   
   React.useEffect(() => {
     // setLemma(getLemma(params.lemmaId));
     const lemmaId = parseInt(params.lemmaId);
-    console.log(params.lemmaId);
+    console.log('Lemma ID from Lemma comp:\n', params.lemmaId);
 
     if(lemmaId) {
       getLemmaDB(setLemma, lemmaId);
@@ -87,7 +86,8 @@ const Lemma = props => {
     console.log('saveLemma()');
     updateLemmataList();
     setChanged(false);
-    saveLemmaToDB(lemma);
+    saveLemmaToDB(setLemma, lemma);
+    setContentLemma(lemma);
   };
   
   const deleteLemma = () => {
