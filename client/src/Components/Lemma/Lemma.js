@@ -2,16 +2,16 @@ import React from "react";
 import { useParams, useNavigate, useLocation, useOutletContext } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
-import { deleteLemmaFromDB } from "../../Data/sample-data";
-import { getLemmaDB, saveLemmaToDB } from "../../Data/api";
+// import { deleteLemmaFromDB } from "../../Data/sample-data";
+import { getLemmaDB, saveLemmaToDB, deleteLemmaFromDB } from "../../Data/api";
 
 import BasicInfo from './BasicInfo';
 import Meanings from './Meanings';
-// import Variants from './Variants';
+import Variants from './Variants';
 // import Quotations from './Quotations';
 // import CrossLinks from './CrossLinks';
 // import ExternalLinks from './ExternalLinks';
-// import DeleteLemma from './DeleteLemma';
+import DeleteLemma from './DeleteLemma';
 
 import UserContext from '../../Contexts/UserContext';
 
@@ -32,7 +32,7 @@ const Lemma = props => {
   React.useEffect(() => {
     // setLemma(getLemma(params.lemmaId));
     const lemmaId = parseInt(params.lemmaId);
-    console.log('Lemma ID from Lemma comp:\n', params.lemmaId);
+    console.log('This log call in LEMMA component\nlemma id:\n', params.lemmaId);
 
     if(lemmaId) {
       getLemmaDB(setLemma, lemmaId);
@@ -92,8 +92,13 @@ const Lemma = props => {
   
   const deleteLemma = () => {
     deleteLemmaFromDB(lemma.lemmaId);
-    setLemma(null);
     navigate('/zodiac-routing/' + location.search);
+    setLemma(null);
+    setContentLemma(null);
+    updateLemmataList();
+    navigate(0);  // Cludge to make the lemmata list update after deletion by forcing page refresh
+                  // I just can't seem to get the stupid lemmata list to update reliably
+                  // CDC 2022-11-30
   }
   
   const updateMeaning = (updatedMeaning, id) => {
@@ -393,7 +398,7 @@ const Lemma = props => {
           deleteMeaning={deleteMeaning}
         />
         
-        {/* <Variants
+        <Variants
           variants={lemma.variants}
           updateVariant={updateVariant}
           addNewVariant={addNewVariant}
@@ -419,9 +424,9 @@ const Lemma = props => {
           updateExternalLink={updateExternalLink}
           addNewExternalLink={addNewExternalLink}
           deleteExternalLink={deleteExternalLink}
-        />
+        /> */}
         
-        {/* <DeleteLemma lemma={lemma} deleteLemma={deleteLemma} /> */}
+        <DeleteLemma lemma={lemma} deleteLemma={deleteLemma} />
       </fieldset>
       
     </main>

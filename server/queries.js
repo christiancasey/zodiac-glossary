@@ -190,6 +190,16 @@ const getLemma = async (request, response) => {
   }
 
   // Add VARIANTS to lemma object
+  const sqlVariants = `SELECT * FROM variants WHERE lemma_id = $1;`;
+  var variantsDB = await waitQuery(sqlVariants, [lemmaId]);
+  lemma.variants = [];
+  for (variant of variantsDB.rows) {
+    variant.id = variant.variant_id;
+    delete variant.variant_id;
+    delete variant.lemma_id;
+    lemma.variants.push(variant);
+  }
+
   // Add QUOTATIONS to lemma object
   // Add CROSS LINKS to lemma object
   // Add EXTERNAL LINKS to lemma object
@@ -275,10 +285,73 @@ const saveLemma = async (request, response) => {
       });
     }
   }
+  
+  // VARIANTS
+  // const sqlMeaningsUpdate = `
+  //   UPDATE meanings
+  //     SET
+  //       value = $2
+  //     WHERE lemma_id = $1 AND meaning_id = $3
+  //   RETURNING *;
+  // `;
+  // const sqlMeaningsInsert = `
+  //   INSERT INTO meanings (lemma_id, value)
+  //     VALUES ($1, $2)
+  //   RETURNING meaning_id;
+  // `;
+
+  // for (meaning of lemma.meanings) {
+
+  //   const values = [
+  //     lemma.lemmaId,
+  //     meaning.value,
+  //     isNaN(parseInt(meaning.id)) ? 0 : parseInt(meaning.id),
+  //   ];
+
+  //   var meaningUpdateResults = await waitQuery(sqlMeaningsUpdate, values);
+
+  //   // If the meaning is not in the DB, add it
+  //   // Reset the id of the lemma object with the new auto value from the DB
+  //   if (!meaningUpdateResults.rows.length) {
+  //     var results = await waitQuery(sqlMeaningsInsert, values.slice(0,-1));
+  //     meaning.id = results.rows[0].meaning_id;
+  //   }
+  // }
+
+  // // Clean up meanings in DB
+  // // Check what's in there and delete any rows that are not in the lemma object anymore
+  // // ... because they have been deleted by the user on the front end
+  // var meaningCleanUpResults = await waitQuery('SELECT * FROM meanings WHERE lemma_id = $1', [lemma.lemmaId]);
+  // let meaningIds = lemma.meanings.map(meaning => meaning.id);
+  // for (meaning of meaningCleanUpResults.rows) {
+  //   if (!meaningIds.includes(meaning.meaning_id)) {
+  //     pool.query('DELETE FROM meanings WHERE meaning_id = $1', [meaning.meaning_id], (error, results) => {
+  //       if (error) throw error;
+  //     });
+  //   }
+  // }
 
   console.log('\nAFTER SAVE:\n', lemma);
 
   response.status(200).json(lemma);
+};
+
+const deleteLemma = (request, response) => {
+  const lemmaId = request.query.lemmaId;
+
+  console.log(`\n\nDELETE LEMMA:\n`, lemmaId);
+
+  const sql = `DELETE FROM lemmata WHERE lemma_id = $1;`;
+
+    const values = [
+      lemmaId,
+    ];
+
+  pool.query(sql, values, (error, results) => {
+    if (error) throw error;
+  });
+
+  response.status(202).json(request.query);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -296,4 +369,5 @@ module.exports = {
   addNewLemma,
   getLemma,
   saveLemma,
+  deleteLemma,
 };

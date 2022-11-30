@@ -35,6 +35,7 @@ app.get('/api/lemmata/add', db.addNewLemma);
 // Lemma
 app.get('/api/lemma/get', db.getLemma);
 app.patch('/api/lemma/save', db.saveLemma);
+app.delete('/api/lemma/delete', db.deleteLemma);
 
 
 app.get('*', (request, response) => {

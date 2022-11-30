@@ -44,7 +44,7 @@ export function getLemmaDB(setLemma, lemmaId) {
 export function saveLemmaToDB(setLemma, lemma) {
   let url = '/api/lemma/save';
 
-  console.log('API lemma:\n', lemma);
+  console.log('API saveLemmaToDB:\n', lemma);
 
   fetch(url, {
     headers: {
@@ -57,4 +57,20 @@ export function saveLemmaToDB(setLemma, lemma) {
   .then(res => res.json())
   .then(data => setLemma(data))
   .catch(data => console.log(data)); // Add error handling that will show the lemma as unsaved if the operation fails
+}
+
+export function deleteLemmaFromDB(lemmaId) {
+  let url = '/api/lemma/delete';
+  const params = new URLSearchParams({lemmaId});
+  url += '?' + params.toString();
+
+  console.log('API deleteLemmaFromDB:\n', lemmaId);
+  console.log(url);
+
+  fetch(url, {
+    method: "DELETE",
+  })
+  .then(res => res.json())
+  .then(data => console.log(data))
+  .catch(data => console.log(data));
 }

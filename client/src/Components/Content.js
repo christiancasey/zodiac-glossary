@@ -15,7 +15,6 @@ const Content = props => {
   // Really stupid cludge that forces the sidebar to update when the user saves a new lemma
   // It's either this or raise all of the lemma state and redo the routing just for that one edge case
   // -CDC 2022-08-15
-
   // No longer works, probably because of async nature of DB save fn.
   // Replaced with contentLemma dummy var
   // –CDC 2022-11-30
