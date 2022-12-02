@@ -287,49 +287,51 @@ const saveLemma = async (request, response) => {
   }
   
   // VARIANTS
-  // const sqlMeaningsUpdate = `
-  //   UPDATE meanings
-  //     SET
-  //       value = $2
-  //     WHERE lemma_id = $1 AND meaning_id = $3
-  //   RETURNING *;
-  // `;
-  // const sqlMeaningsInsert = `
-  //   INSERT INTO meanings (lemma_id, value)
-  //     VALUES ($1, $2)
-  //   RETURNING meaning_id;
-  // `;
+  const sqlVariantsUpdate = `
+    UPDATE variants
+      SET
+        original = $2,
+        transliteration = $3
+      WHERE lemma_id = $1 AND variant_id = $4
+    RETURNING *;
+  `;
+  const sqlVariantsInsert = `
+    INSERT INTO variants (lemma_id, original, transliteration)
+      VALUES ($1, $2, $3)
+    RETURNING variant_id;
+  `;
 
-  // for (meaning of lemma.meanings) {
+  for (variant of lemma.variants) {
 
-  //   const values = [
-  //     lemma.lemmaId,
-  //     meaning.value,
-  //     isNaN(parseInt(meaning.id)) ? 0 : parseInt(meaning.id),
-  //   ];
+    const values = [
+      lemma.lemmaId,
+      variant.original,
+      variant.transliteration,
+      isNaN(parseInt(variant.id)) ? 0 : parseInt(variant.id),
+    ];
 
-  //   var meaningUpdateResults = await waitQuery(sqlMeaningsUpdate, values);
+    var variantUpdateResults = await waitQuery(sqlVariantsUpdate, values);
 
-  //   // If the meaning is not in the DB, add it
-  //   // Reset the id of the lemma object with the new auto value from the DB
-  //   if (!meaningUpdateResults.rows.length) {
-  //     var results = await waitQuery(sqlMeaningsInsert, values.slice(0,-1));
-  //     meaning.id = results.rows[0].meaning_id;
-  //   }
-  // }
+    // If the meaning is not in the DB, add it
+    // Reset the id of the lemma object with the new auto value from the DB
+    if (!variantUpdateResults.rows.length) {
+      var results = await waitQuery(sqlVariantsInsert, values.slice(0,-1));
+      variant.id = results.rows[0].variant_id;
+    }
+  }
 
-  // // Clean up meanings in DB
-  // // Check what's in there and delete any rows that are not in the lemma object anymore
-  // // ... because they have been deleted by the user on the front end
-  // var meaningCleanUpResults = await waitQuery('SELECT * FROM meanings WHERE lemma_id = $1', [lemma.lemmaId]);
-  // let meaningIds = lemma.meanings.map(meaning => meaning.id);
-  // for (meaning of meaningCleanUpResults.rows) {
-  //   if (!meaningIds.includes(meaning.meaning_id)) {
-  //     pool.query('DELETE FROM meanings WHERE meaning_id = $1', [meaning.meaning_id], (error, results) => {
-  //       if (error) throw error;
-  //     });
-  //   }
-  // }
+  // Clean up meanings in DB
+  // Check what's in there and delete any rows that are not in the lemma object anymore
+  // ... because they have been deleted by the user on the front end
+  var variantCleanUpResults = await waitQuery('SELECT * FROM variants WHERE lemma_id = $1', [lemma.lemmaId]);
+  let variantIds = lemma.variants.map(variant => variant.id);
+  for (variant of variantCleanUpResults.rows) {
+    if (!variantIds.includes(variant.variant_id)) {
+      pool.query('DELETE FROM variants WHERE variant_id = $1', [variant.variant_id], (error, results) => {
+        if (error) throw error;
+      });
+    }
+  }
 
   console.log('\nAFTER SAVE:\n', lemma);
 
