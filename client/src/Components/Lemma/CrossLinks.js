@@ -10,14 +10,14 @@ const CrossLinks = props => {
   const {user} = React.useContext(UserContext);
   
   return (
-    <div className={styles.crosslinks}>
+    <div className={styles.crossLinks}>
       <h3>Cross Links</h3>
-      {props.crosslinks.map((crosslink, i) => {
+      {props.crossLinks.map((crossLink, i) => {
         return (
           <CrossLink 
-            key={crosslink.id} 
-            crosslink={crosslink.link} 
-            i={crosslink.id} 
+            key={crossLink.id} 
+            crossLink={crossLink.link} 
+            i={crossLink.id} 
             updateCrossLink={props.updateCrossLink}
             deleteCrossLink={props.deleteCrossLink}
           />

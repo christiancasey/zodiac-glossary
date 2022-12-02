@@ -201,8 +201,29 @@ const getLemma = async (request, response) => {
   }
 
   // Add QUOTATIONS to lemma object
+  const sqlQuotations = `SELECT * FROM quotations WHERE lemma_id = $1;`;
+  var quotationsDB = await waitQuery(sqlQuotations, [lemmaId]);
+  lemma.quotations = [];
+  for (quotation of quotationsDB.rows) {
+    quotation.id = quotation.quotation_id;
+    delete quotation.quotation_id;
+    delete quotation.lemma_id;
+    lemma.quotations.push(quotation);
+  }
+
   // Add CROSS LINKS to lemma object
+
+
   // Add EXTERNAL LINKS to lemma object
+  const sqlExternalLinks = `SELECT * FROM external_links WHERE lemma_id = $1;`;
+  var externalLinksDB = await waitQuery(sqlExternalLinks, [lemmaId]);
+  lemma.externalLinks = [];
+  for (externalLink of externalLinksDB.rows) {
+    externalLink.id = externalLink.external_link_id;
+    delete externalLink.external_link_id;
+    delete externalLink.lemma_id;
+    lemma.externalLinks.push(externalLink);
+  }
 
   response.status(200).json(lemma);
 
@@ -312,7 +333,7 @@ const saveLemma = async (request, response) => {
 
     var variantUpdateResults = await waitQuery(sqlVariantsUpdate, values);
 
-    // If the meaning is not in the DB, add it
+    // If the variant is not in the DB, add it
     // Reset the id of the lemma object with the new auto value from the DB
     if (!variantUpdateResults.rows.length) {
       var results = await waitQuery(sqlVariantsInsert, values.slice(0,-1));
@@ -320,7 +341,7 @@ const saveLemma = async (request, response) => {
     }
   }
 
-  // Clean up meanings in DB
+  // Clean up variants in DB
   // Check what's in there and delete any rows that are not in the lemma object anymore
   // ... because they have been deleted by the user on the front end
   var variantCleanUpResults = await waitQuery('SELECT * FROM variants WHERE lemma_id = $1', [lemma.lemmaId]);
@@ -328,6 +349,114 @@ const saveLemma = async (request, response) => {
   for (variant of variantCleanUpResults.rows) {
     if (!variantIds.includes(variant.variant_id)) {
       pool.query('DELETE FROM variants WHERE variant_id = $1', [variant.variant_id], (error, results) => {
+        if (error) throw error;
+      });
+    }
+  }
+  
+  // QUOTATIONS
+  const sqlQuotationsUpdate = `
+    UPDATE quotations
+      SET
+        original = $2,
+        transliteration = $3,
+        translation = $4,
+        source = $5,
+        genre = $6,
+        provenance = $7,
+        date = $8,
+        publication = $9,
+        link = $10
+      WHERE lemma_id = $1 AND quotation_id = $11
+    RETURNING *;
+  `;
+  const sqlQuotationsInsert = `
+    INSERT INTO quotations (lemma_id, original, transliteration, translation, source, genre, provenance, date, publication, link)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+    RETURNING quotation_id;
+  `;
+
+  for (quotation of lemma.quotations) {
+
+    const values = [
+      lemma.lemmaId,
+      quotation.original,
+      quotation.transliteration,
+      quotation.translation,
+      quotation.source,
+      quotation.genre,
+      quotation.provenance,
+      quotation.date,
+      quotation.publication,
+      quotation.link,
+      isNaN(parseInt(quotation.id)) ? 0 : parseInt(quotation.id),
+    ];
+
+    var quotationUpdateResults = await waitQuery(sqlQuotationsUpdate, values);
+
+    // If the quotation is not in the DB, add it
+    // Reset the id of the lemma object with the new auto value from the DB
+    if (!quotationUpdateResults.rows.length) {
+      var results = await waitQuery(sqlQuotationsInsert, values.slice(0,-1));
+      quotation.id = results.rows[0].quotation_id;
+    }
+  }
+
+  // Clean up quotations in DB
+  // Check what's in there and delete any rows that are not in the lemma object anymore
+  // ... because they have been deleted by the user on the front end
+  var quotationCleanUpResults = await waitQuery('SELECT * FROM quotations WHERE lemma_id = $1', [lemma.lemmaId]);
+  let quotationIds = lemma.quotations.map(quotation => quotation.id);
+  for (quotation of quotationCleanUpResults.rows) {
+    if (!quotationIds.includes(quotation.quotation_id)) {
+      pool.query('DELETE FROM quotations WHERE quotation_id = $1', [quotation.quotation_id], (error, results) => {
+        if (error) throw error;
+      });
+    }
+  }
+  
+  // EXTERNAL LINKS
+  const sqlExternalLinksUpdate = `
+    UPDATE external_links
+      SET
+        url = $2,
+        display = $3
+      WHERE lemma_id = $1 AND external_link_id = $4
+    RETURNING *;
+  `;
+  const sqlExternalLinksInsert = `
+    INSERT INTO external_links (lemma_id, url, display)
+      VALUES ($1, $2, $3)
+    RETURNING external_link_id;
+  `;
+
+  for (externalLink of lemma.externalLinks) {
+    
+    const values = [
+      lemma.lemmaId,
+      externalLink.url,
+      externalLink.display,
+      isNaN(parseInt(externalLink.id)) ? 0 : parseInt(externalLink.id),
+    ];
+
+    var externalLinkUpdateResults = await waitQuery(sqlExternalLinksUpdate, values);
+
+    // If the externalLink is not in the DB, add it
+    // Reset the id of the lemma object with the new auto value from the DB
+    if (!externalLinkUpdateResults.rows.length) {
+      var results = await waitQuery(sqlExternalLinksInsert, values.slice(0,-1));
+      externalLink.id = results.rows[0].external_link_id;
+    }
+  }
+
+  // Clean up externalLinks in DB
+  // Check what's in there and delete any rows that are not in the lemma object anymore
+  // ... because they have been deleted by the user on the front end
+  var externalLinkCleanUpResults = await waitQuery('SELECT * FROM external_links WHERE lemma_id = $1', [lemma.lemmaId]);
+  let externalLinkIds = lemma.externalLinks.map(externalLink => externalLink.id);
+  for (externalLink of externalLinkCleanUpResults.rows) {
+    if (!externalLinkIds.includes(externalLink.external_link_id)) {
+      pool.query('DELETE FROM external_links WHERE external_link_id = $1', [externalLink.external_link_id], (error, results) => {
         if (error) throw error;
       });
     }

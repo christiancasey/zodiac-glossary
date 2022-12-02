@@ -11,17 +11,17 @@ import styles from './Lemma.module.css';
 
 const CrossLink = props => {
   const {user} = React.useContext(UserContext);
-  const [crosslink, setCrosslink] = React.useState(props.crosslink);
-  const [lemma, setLemma] = React.useState(getLemma(props.crosslink));
+  const [crossLink, setCrossLink] = React.useState(props.crossLink);
+  const [lemma, setLemma] = React.useState(getLemma(props.crossLink));
   const i = props.i;
   
   const [style, setStyle] = React.useState({display: 'none'});
   
-  // Needed to make sure the crosslinks update when the user follows a crosslink to a new lemma
+  // Needed to make sure the crossLinks update when the user follows a crossLink to a new lemma
   React.useEffect(() => {
-    setCrosslink(props.crosslink);
-    setLemma(getLemma(props.crosslink));
-  }, [props.crosslink, crosslink]);
+    setCrossLink(props.crossLink);
+    setLemma(getLemma(props.crossLink));
+  }, [props.crossLink, crossLink]);
   
   if (!user.token) {
     if (!lemma || !lemma.published)
@@ -29,7 +29,7 @@ const CrossLink = props => {
     
     return (
       <div className={styles.label}>
-        <QueryNavLink to={'/zodiac-routing/'+crosslink}>
+        <QueryNavLink to={'/zodiac-routing/'+crossLink}>
           {lemma.original} | {lemma.transliteration} | {lemma.translation}
           &nbsp;
           <IoIosOpen />
@@ -44,7 +44,7 @@ const CrossLink = props => {
     if (event.target.value) {
       let newLemma = getLemma(event.target.value);
       if (newLemma) {
-        setCrosslink(event.target.value);
+        setCrossLink(event.target.value);
         setLemma(newLemma);
         props.updateCrossLink(event.target.value, id);
       }
@@ -53,7 +53,7 @@ const CrossLink = props => {
   
   return (
     <div 
-      className={styles.crosslinksList}
+      className={styles.crossLinksList}
       onMouseEnter={e => {
         setStyle({display: 'block'});
       }}
@@ -64,18 +64,18 @@ const CrossLink = props => {
       <div className={styles.row}>
         <label
           className={styles.label}
-          htmlFor={"crosslink_"+i}
+          htmlFor={"crossLink_"+i}
           data-tip="Add a link to another related lemma"
-          data-for={"crosslink_"+i}
+          data-for={"crossLink_"+i}
         >
           Linked Lemma
         </label>
-        <ReactTooltip id={"crosslink_"+i} type="light" html={true} />
+        <ReactTooltip id={"crossLink_"+i} type="light" html={true} />
         <input 
           list="lemmata" 
           className={styles.inputWide}
-          name={"crosslink_"+i}
-          defaultValue={crosslink}
+          name={"crossLink_"+i}
+          defaultValue={crossLink}
           onChange={event => updateCrossLink(event, i)}/>
         <datalist id="lemmata">
           {lemmata.map((lemma, j) => (
@@ -91,12 +91,12 @@ const CrossLink = props => {
       <div className={styles.row}>
         <label
           className={styles.label}
-          htmlFor={"crosslink_sample_"+i}
+          htmlFor={"crossLink_sample_"+i}
         >
           Sample Link
         </label>
         {lemma ? 
-          <QueryNavLink className={styles.label} to={'/zodiac-routing/'+crosslink}>
+          <QueryNavLink className={styles.label} to={'/zodiac-routing/'+crossLink}>
             <>&nbsp;{lemma.original} | {lemma.transliteration} | {lemma.translation} <IoIosOpen /></>
           </QueryNavLink>
         : <> | | </>}

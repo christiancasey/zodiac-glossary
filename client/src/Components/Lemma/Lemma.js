@@ -8,9 +8,9 @@ import { getLemmaDB, saveLemmaToDB, deleteLemmaFromDB } from "../../Data/api";
 import BasicInfo from './BasicInfo';
 import Meanings from './Meanings';
 import Variants from './Variants';
-// import Quotations from './Quotations';
+import Quotations from './Quotations';
 // import CrossLinks from './CrossLinks';
-// import ExternalLinks from './ExternalLinks';
+import ExternalLinks from './ExternalLinks';
 import DeleteLemma from './DeleteLemma';
 
 import UserContext from '../../Contexts/UserContext';
@@ -302,15 +302,15 @@ const Lemma = props => {
   
   //////////////////////////////////////////////////////////////////////////////
   // CROSS LINKS
-  const updateCrossLink = (updatedCrosslink, id) => {
+  const updateCrossLink = (updatedCrossLink, id) => {
     setLemma(prevLemma => {
       return {
         ...prevLemma,
-        crosslinks: lemma.crosslinks.map(crosslink => {
-          if (crosslink.id === id) {
-            crosslink.link = updatedCrosslink;
+        crossLinks: lemma.crossLinks.map(crossLink => {
+          if (crossLink.id === id) {
+            crossLink.link = updatedCrossLink;
           }
-          return crosslink;
+          return crossLink;
         }),
       }
     });
@@ -321,8 +321,8 @@ const Lemma = props => {
     setLemma(prevLemma => {
       return {
         ...prevLemma,
-        crosslinks: prevLemma.crosslinks.filter(crosslink => {
-          return crosslink.id !== id;
+        crossLinks: prevLemma.crossLinks.filter(crossLink => {
+          return crossLink.id !== id;
         }),
       };
     });
@@ -332,7 +332,7 @@ const Lemma = props => {
   const addNewCrossLink = e => {
     e.preventDefault();
     console.log('addNewCrossLink()');
-    const newCrosslink = {
+    const newCrossLink = {
       id: uuidv4(),
       link: '',
     }
@@ -340,9 +340,9 @@ const Lemma = props => {
     setLemma(prevLemma => {
       return {
         ...prevLemma,
-        crosslinks: [
-          ...prevLemma.crosslinks,
-          newCrosslink
+        crossLinks: [
+          ...prevLemma.crossLinks,
+          newCrossLink
         ]
       };
     });
@@ -405,7 +405,7 @@ const Lemma = props => {
           deleteVariant={deleteVariant}
         />
         
-        {/* <Quotations
+        <Quotations
           quotations={lemma.quotations}
           updateQuotation={updateQuotation}
           addNewQuotation={addNewQuotation}
@@ -413,18 +413,18 @@ const Lemma = props => {
         />
         
         {/* <CrossLinks
-          crosslinks={lemma.crosslinks}
+          crossLinks={lemma.crossLinks}
           updateCrossLink={updateCrossLink}
           addNewCrossLink={addNewCrossLink}
           deleteCrossLink={deleteCrossLink}
-        />
+        /> */}
         
-        {/* <ExternalLinks
+        <ExternalLinks
           externalLinks={lemma.externalLinks}
           updateExternalLink={updateExternalLink}
           addNewExternalLink={addNewExternalLink}
           deleteExternalLink={deleteExternalLink}
-        /> */}
+        />
         
         <DeleteLemma lemma={lemma} deleteLemma={deleteLemma} />
       </fieldset>
