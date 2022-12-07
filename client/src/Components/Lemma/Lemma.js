@@ -30,11 +30,18 @@ const Lemma = props => {
   let [updateLemmataList, changed, setChanged, setContentLemma, lemmataList] = useOutletContext(); 
   
   React.useEffect(() => {
-    const lemmaId = parseInt(params.lemmaId);
-    console.log('This log call in LEMMA component\nlemma id:\n', params.lemmaId);
+    var lemmaId = parseInt(params.lemmaId);
 
-    if(lemmaId) {
+    // On refresh or load from URL, lemmaId in the route gets changed to null by React Router
+    // This fixes it by temporarily saving the most recent lemma id and using that when the route has null
+    if (isNaN(lemmaId)) {
+        lemmaId = localStorage.getItem('currentLemmaId');
+        if (lemmaId) {
+          navigate('/' + lemmaId);
+        }
+    } else {
       getLemmaDB(setLemma, lemmaId);
+      localStorage.setItem('currentLemmaId', lemmaId);
     }
   }, [params.lemmaId]);
   
@@ -325,7 +332,6 @@ const Lemma = props => {
 
   const addNewCrossLink = e => {
     e.preventDefault();
-    console.log('addNewCrossLink()');
     const newCrossLink = {
       id: uuidv4(),
       link: '',

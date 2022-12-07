@@ -15,10 +15,7 @@ export function getLemmataList(setLemmataList, token = true) {
   
   fetch(url)
   .then(res => res.json())
-  .then(data => {
-    setLemmataList(data);
-    console.log(data);
-  });
+  .then(data => setLemmataList(data));
 }
 
 export function addNewLemma(setNewLemmaId, token = true) {

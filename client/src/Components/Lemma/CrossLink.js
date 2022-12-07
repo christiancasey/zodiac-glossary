@@ -2,8 +2,6 @@ import React from 'react';
 import ReactTooltip from 'react-tooltip';
 import { IoIosTrash, IoIosOpen } from "react-icons/io";
 
-import { getLemmaDB } from "../../Data/api";
-
 import QueryNavLink from '../QueryNavLink';
 import UserContext from '../../Contexts/UserContext';
 
@@ -18,9 +16,6 @@ const CrossLink = props => {
   const [crossLink, setCrossLink] = React.useState(props.crossLink);
   const [lemma, setLemma] = React.useState(getLemmaById(lemmata, props.crossLink));
   // const [lemmata, setLemmata] = React.useState([]);
-
-
-  console.log('CrossLink COMP', props.crossLink);
   
   const [style, setStyle] = React.useState({display: 'none'});
 
@@ -50,7 +45,6 @@ const CrossLink = props => {
   }
   
   function updateCrossLink(event, id) {
-    console.log('CrossLink', 'updateCrossLink()', event.target.value);
     if (event.target.value) {
       props.updateCrossLink(event.target.value, id);
       setCrossLink(event.target.value);
@@ -58,7 +52,6 @@ const CrossLink = props => {
     }
   }
   
-  console.log(lemmata);
   return (
     <div 
       className={styles.crossLinksList}

@@ -58,7 +58,7 @@ const Quotation = props => {
       </div>
     );
   }
-  
+
   return (
     <div 
       className={styles.quotationsList}

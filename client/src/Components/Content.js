@@ -18,10 +18,6 @@ const Content = props => {
   React.useEffect(() => {
     getLemmataList(setLemmataList);
   }, []);
-
-  React.useEffect(() => {
-    console.log(lemmataList);
-  }, [lemmataList]);
   
   // Really stupid cludge that forces the sidebar to update when the user saves a new lemma
   // It's either this or raise all of the lemma state and redo the routing just for that one edge case

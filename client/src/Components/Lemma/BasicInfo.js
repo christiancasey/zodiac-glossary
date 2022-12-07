@@ -12,8 +12,6 @@ const BasicInfo = props => {
   let lemma = props.lemma;
   let onChange = props.onChange;
   const {user} = React.useContext(UserContext);
-
-  console.log('Basic Info Component\n', lemma);
   
   return (
     <div className={styles.basic}>

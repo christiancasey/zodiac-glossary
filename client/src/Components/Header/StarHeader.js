@@ -49,8 +49,6 @@ const StarHeader = () => {
   // }
   
   const playPause = () => {
-  //   console.log('playPause()');
-  // };
     setStyle(prevStyle => {
       if (prevStyle.animationPlayState === 'running') {
         localStorage.setItem('pauseStarChart', true);
