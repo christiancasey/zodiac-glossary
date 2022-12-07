@@ -23,7 +23,7 @@ function App() {
       <div className="App">
         <StarHeader />
         <Routes>
-          <Route path="/zodiac-routing/" element={<Content />}>
+          <Route path="/" element={<Content />}>
             <Route className={styles.lemma} index element={<Lemma />} />
             <Route className={styles.lemma} path=":lemmaId" element={<Lemma />} />
           </Route>

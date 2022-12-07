@@ -62,7 +62,7 @@ const StarHeader = () => {
   };
   
   const goHome = () => {
-    navigate('/zodiac-routing/');
+    navigate('/');
   }
   
   return (

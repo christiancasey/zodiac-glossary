@@ -86,7 +86,7 @@ const Lemma = props => {
   
   const deleteLemma = () => {
     deleteLemmaFromDB(lemma.lemmaId);
-    navigate('/zodiac-routing/' + location.search);
+    navigate('/' + location.search);
     setLemma(null);
     setContentLemma(null);
     updateLemmataList();

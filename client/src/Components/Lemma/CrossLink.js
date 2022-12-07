@@ -40,7 +40,7 @@ const CrossLink = props => {
     
     return (
       <div className={styles.label}>
-        <QueryNavLink to={'/zodiac-routing/'+crossLink}>
+        <QueryNavLink to={'/'+crossLink}>
           {lemma.original} | {lemma.transliteration} | {lemma.translation}
           &nbsp;
           <IoIosOpen />
@@ -104,7 +104,7 @@ const CrossLink = props => {
           Sample Link
         </label>
         {lemma ? 
-          <QueryNavLink className={styles.label} to={'/zodiac-routing/'+crossLink}>
+          <QueryNavLink className={styles.label} to={'/'+crossLink}>
             <>&nbsp;{lemma.original} | {lemma.transliteration} | {lemma.translation} <IoIosOpen /></>
           </QueryNavLink>
         : <> | | </>}
