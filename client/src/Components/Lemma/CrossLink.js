@@ -2,25 +2,36 @@ import React from 'react';
 import ReactTooltip from 'react-tooltip';
 import { IoIosTrash, IoIosOpen } from "react-icons/io";
 
-import { getLemma, getLemmataList } from "../../Data/sample-data";
+import { getLemmaDB } from "../../Data/api";
 
 import QueryNavLink from '../QueryNavLink';
 import UserContext from '../../Contexts/UserContext';
 
 import styles from './Lemma.module.css';
 
+
+
 const CrossLink = props => {
+  const lemmata = props.lemmataList;
+  const i = props.i;
   const {user} = React.useContext(UserContext);
   const [crossLink, setCrossLink] = React.useState(props.crossLink);
-  const [lemma, setLemma] = React.useState(getLemma(props.crossLink));
-  const i = props.i;
+  const [lemma, setLemma] = React.useState(getLemmaById(lemmata, props.crossLink));
+  // const [lemmata, setLemmata] = React.useState([]);
+
+
+  console.log('CrossLink COMP', props.crossLink);
   
   const [style, setStyle] = React.useState({display: 'none'});
+
+  function getLemmaById(lemmataList, id) {
+    return lemmataList.find(lemma => lemma.lemmaId === parseInt(id));
+  }
   
   // Needed to make sure the crossLinks update when the user follows a crossLink to a new lemma
   React.useEffect(() => {
     setCrossLink(props.crossLink);
-    setLemma(getLemma(props.crossLink));
+    setLemma(getLemmaById(lemmata, props.crossLink));
   }, [props.crossLink, crossLink]);
   
   if (!user.token) {
@@ -38,19 +49,16 @@ const CrossLink = props => {
     )
   }
   
-  const lemmata = getLemmataList();
-  
   function updateCrossLink(event, id) {
+    console.log('CrossLink', 'updateCrossLink()', event.target.value);
     if (event.target.value) {
-      let newLemma = getLemma(event.target.value);
-      if (newLemma) {
-        setCrossLink(event.target.value);
-        setLemma(newLemma);
-        props.updateCrossLink(event.target.value, id);
-      }
+      props.updateCrossLink(event.target.value, id);
+      setCrossLink(event.target.value);
+      setLemma(getLemmaById(lemmata, event.target.value));
     }
   }
   
+  console.log(lemmata);
   return (
     <div 
       className={styles.crossLinksList}
@@ -72,12 +80,12 @@ const CrossLink = props => {
         </label>
         <ReactTooltip id={"crossLink_"+i} type="light" html={true} />
         <input 
-          list="lemmata" 
+          list="lemmata_list" 
           className={styles.inputWide}
           name={"crossLink_"+i}
           defaultValue={crossLink}
           onChange={event => updateCrossLink(event, i)}/>
-        <datalist id="lemmata">
+        <datalist id="lemmata_list">
           {lemmata.map((lemma, j) => (
             <option
               key={j}

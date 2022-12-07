@@ -10,7 +10,7 @@ const ExternalLinks = props => {
   const {user} = React.useContext(UserContext);
   
   return (
-    <div className={styles.crosslinks}>
+    <div className={styles.crossLinks}>
       <h3>External Links</h3>
       {props.externalLinks.map((externalLink, i) => {
         return (

@@ -2,6 +2,8 @@ import React from 'react';
 import { Outlet } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
+import { getLemmataList } from '../Data/api';
+
 import Sidebar from './Sidebar';
 
 import styles from './Content.module.css';
@@ -11,6 +13,15 @@ const Content = props => {
   let [sidebarUpdate, setSidebarUpdate] = React.useState(uuidv4());
   let [changed, setChanged] = React.useState(false);
   let [contentLemma, setContentLemma] = React.useState();
+  let [lemmataList, setLemmataList] = React.useState([]);
+
+  React.useEffect(() => {
+    getLemmataList(setLemmataList);
+  }, []);
+
+  React.useEffect(() => {
+    console.log(lemmataList);
+  }, [lemmataList]);
   
   // Really stupid cludge that forces the sidebar to update when the user saves a new lemma
   // It's either this or raise all of the lemma state and redo the routing just for that one edge case
@@ -26,8 +37,8 @@ const Content = props => {
   return (
     <section style={{height: '80vh'}}>
     <div className={styles.content}>
-      <Sidebar sidebarUpdate={sidebarUpdate} setChanged={setChanged} contentLemma={contentLemma} />
-      <Outlet context={[updateLemmataList, changed, setChanged, setContentLemma]} />
+      <Sidebar sidebarUpdate={sidebarUpdate} setChanged={setChanged} contentLemma={contentLemma} lemmataList={lemmataList} setLemmataList={setLemmataList} />
+      <Outlet context={[updateLemmataList, changed, setChanged, setContentLemma, lemmataList]} />
     </div>
     </section>
   );

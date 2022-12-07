@@ -7,17 +7,21 @@
 // LEMMATA LIST
 ////////////////////////////////////////////////////////////////////////////////
 
-export function getLemmataList(setLemmataList, token = null) {
+// Change token default to null after adding authentication
+export function getLemmataList(setLemmataList, token = true) {
   let url = '/api/lemmata/list';
   const params = new URLSearchParams({token});
   url += '?' + params.toString();
   
   fetch(url)
   .then(res => res.json())
-  .then(data => setLemmataList(data));
+  .then(data => {
+    setLemmataList(data);
+    console.log(data);
+  });
 }
 
-export function addNewLemma(setNewLemmaId, token = null) {
+export function addNewLemma(setNewLemmaId, token = true) {
   let url = '/api/lemmata/add';
   const params = new URLSearchParams({token});
   url += '?' + params.toString();

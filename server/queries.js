@@ -99,23 +99,28 @@ const getPartsOfSpeech = (request, response) => {
 
 const getLemmataList = (request, response) => {
   const token = request.query.token;
-  const sql = `
-    SELECT lemma_id AS lemmaId, published, original, translation, transliteration, languages.value AS language 
+  let sql = `
+    SELECT lemma_id, published, original, translation, transliteration, languages.value AS language 
     FROM lemmata 
     LEFT JOIN languages USING (language_id) 
-    LEFT JOIN partsofspeech USING (partofspeech_id)`;
+    LEFT JOIN partsofspeech USING (partofspeech_id)
+  `;
 
-  if (token) {
-    pool.query(sql, (error, results) => {
-      if (error) throw error;
-      response.status(200).json(results.rows);
-    });
-  } else {
-    pool.query(sql + ' WHERE published = TRUE', (error, results) => {
-      if (error) throw error;
-      response.status(200).json(results.rows);
-    });
+  // If no user logged in, show only published lemmata
+  if (!token) {
+    sql = sql + ' WHERE published = TRUE'
   }
+
+  pool.query(sql, (error, results) => {
+    if (error) throw error;
+    let lemmata = results.rows;
+    lemmata = lemmata.map(lemma => {
+      lemma.lemmaId = lemma.lemma_id;
+      delete lemma.lemma_id;
+      return lemma;
+    });
+    response.status(200).json(lemmata);
+  });
 };
 
 const addNewLemma = (request, response) => {
@@ -145,7 +150,8 @@ function waitQuery(query, params) {
 }
 
 const getLemma = async (request, response) => {
-  const lemmaId = request.query.lemmaId; // Will need this later for authentication
+
+  var lemmaId = request.query.lemmaId; // Will need this later for authentication
   console.log('lemmaId (sent from client)', lemmaId);
 
   // Temporary patch to deal with React Router making lemmaId = null in URL
@@ -154,6 +160,9 @@ const getLemma = async (request, response) => {
     response.status(404);
     return;
   }
+
+  // Patch to deal with fake lemma id's for new cross links
+  lemmaId = parseInt(lemmaId);
 
   // Query DB and create lemma object
   const sqlLemma = `
@@ -212,7 +221,15 @@ const getLemma = async (request, response) => {
   }
 
   // Add CROSS LINKS to lemma object
-
+  const sqlCrossLinks = `SELECT * FROM cross_links WHERE lemma_id = $1;`;
+  var crossLinksDB = await waitQuery(sqlCrossLinks, [lemmaId]);
+  lemma.crossLinks = [];
+  for (crossLink of crossLinksDB.rows) {
+    crossLink.id = crossLink.cross_link_id;
+    delete crossLink.cross_link_id;
+    delete crossLink.lemma_id;
+    lemma.crossLinks.push(crossLink);
+  }
 
   // Add EXTERNAL LINKS to lemma object
   const sqlExternalLinks = `SELECT * FROM external_links WHERE lemma_id = $1;`;
@@ -414,7 +431,52 @@ const saveLemma = async (request, response) => {
       });
     }
   }
-  
+
+  // CROSS LINKS
+  const sqlCrossLinksUpdate = `
+    UPDATE cross_links
+      SET
+        link = $2
+      WHERE lemma_id = $1 AND cross_link_id = $3
+    RETURNING *;
+  `;
+  const sqlCrossLinksInsert = `
+    INSERT INTO cross_links (lemma_id, link)
+      VALUES ($1, $2)
+    RETURNING cross_link_id;
+  `;
+
+  for (crossLink of lemma.crossLinks) {
+    
+    const values = [
+      lemma.lemmaId,
+      crossLink.link,
+      isNaN(parseInt(crossLink.id)) ? 0 : parseInt(crossLink.id),
+    ];
+
+    var crossLinkUpdateResults = await waitQuery(sqlCrossLinksUpdate, values);
+
+    // If the crossLink is not in the DB, add it
+    // Reset the id of the lemma object with the new auto value from the DB
+    if (!crossLinkUpdateResults.rows.length) {
+      var results = await waitQuery(sqlCrossLinksInsert, values.slice(0,-1));
+      crossLink.id = results.rows[0].cross_link_id;
+    }
+  }
+
+  // Clean up crossLinks in DB
+  // Check what's in there and delete any rows that are not in the lemma object anymore
+  // ... because they have been deleted by the user on the front end
+  var crossLinkCleanUpResults = await waitQuery('SELECT * FROM cross_links WHERE lemma_id = $1', [lemma.lemmaId]);
+  let crossLinkIds = lemma.crossLinks.map(crossLink => crossLink.id);
+  for (crossLink of crossLinkCleanUpResults.rows) {
+    if (!crossLinkIds.includes(crossLink.cross_link_id)) {
+      pool.query('DELETE FROM cross_links WHERE cross_link_id = $1', [crossLink.cross_link_id], (error, results) => {
+        if (error) throw error;
+      });
+    }
+  }
+
   // EXTERNAL LINKS
   const sqlExternalLinksUpdate = `
     UPDATE external_links

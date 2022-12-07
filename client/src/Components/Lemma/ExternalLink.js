@@ -25,7 +25,7 @@ const ExternalLink = props => {
   
   return (
     <div 
-      className={styles.crosslinksList}
+      className={styles.crossLinksList}
       onMouseEnter={e => {
         setStyle({display: 'block'});
       }}

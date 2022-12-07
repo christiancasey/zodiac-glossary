@@ -11,11 +11,16 @@ import styles from './Lemma/Lemma.module.css';
 
 const LemmataList = props => {
   const {user} = React.useContext(UserContext);
-  const [lemmataList, setLemmataList] = React.useState([]);
   const [lemmataFiltered, setLemmataFiltered] = React.useState([]);
   let [searchParams] = useSearchParams();
   let search = searchParams.get('search');
   let location = useLocation();
+
+
+  // const [lemmataList, setLemmataList] = React.useState([]); 
+  // Moved up to content to be shared with cross links
+  const lemmataList = props.lemmataList;
+  const setLemmataList = props.setLemmataList;
   
   const [lemmataSortField, setLemmataSortField] = React.useState('original');
   
@@ -79,8 +84,8 @@ const LemmataList = props => {
             style={({ isActive }) => {
                 return { display: "block", margin: "1rem 0", filter: isActive ? "drop-shadow(0 0 2px #ffe6)" : ""};
               }}
-            to={lemma.lemmaid} 
-            key={lemma.lemmaid}
+            to={lemma.lemmaId} 
+            key={lemma.lemmaId}
           >
             {!lemma.published && (<div style={{fontStyle: 'italic', color: '#ffea'}}> – {lemma.original} | {lemma.transliteration} | {lemma.translation}</div>)}
             {lemma.published && (<>{lemma.original} | {lemma.transliteration} | {lemma.translation}</>)}

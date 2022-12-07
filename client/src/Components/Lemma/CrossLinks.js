@@ -8,16 +8,17 @@ import styles from './Lemma.module.css';
 
 const CrossLinks = props => {
   const {user} = React.useContext(UserContext);
-  
+
   return (
     <div className={styles.crossLinks}>
       <h3>Cross Links</h3>
       {props.crossLinks.map((crossLink, i) => {
         return (
-          <CrossLink 
+          <CrossLink
             key={crossLink.id} 
             crossLink={crossLink.link} 
-            i={crossLink.id} 
+            i={crossLink.id}
+            lemmataList={props.lemmataList}
             updateCrossLink={props.updateCrossLink}
             deleteCrossLink={props.deleteCrossLink}
           />

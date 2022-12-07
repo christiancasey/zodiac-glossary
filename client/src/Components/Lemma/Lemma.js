@@ -9,7 +9,7 @@ import BasicInfo from './BasicInfo';
 import Meanings from './Meanings';
 import Variants from './Variants';
 import Quotations from './Quotations';
-// import CrossLinks from './CrossLinks';
+import CrossLinks from './CrossLinks';
 import ExternalLinks from './ExternalLinks';
 import DeleteLemma from './DeleteLemma';
 
@@ -27,10 +27,9 @@ const Lemma = props => {
   
   // Really stupid cludge that forces the sidebar to update when the user saves a new lemma
   // It's either this or raise all of the lemma state and redo the routing just for that one edge case
-  let [updateLemmataList, changed, setChanged, setContentLemma] = useOutletContext(); 
+  let [updateLemmataList, changed, setChanged, setContentLemma, lemmataList] = useOutletContext(); 
   
   React.useEffect(() => {
-    // setLemma(getLemma(params.lemmaId));
     const lemmaId = parseInt(params.lemmaId);
     console.log('This log call in LEMMA component\nlemma id:\n', params.lemmaId);
 
@@ -38,11 +37,6 @@ const Lemma = props => {
       getLemmaDB(setLemma, lemmaId);
     }
   }, [params.lemmaId]);
-
-
-  // React.useEffect(() => {
-  //   console.log(lemma);
-  // }, [lemma]);
   
   // Keyboard shortcuts
   const handleKeyPress = e => {
@@ -412,12 +406,13 @@ const Lemma = props => {
           deleteQuotation={deleteQuotation}
         />
         
-        {/* <CrossLinks
+        <CrossLinks
           crossLinks={lemma.crossLinks}
+          lemmataList={lemmataList}
           updateCrossLink={updateCrossLink}
           addNewCrossLink={addNewCrossLink}
           deleteCrossLink={deleteCrossLink}
-        /> */}
+        />
         
         <ExternalLinks
           externalLinks={lemma.externalLinks}

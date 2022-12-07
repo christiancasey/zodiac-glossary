@@ -13,7 +13,7 @@ const BasicInfo = props => {
   let onChange = props.onChange;
   const {user} = React.useContext(UserContext);
 
-  console.log(lemma);
+  console.log('Basic Info Component\n', lemma);
   
   return (
     <div className={styles.basic}>
