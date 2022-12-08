@@ -67,7 +67,9 @@ const Sidebar = props => {
     // Add language values to search params while keeping existing search value
     let newSearchParams = Object.fromEntries([...searchParams]);
     for (const language of newLanguages) {
-      newSearchParams[language.value] = language.active;
+      if (language.value !== 'none') {
+        newSearchParams[language.value] = language.active;
+      }
     }
     setSearchParams(newSearchParams);
     
