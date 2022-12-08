@@ -37,7 +37,7 @@ const Lemma = props => {
     if (isNaN(lemmaId)) {
         lemmaId = localStorage.getItem('currentLemmaId');
         if (lemmaId) {
-          navigate('/' + lemmaId);
+          navigate('/' + lemmaId + location.search);
         }
     } else {
       getLemmaDB(setLemma, lemmaId);
@@ -84,7 +84,6 @@ const Lemma = props => {
   };
   
   const saveLemma = () => {
-    console.log('saveLemma()');
     updateLemmataList();
     setChanged(false);
     saveLemmaToDB(setLemma, lemma);

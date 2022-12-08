@@ -1,13 +1,13 @@
 import React from "react";
 import { useSearchParams, useLocation } from "react-router-dom";
 
-import QueryNavLink from './QueryNavLink';
-import UserContext from '../Contexts/UserContext';
+import QueryNavLink from '../QueryNavLink';
+import UserContext from '../../Contexts/UserContext';
 
-import { getLemmataList } from '../Data/api';
-import { searchLemma } from '../Functions/searchLemmata';
+import { getLemmataList } from '../../Data/api';
+import { searchLemma } from '../../Functions/searchLemmata';
 
-import styles from './Lemma/Lemma.module.css';
+import styles from '../Lemma.module.css';
 
 const LemmataList = props => {
   const {user} = React.useContext(UserContext);

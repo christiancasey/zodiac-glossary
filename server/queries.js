@@ -152,7 +152,6 @@ function waitQuery(query, params) {
 const getLemma = async (request, response) => {
 
   var lemmaId = request.query.lemmaId; // Will need this later for authentication
-  console.log('lemmaId (sent from client)', lemmaId);
 
   // Temporary patch to deal with React Router making lemmaId = null in URL
   // Needs a proper fix on client side –CDC 2022-11-29
@@ -243,14 +242,10 @@ const getLemma = async (request, response) => {
   }
 
   response.status(200).json(lemma);
-
-  console.log('lemma', lemma);
 };
 
 const saveLemma = async (request, response) => {
   const lemma = request.body;
-
-  console.log(`\n\nSAVE LEMMA\nBEFORE SAVE:\n`, lemma);
 
   // LEMMA – basic info
   const sqlLemma = `
@@ -524,15 +519,11 @@ const saveLemma = async (request, response) => {
     }
   }
 
-  console.log('\nAFTER SAVE:\n', lemma);
-
   response.status(200).json(lemma);
 };
 
 const deleteLemma = (request, response) => {
   const lemmaId = request.query.lemmaId;
-
-  console.log(`\n\nDELETE LEMMA:\n`, lemmaId);
 
   const sql = `DELETE FROM lemmata WHERE lemma_id = $1;`;
 

@@ -5,7 +5,7 @@ import { RiDeleteBack2Fill } from "react-icons/ri";
 
 import styles from './Keyboards.module.css';
 
-import keyboardData from '../Data/keyboard-data.json';
+import keyboardData from '../../Data/keyboard-data.json';
 
 const keyClick = (e, keyClick, key) => {
   e.preventDefault();

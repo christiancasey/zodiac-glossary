@@ -5,12 +5,12 @@ import { IoIosAddCircle } from "react-icons/io";
 import Search from './Search';
 import LanguageList from './LanguageList';
 import LemmataList from './LemmataList';
-import UserContext from '../Contexts/UserContext';
+import UserContext from '../../Contexts/UserContext';
 
-import { languageOptions } from '../Data/options';
-import { addNewLemma } from '../Data/api';
+import { languageOptions } from '../../Data/options';
+import { addNewLemma } from '../../Data/api';
 
-import styles from './Lemma/Lemma.module.css';
+import styles from '../Lemma.module.css';
 
 const Sidebar = props => {
   let [searchParams, setSearchParams] = useSearchParams();

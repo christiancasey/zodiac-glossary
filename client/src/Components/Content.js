@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { getLemmataList } from '../Data/api';
 
-import Sidebar from './Sidebar';
+import Sidebar from './Sidebar/Sidebar';
 
 import styles from './Content.module.css';
 

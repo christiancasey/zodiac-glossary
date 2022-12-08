@@ -4,7 +4,7 @@ import { useSearchParams } from "react-router-dom";
 
 import Keyboards from './Keyboards';
 
-import styles from './Lemma.module.css';
+import styles from '../Lemma.module.css';
 
 const Search = props => {
   let [searchParams, setSearchParams] = useSearchParams();

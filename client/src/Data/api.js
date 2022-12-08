@@ -45,8 +45,6 @@ export function getLemmaDB(setLemma, lemmaId) {
 export function saveLemmaToDB(setLemma, lemma) {
   let url = '/api/lemma/save';
 
-  console.log('API saveLemmaToDB:\n', lemma);
-
   fetch(url, {
     headers: {
       'Accept': 'application/json',
@@ -64,9 +62,6 @@ export function deleteLemmaFromDB(lemmaId) {
   let url = '/api/lemma/delete';
   const params = new URLSearchParams({lemmaId});
   url += '?' + params.toString();
-
-  console.log('API deleteLemmaFromDB:\n', lemmaId);
-  console.log(url);
 
   fetch(url, {
     method: "DELETE",

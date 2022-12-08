@@ -1,5 +1,5 @@
 import React from "react";
-import styles from './Content.module.css';
+import styles from '../Content.module.css';
 
 function LanguageItem(props) {
   return (
