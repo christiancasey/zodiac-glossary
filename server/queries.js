@@ -114,6 +114,9 @@ const getLemmataList = async (request, response) => {
   const lemmataDB = await waitQuery(sql);
   let lemmata = lemmataDB.rows;
 
+  // TODO – REWRITE THIS TO RUN meanings AND variants QUERIES ONLY ONCE EACH
+  // THEN FILTER PROGRAMMATICALLY BY LEMMA_ID
+  // CDC 2022-12-12
   const sqlMeanings = `SELECT * FROM meanings WHERE lemma_id = $1;`;
   const sqlVariants = `SELECT * FROM variants WHERE lemma_id = $1;`;
 
@@ -126,6 +129,7 @@ const getLemmataList = async (request, response) => {
     for (meaning of meaningsDB.rows) {
       lemma.meanings.push(meaning.value);
     }
+
     lemma.variants = [];
     var variantsDB = await waitQuery(sqlVariants, [lemma.lemmaId]);
     for (variant of variantsDB.rows) {
@@ -133,7 +137,7 @@ const getLemmataList = async (request, response) => {
       lemma.variants.push(variant.transliteration);
     }
   }
-  
+
   response.status(200).json(lemmata);
 };
 

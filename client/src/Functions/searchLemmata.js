@@ -63,7 +63,6 @@ export function searchLemmata(lemmata, search) {
 
 export function searchLemma(lemma, search) {
   let match = false;
-  console.log('searchLemma()', lemma);
   
   search = softenString(search);
 
@@ -77,7 +76,7 @@ export function searchLemma(lemma, search) {
   for (let variant of lemma.variants) {
     match = match || softenString(variant).includes(search);
   }
-  
+
   return match;
 }
 
