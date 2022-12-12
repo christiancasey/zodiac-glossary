@@ -97,7 +97,7 @@ const getPartsOfSpeech = (request, response) => {
 // LEMMATA LIST
 ////////////////////////////////////////////////////////////////////////////////
 
-const getLemmataList = (request, response) => {
+const getLemmataList = async (request, response) => {
   const token = request.query.token;
   let sql = `
     SELECT lemma_id, published, original, translation, transliteration, languages.value AS language 
@@ -111,16 +111,30 @@ const getLemmataList = (request, response) => {
     sql = sql + ' WHERE published = TRUE'
   }
 
-  pool.query(sql, (error, results) => {
-    if (error) throw error;
-    let lemmata = results.rows;
-    lemmata = lemmata.map(lemma => {
-      lemma.lemmaId = lemma.lemma_id;
-      delete lemma.lemma_id;
-      return lemma;
-    });
-    response.status(200).json(lemmata);
-  });
+  const lemmataDB = await waitQuery(sql);
+  let lemmata = lemmataDB.rows;
+
+  const sqlMeanings = `SELECT * FROM meanings WHERE lemma_id = $1;`;
+  const sqlVariants = `SELECT * FROM variants WHERE lemma_id = $1;`;
+
+  for (lemma of lemmata) {
+    lemma.lemmaId = lemma.lemma_id;
+    delete lemma.lemma_id;
+
+    lemma.meanings = [];
+    var meaningsDB = await waitQuery(sqlMeanings, [lemma.lemmaId]);
+    for (meaning of meaningsDB.rows) {
+      lemma.meanings.push(meaning.value);
+    }
+    lemma.variants = [];
+    var variantsDB = await waitQuery(sqlVariants, [lemma.lemmaId]);
+    for (variant of variantsDB.rows) {
+      lemma.variants.push(variant.original);
+      lemma.variants.push(variant.transliteration);
+    }
+  }
+  
+  response.status(200).json(lemmata);
 };
 
 const addNewLemma = (request, response) => {

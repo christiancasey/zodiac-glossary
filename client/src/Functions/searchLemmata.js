@@ -48,6 +48,13 @@ export function searchLemmata(lemmata, search) {
     match = match || softenString(lemma.transliteration).includes(search);
     match = match || softenString(lemma.translation).includes(search);
 
+    for (let meaning of lemma.meanings) {
+      match = match || softenString(meaning).includes(search);
+    }
+    for (let variant of lemma.variants) {
+      match = match || softenString(variant).includes(search);
+    }
+
     return match;
   });
 
@@ -56,12 +63,20 @@ export function searchLemmata(lemmata, search) {
 
 export function searchLemma(lemma, search) {
   let match = false;
+  console.log('searchLemma()', lemma);
   
   search = softenString(search);
 
   match = match || softenString(lemma.original).includes(search);
   match = match || softenString(lemma.transliteration).toLowerCase().includes(search);
   match = match || softenString(lemma.translation).includes(search);
+  
+  for (let meaning of lemma.meanings) {
+    match = match || softenString(meaning).includes(search);
+  }
+  for (let variant of lemma.variants) {
+    match = match || softenString(variant).includes(search);
+  }
   
   return match;
 }
