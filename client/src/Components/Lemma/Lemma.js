@@ -43,6 +43,9 @@ const Lemma = props => {
       getLemmaDB(setLemma, lemmaId);
       localStorage.setItem('currentLemmaId', lemmaId);
     }
+
+    // Mark changed as false (don't alert user to save) any time a new lemma is selected
+    setChanged(false);
   }, [params.lemmaId]);
   
   // Keyboard shortcuts
