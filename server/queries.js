@@ -120,22 +120,30 @@ const getLemmataList = async (request, response) => {
   const sqlMeanings = `SELECT * FROM meanings WHERE lemma_id = $1;`;
   const sqlVariants = `SELECT * FROM variants WHERE lemma_id = $1;`;
 
+  var meaningsDB = await waitQuery('SELECT * FROM meanings');
+  var variantsDB = await waitQuery('SELECT * FROM variants');
+
   for (lemma of lemmata) {
-    lemma.lemmaId = lemma.lemma_id;
-    delete lemma.lemma_id;
 
     lemma.meanings = [];
-    var meaningsDB = await waitQuery(sqlMeanings, [lemma.lemmaId]);
-    for (meaning of meaningsDB.rows) {
-      lemma.meanings.push(meaning.value);
+    // var meaningsDB = await waitQuery(sqlMeanings, [lemma.lemmaId]);
+    for (let meaning of meaningsDB.rows) {
+      if (meaning.lemma_id === lemma.lemma_id) {
+        lemma.meanings.push(meaning.value);
+      }
     }
 
     lemma.variants = [];
-    var variantsDB = await waitQuery(sqlVariants, [lemma.lemmaId]);
-    for (variant of variantsDB.rows) {
-      lemma.variants.push(variant.original);
-      lemma.variants.push(variant.transliteration);
+    // var variantsDB = await waitQuery(sqlVariants, [lemma.lemmaId]);
+    for (let variant of variantsDB.rows) {
+      if (variant.lemma_id === lemma.lemma_id) {
+        lemma.variants.push(variant.original);
+        lemma.variants.push(variant.transliteration);
+      }
     }
+
+    lemma.lemmaId = lemma.lemma_id;
+    delete lemma.lemma_id;
   }
 
   response.status(200).json(lemmata);
@@ -155,7 +163,7 @@ const addNewLemma = (request, response) => {
 // LEMMA
 ////////////////////////////////////////////////////////////////////////////////
 
-function waitQuery(query, params) {
+function waitQuery(query, params=[]) {
   return new Promise((resolve, reject) => {
     pool.query(query, params, (error, results) => {
       if (error) {

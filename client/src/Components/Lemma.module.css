@@ -250,3 +250,7 @@
 .lemmaList:hover {
   text-shadow: 0 0 4px #FFE6;
 }
+
+.search {
+  margin-bottom: 1vw;
+}
