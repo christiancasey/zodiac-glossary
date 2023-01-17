@@ -17,6 +17,7 @@ const Variants = props => {
           <Variant
             key={variant.id}
             variant={variant}
+            language={props.language}
             i={i}
             updateVariant={props.updateVariant}
             deleteVariant={props.deleteVariant}

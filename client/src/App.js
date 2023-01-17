@@ -7,6 +7,7 @@ import StarHeader from './Components/Header/StarHeader';
 import Content from './Components/Content';
 import Lemma from './Components/Lemma/Lemma';
 import SignUp from './Components/SignUp/SignUp';
+import Help from './Components/Help/Help';
 
 
 import UserContext from './Contexts/UserContext';
@@ -28,6 +29,7 @@ function App() {
             <Route className={styles.lemma} path=":lemmaId" element={<Lemma />} />
           </Route>
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/help" element={<Help />} />
         </Routes>
       </div>
     </UserContext.Provider>

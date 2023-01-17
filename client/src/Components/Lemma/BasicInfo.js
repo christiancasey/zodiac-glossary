@@ -10,6 +10,7 @@ import styles from './Lemma.module.css';
 
 const BasicInfo = props => {
   let lemma = props.lemma;
+  console.log(lemma);
   let onChange = props.onChange;
   const {user} = React.useContext(UserContext);
   
@@ -17,11 +18,39 @@ const BasicInfo = props => {
     <div className={styles.basic}>
       <h3>Basic</h3>
       <table><tbody>
-        <tr>
+        {/* <tr>
           <td><label className={styles.label} htmlFor="lemmaId">Lemma ID</label></td>
           <td><input className={styles.input} type="text" name="lemmaId" placeholder="0" value={lemma.lemmaId} onChange={(onChange)} disabled={true} /></td>
-        </tr>
+        </tr> */}
         {/* comment out the above when routing is finished */}
+
+        {/* Temporary: Editor field. Delete after user authentication is ready */}
+        <tr>
+        <td>
+            <label
+              className={styles.label}
+              htmlFor="editor"
+              data-tip="Put your name here any time you edit a lemma."
+              data-for="editor"
+            >
+              Editor
+            </label>
+            <ReactTooltip id="editor" type="light" html={true} />
+          </td>
+          <td>
+            {user.token && (<input
+              className={styles.input}
+              type="text"
+              name="editor"
+              placeholder="editor"
+              value={lemma.editor}
+              onChange={onChange}
+            />)}
+            {!user.token && (<div>{lemma.editor}</div>)}
+          </td>
+        </tr>
+        {/* Temporary: Delete when user authentication is working */}
+
         <tr style={{display: (user.token ? 'table-row' : 'none')}}>
           <td>
             <label
@@ -63,11 +92,54 @@ const BasicInfo = props => {
           <td>
             <label
               className={styles.label}
+              htmlFor="transliteration"
+              data-tip="Akkadian: (normalized) transcription<br />Egyptian: Egyptological transliteration<br />Other: Roman transliteration"
+              data-for="phonetic"
+            >
+              {lemma.language === "akkadian" ? 'Normalized' : 'Transliteration'}
+            </label>
+            <ReactTooltip id="phonetic" type="light" html={true} />
+          </td>
+          <td>
+            {user.token && (<input
+              className={styles.input}
+              style={{fontStyle: (lemma.language === "akkadian" || 'italic')}}
+              type="text"
+              name="transliteration"
+              placeholder="transliteration"
+              value={lemma.transliteration}
+              onChange={onChange}
+            />)}
+            {!user.token && (<div style={{fontStyle: 'italic'}}>{lemma.transliteration}</div>)}
+          </td>
+        </tr>
+        {lemma.language === "akkadian" && (<tr>
+          <td>
+            <label className={styles.label} htmlFor="translation">
+              Literal Translation
+            </label>
+          </td>
+          <td>
+            {user.token && (<input
+              className={styles.input}
+              type="text"
+              name="literal_translation2"
+              placeholder="literal translation"
+              value={lemma.literal_translation2}
+              onChange={onChange}
+            />)}
+            {!user.token && (<div>{lemma.literal_translation2}</div>)}
+          </td>
+        </tr>)}
+        <tr>
+          <td>
+            <label
+              className={styles.label}
               htmlFor="original"
               data-tip="Akkadian: transliteration<br />Egyptian: hieroglyphic<br />Other: original text (Unicode)"
               data-for="original"
             >
-              Dictionary Form
+              {lemma.language === "akkadian" ? 'Transliteration' : 'Original'}
             </label>
             <ReactTooltip id="original" type="light" html={true} />
           </td>
@@ -85,40 +157,38 @@ const BasicInfo = props => {
         </tr>
         <tr>
           <td>
-            <label
-              className={styles.label}
-              htmlFor="transliteration"
-              data-tip="Akkadian: (normalized) transcription<br />Egyptian: Egyptological transliteration<br />Other: Roman transliteration"
-              data-for="phonetic"
-            >
-              Transliteration
+            <label className={styles.label} htmlFor="translation">
+              Literal Translation
             </label>
-            <ReactTooltip id="phonetic" type="light" html={true} />
           </td>
-          <td>
-            {user.token && (<input
-              className={styles.inputTransliteration}
-              type="text"
-              name="transliteration"
-              placeholder="transliteration"
-              value={lemma.transliteration}
-              onChange={onChange}
-            />)}
-            {!user.token && (<div style={{fontStyle: 'italic'}}>{lemma.transliteration}</div>)}
-            </td>
-        </tr>
-        <tr>
-          <td><label className={styles.label} htmlFor="translation">Translation</label></td>
           <td>
             {user.token && (<input
               className={styles.input}
               type="text"
               name="translation"
-              placeholder="translation"
+              placeholder="literal translation"
               value={lemma.translation}
               onChange={onChange}
             />)}
             {!user.token && (<div>{lemma.translation}</div>)}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label className={styles.label} htmlFor="primary_meaning">
+              Primary Meaning
+            </label>
+          </td>
+          <td>
+            {user.token && (<input
+              className={styles.input}
+              type="text"
+              name="primary_meaning"
+              placeholder="primary meaning"
+              value={lemma.primary_meaning}
+              onChange={onChange}
+            />)}
+            {!user.token && (<div>{lemma.primary_meaning}</div>)}
           </td>
         </tr>
       </tbody></table>

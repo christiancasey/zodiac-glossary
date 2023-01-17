@@ -36,7 +36,7 @@ const Search = props => {
   }
   
   return (
-    <div className={styles.search}>
+    <>
       <h2>Search</h2>
       <input
         className={styles.inputSearch}
@@ -54,7 +54,7 @@ const Search = props => {
       <div className={keyboardVisible ? styles.fadeIn : styles.fadeOut }>
         <Keyboards visible={keyboardVisible} keyboardClick={keyboardClick} keyClick={keyClick} />
       </div>
-    </div>
+    </>
   );
 };
 

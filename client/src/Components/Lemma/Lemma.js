@@ -104,13 +104,13 @@ const Lemma = props => {
                   // CDC 2022-11-30
   }
   
-  const updateMeaning = (updatedMeaning, id) => {
+  const updateMeaning = (field, updatedMeaning, id) => {
     setLemma(prevLemma => {
       return {
         ...prevLemma,
         meanings: prevLemma.meanings.map(meaning => {
           if (meaning.id === id) {
-            meaning.value = updatedMeaning;
+            meaning[field] = updatedMeaning;
           }
           return meaning;
         })
@@ -402,6 +402,7 @@ const Lemma = props => {
         
         <Variants
           variants={lemma.variants}
+          language={lemma.language}
           updateVariant={updateVariant}
           addNewVariant={addNewVariant}
           deleteVariant={deleteVariant}
@@ -409,6 +410,7 @@ const Lemma = props => {
         
         <Quotations
           quotations={lemma.quotations}
+          language={lemma.language}
           updateQuotation={updateQuotation}
           addNewQuotation={addNewQuotation}
           deleteQuotation={deleteQuotation}

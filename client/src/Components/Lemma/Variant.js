@@ -48,19 +48,28 @@ const Variant = props => {
         <label className={styles.label} htmlFor={"original_"+variant.id}>{i+1}</label>
         <input
           className={styles.input}
+          style={{fontStyle: (props.language === "akkadian" || 'italic')}}
+          type="text"
+          name={"transliteration_"+variant.id}
+          placeholder={props.language === "akkadian" ? 'normalized' : 'transliteration'}
+          value={variant.transliteration}
+          onChange={e => props.updateVariant("transliteration", e.target.value, variant.id)} 
+        />
+        <input
+          className={styles.input}
           type="text"
           name={"original_"+variant.id}
-          placeholder="original"
+          placeholder={props.language === "akkadian" ? 'transliteration' : 'original'}
           value={variant.original}
           onChange={e => props.updateVariant("original", e.target.value, variant.id)} 
         />
         <input
-          className={styles.inputTransliteration}
+          className={styles.inputMeaning}
           type="text"
-          name={"transliteration_"+variant.id}
-          placeholder="transliteration"
-          value={variant.transliteration}
-          onChange={e => props.updateVariant("transliteration", e.target.value, variant.id)} 
+          name={"comment_"+variant.id}
+          placeholder="comment"
+          value={variant.comment}
+          onChange={e => props.updateVariant("comment", e.target.value, variant.id)} 
         />
       </>
       <div style={{display: (user.token ? 'inline' : 'none')}}>

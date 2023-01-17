@@ -100,7 +100,7 @@ const getPartsOfSpeech = (request, response) => {
 const getLemmataList = async (request, response) => {
   const token = request.query.token;
   let sql = `
-    SELECT lemma_id, published, original, translation, transliteration, languages.value AS language 
+    SELECT lemma_id, published, original, translation, primary_meaning, transliteration, languages.value AS language 
     FROM lemmata 
     LEFT JOIN languages USING (language_id) 
     LEFT JOIN partsofspeech USING (partofspeech_id)
@@ -114,39 +114,41 @@ const getLemmataList = async (request, response) => {
   const lemmataDB = await waitQuery(sql);
   let lemmata = lemmataDB.rows;
 
-  // TODO – REWRITE THIS TO RUN meanings AND variants QUERIES ONLY ONCE EACH
-  // THEN FILTER PROGRAMMATICALLY BY LEMMA_ID
-  // CDC 2022-12-12
-  const sqlMeanings = `SELECT * FROM meanings WHERE lemma_id = $1;`;
-  const sqlVariants = `SELECT * FROM variants WHERE lemma_id = $1;`;
+  const sqlMeanings = 'SELECT * FROM meanings';
+  const sqlVariants = 'SELECT * FROM variants';
 
-  var meaningsDB = await waitQuery('SELECT * FROM meanings');
-  var variantsDB = await waitQuery('SELECT * FROM variants');
+  try {
+    // var meaningsDB = await waitQuery(sqlMeanings);
+    // var variantsDB = await waitQuery(sqlVariants);
 
-  for (lemma of lemmata) {
+    for (lemma of lemmata) {
 
-    lemma.meanings = [];
-    // var meaningsDB = await waitQuery(sqlMeanings, [lemma.lemmaId]);
-    for (let meaning of meaningsDB.rows) {
-      if (meaning.lemma_id === lemma.lemma_id) {
-        lemma.meanings.push(meaning.value);
-      }
+      lemma.meanings = [];
+      lemma.variants = [];
+
+      // for (let meaning of meaningsDB.rows) {
+      //   if (meaning.lemma_id === lemma.lemma_id) {
+      //     lemma.meanings.push(meaning.value);
+      //   }
+      // }
+
+      // for (let variant of variantsDB.rows) {
+      //   if (variant.lemma_id === lemma.lemma_id) {
+      //     lemma.variants.push(variant.original);
+      //     lemma.variants.push(variant.transliteration);
+      //   }
+      // }
+
+      lemma.lemmaId = lemma.lemma_id;
+      delete lemma.lemma_id;
     }
 
-    lemma.variants = [];
-    // var variantsDB = await waitQuery(sqlVariants, [lemma.lemmaId]);
-    for (let variant of variantsDB.rows) {
-      if (variant.lemma_id === lemma.lemma_id) {
-        lemma.variants.push(variant.original);
-        lemma.variants.push(variant.transliteration);
-      }
-    }
-
-    lemma.lemmaId = lemma.lemma_id;
-    delete lemma.lemma_id;
+    response.status(200).json(lemmata);
   }
-
-  response.status(200).json(lemmata);
+  catch (error) {
+    response.status(500);
+    console.log(error);
+  }
 };
 
 const addNewLemma = (request, response) => {
@@ -191,7 +193,7 @@ const getLemma = async (request, response) => {
 
   // Query DB and create lemma object
   const sqlLemma = `
-    SELECT lemma_id AS lemmaId, published, original, translation, transliteration, languages.value AS language, partsofspeech.value AS partofspeech
+    SELECT lemma_id AS lemmaId, editor, published, original, translation, primary_meaning, transliteration, literal_translation2, languages.value AS language, partsofspeech.value AS partofspeech
     FROM lemmata 
       JOIN languages USING (language_id) 
       JOIN partsofspeech USING (partofspeech_id)
@@ -246,13 +248,25 @@ const getLemma = async (request, response) => {
   }
 
   // Add CROSS LINKS to lemma object
-  const sqlCrossLinks = `SELECT * FROM cross_links WHERE lemma_id = $1;`;
+  // Make cross links work in both directions by linking all that link to this one
+  // Get all links from this lemmaId and all links to it
+  const sqlCrossLinks = `
+    SELECT * FROM cross_links WHERE lemma_id = $1
+    UNION
+    SELECT * FROM cross_links WHERE link = $1;`;
+  
   var crossLinksDB = await waitQuery(sqlCrossLinks, [lemmaId]);
   lemma.crossLinks = [];
   for (crossLink of crossLinksDB.rows) {
     crossLink.id = crossLink.cross_link_id;
     delete crossLink.cross_link_id;
+    crossLink.lemmaId = crossLink.lemma_id;
     delete crossLink.lemma_id;
+
+    // Make cross links work in both directions by linking all that link to this one
+    if (crossLink.link === lemmaId) {
+      crossLink.link = crossLink.lemmaId;
+    }
     lemma.crossLinks.push(crossLink);
   }
 
@@ -273,6 +287,8 @@ const getLemma = async (request, response) => {
 const saveLemma = async (request, response) => {
   const lemma = request.body;
 
+  console.log('saveLemma in queries.js, Editor: ', lemma.editor, ' Lemma ID: ', lemma.lemmaId);
+
   // LEMMA – basic info
   const sqlLemma = `
     UPDATE lemmata
@@ -282,7 +298,10 @@ const saveLemma = async (request, response) => {
         translation = $4, 
         transliteration = $5, 
         partofspeech_id = (SELECT partofspeech_id FROM partsofspeech WHERE value = $6), 
-		    language_id = (SELECT language_id FROM languages WHERE value = $7)
+		    language_id = (SELECT language_id FROM languages WHERE value = $7),
+        primary_meaning = $8,
+        editor = $9,
+        literal_translation2 = $10
     WHERE lemma_id = $1;
     `;
 
@@ -294,6 +313,9 @@ const saveLemma = async (request, response) => {
       lemma.transliteration,
       lemma.partOfSpeech,
       lemma.language,
+      lemma.primary_meaning,
+      lemma.editor,
+      lemma.literal_translation2,
     ];
 
   pool.query(sqlLemma, values, (error, results) => {
@@ -304,13 +326,14 @@ const saveLemma = async (request, response) => {
   const sqlMeaningsUpdate = `
     UPDATE meanings
       SET
-        value = $2
-      WHERE lemma_id = $1 AND meaning_id = $3
+        value = $2,
+        category = $3
+      WHERE lemma_id = $1 AND meaning_id = $4
     RETURNING *;
   `;
   const sqlMeaningsInsert = `
-    INSERT INTO meanings (lemma_id, value)
-      VALUES ($1, $2)
+    INSERT INTO meanings (lemma_id, value, category)
+      VALUES ($1, $2, $3)
     RETURNING meaning_id;
   `;
 
@@ -319,6 +342,7 @@ const saveLemma = async (request, response) => {
     const values = [
       lemma.lemmaId,
       meaning.value,
+      meaning.category,
       isNaN(parseInt(meaning.id)) ? 0 : parseInt(meaning.id),
     ];
 
@@ -350,13 +374,14 @@ const saveLemma = async (request, response) => {
     UPDATE variants
       SET
         original = $2,
-        transliteration = $3
-      WHERE lemma_id = $1 AND variant_id = $4
+        transliteration = $3,
+        comment = $4
+      WHERE lemma_id = $1 AND variant_id = $5
     RETURNING *;
   `;
   const sqlVariantsInsert = `
-    INSERT INTO variants (lemma_id, original, transliteration)
-      VALUES ($1, $2, $3)
+    INSERT INTO variants (lemma_id, original, transliteration, comment)
+      VALUES ($1, $2, $3, $4)
     RETURNING variant_id;
   `;
 
@@ -366,6 +391,7 @@ const saveLemma = async (request, response) => {
       lemma.lemmaId,
       variant.original,
       variant.transliteration,
+      variant.comment,
       isNaN(parseInt(variant.id)) ? 0 : parseInt(variant.id),
     ];
 
@@ -468,6 +494,21 @@ const saveLemma = async (request, response) => {
   `;
 
   for (crossLink of lemma.crossLinks) {
+
+    // Don't save the ones that link back to this same lemma
+    // Cross Links are collected in both directions, to and from
+    // Don't save the "to's"
+    // These are marked by having the same lemmaId as the link
+    // Because of the way they're queried
+    if (crossLink.lemmaId === crossLink.link) {
+      continue;
+    }
+
+    // Prevent crash where user accientally deletes id in UI and triggers a foreign key error
+    if (!crossLink.lemmaId) {
+      console.log('Invalid lemmaId in crosslink error prevention');
+      continue;
+    }
     
     const values = [
       lemma.lemmaId,

@@ -3,7 +3,7 @@ import React from 'react';
 
 import { useNavigate } from "react-router-dom";
 // import { IoIosPlay, IoIosPause, IoIosHome, IoIosLogIn, IoIosLogOut } from 'react-icons/io';
-import { IoIosPlay, IoIosPause, IoIosHome } from 'react-icons/io';
+import { IoIosPlay, IoIosPause, IoIosHome, IoIosHelpCircle } from 'react-icons/io';
 
 import UserContext from '../../Contexts/UserContext';
 import LogIn from './LogIn.js';
@@ -68,6 +68,9 @@ const StarHeader = () => {
       <button className={styles.home} onClick={goHome}>
         <IoIosHome />
       </button>
+      <a className={styles.home} href="/help" target="_blank" rel="noopener noreferrer">
+        <IoIosHelpCircle />
+      </a>
       {/* {(user && user.token) ? null : (
         <button className={styles.home} onClick={login}>
           <IoIosLogIn />

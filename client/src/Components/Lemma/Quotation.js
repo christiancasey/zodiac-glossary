@@ -74,37 +74,38 @@ const Quotation = props => {
       <div className={styles.row}>
         <label
           className={styles.label}
-          htmlFor={"original_"+quotation.id}
-          data-tip="Akkadian: transliteration<br />Egyptian: hieroglyphic<br />Other: original text (Unicode)"
-          data-for={"original_"+quotation.id}
+          htmlFor={"transliteration_"+quotation.id}
+          data-tip="Akkadian: (normalized) transcription<br />Egyptian: Egyptological transliteration<br />Other: Roman transliteration"
+          data-for={"phonetic_"+quotation.id}
         >
-          Original
+          {props.language === "akkadian" ? 'Normalized' : 'Transliteration'}
         </label>
-        <ReactTooltip id={"original_"+quotation.id} type="light" html={true} />
+        <ReactTooltip id={"phonetic_"+quotation.id} type="light" html={true} />
         <textarea
           className={styles.inputWide}
-          name={"original_"+quotation.id}
-          placeholder="original"
-          value={quotation.original}
-          onChange={e => props.updateQuotation("original", e.target.value, quotation.id)} 
+          style={{fontStyle: (props.language === "akkadian" || 'italic')}}
+          name={"transliteration_"+quotation.id}
+          placeholder={props.language === "akkadian" ? 'normalized' : 'transliteration'}
+          value={quotation.transliteration}
+          onChange={e => props.updateQuotation("transliteration", e.target.value, quotation.id)} 
         />
       </div>
       <div className={styles.row}>
         <label
           className={styles.label}
-          htmlFor={"transliteration_"+quotation.id}
-          data-tip="Akkadian: (normalized) transcription<br />Egyptian: Egyptological transliteration<br />Other: Roman transliteration"
-          data-for={"phonetic_"+quotation.id}
+          htmlFor={"original_"+quotation.id}
+          data-tip="Akkadian: transliteration<br />Egyptian: hieroglyphic<br />Other: original text (Unicode)"
+          data-for={"original_"+quotation.id}
         >
-          Transliteration
+          {props.language === "akkadian" ? 'Transliteration' : 'Original'}
         </label>
-        <ReactTooltip id={"phonetic_"+quotation.id} type="light" html={true} />
+        <ReactTooltip id={"original_"+quotation.id} type="light" html={true} />
         <textarea
-          className={styles.inputTransliterationWide}
-          name={"transliteration_"+quotation.id}
-          placeholder="transliteration"
-          value={quotation.transliteration}
-          onChange={e => props.updateQuotation("transliteration", e.target.value, quotation.id)} 
+          className={styles.inputWide}
+          name={"original_"+quotation.id}
+          placeholder={props.language === "akkadian" ? 'transliteration' : 'original'}
+          value={quotation.original}
+          onChange={e => props.updateQuotation("original", e.target.value, quotation.id)} 
         />
       </div>
       <div className={styles.row}>

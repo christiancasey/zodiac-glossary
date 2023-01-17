@@ -15,7 +15,8 @@ const Quotations = props => {
       {props.quotations.map((quotation,i) => {
         return (
           <Quotation 
-            key={quotation.id} 
+            key={quotation.id}
+            language={props.language}
             quotation={quotation} 
             i={i} 
             updateQuotation={props.updateQuotation}

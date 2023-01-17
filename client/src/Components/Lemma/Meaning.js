@@ -12,10 +12,6 @@ const Meaning = props => {
   
   const [style, setStyle] = React.useState({display: 'none'});
   
-  const onChange = e => {
-    props.updateMeaning(e.target.value, meaning.id);
-  };
-  
   return (
     <div 
       className={styles.row}
@@ -41,18 +37,26 @@ const Meaning = props => {
       </>
     )}
     {!user.token && (<div>{i+1} {meaning.value}</div>)} */}
-    <>
-      <label className={styles.label} htmlFor={"meaning_"+meaning.id}>{i+1}</label>
-      <input
-        className={styles.inputMeaning}
-        type="text"
-        name={"meaning_"+meaning.id}
-        placeholder="meaning"
-        value={meaning.value}
-        onChange={onChange}
-      />
-    </>
-    <button className={styles.delete} style={style} onClick={() => props.deleteMeaning(meaning.id)}><IoIosTrash /></button>
+      <>
+        <label className={styles.label} htmlFor={"meaning_"+meaning.id}>{i+1}</label>
+        <input
+          className={styles.input}
+          type="text"
+          name={"meaning_"+meaning.id}
+          placeholder="meaning"
+          value={meaning.value}
+          onChange={e => props.updateMeaning('value', e.target.value, meaning.id)}
+        />
+        <input
+          className={styles.input}
+          type="text"
+          name={"category_"+meaning.id}
+          placeholder="category"
+          value={meaning.category}
+          onChange={e => props.updateMeaning('category', e.target.value, meaning.id)}
+        />
+      </>
+      <button className={styles.delete} style={style} onClick={() => props.deleteMeaning(meaning.id)}><IoIosTrash /></button>
     </div>
   );
 };

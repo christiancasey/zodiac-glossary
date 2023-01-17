@@ -1,5 +1,7 @@
 import React from "react";
 import { useSearchParams, useLocation } from "react-router-dom";
+import Collapsible from "react-collapsible";
+import {MdExpandMore, MdExpandLess} from 'react-icons/md';
 
 import QueryNavLink from '../QueryNavLink';
 import UserContext from '../../Contexts/UserContext';
@@ -22,7 +24,7 @@ const LemmataList = props => {
   const lemmataList = props.lemmataList;
   const setLemmataList = props.setLemmataList;
   
-  const [lemmataSortField, setLemmataSortField] = React.useState('original');
+  const [lemmataSortField, setLemmataSortField] = React.useState('primary_meaning');
   
   // Forces a refresh of the list when a new lemma is added (and on load)
   // Uses a dummy lemma variable in content to detect saves and update the list
@@ -70,7 +72,7 @@ const LemmataList = props => {
       <h2>Lemmata</h2>
       <div className={styles.sortButtons}>
         Sort by: 
-          <button className={styles.sortButtons} onClick={e => setLemmataSortField('original')}>Dictionary</button> |
+          <button className={styles.sortButtons} onClick={e => setLemmataSortField('primary_meaning')}>Dictionary</button> |
           <button className={styles.sortButtons} onClick={e => setLemmataSortField('transliteration')}>Transliteration</button> |
           <button className={styles.sortButtons} onClick={e => setLemmataSortField('translation')}>Translation</button>
           {/* A nice idea, but breaks sorting above because language can be null, but sorting needs to use the .toLowerCase() function
@@ -87,12 +89,38 @@ const LemmataList = props => {
             to={lemma.lemmaId} 
             key={lemma.lemmaId}
           >
-            {!lemma.published && (<div style={{fontStyle: 'italic', color: '#ffea'}}> – {lemma.original} | {lemma.transliteration} | {lemma.translation}</div>)}
-            {lemma.published && (<>{lemma.original} | {lemma.transliteration} | {lemma.translation}</>)}
+            <LemmataListItem lemma={lemma} />
+            {/* <Collapsible 
+              trigger={<MdExpandMore />}
+              triggerWhenOpen={<MdExpandLess />}
+              contentContainerTagName="span"
+              transitionTime={200}
+            >
+              <ul>
+                {lemma.meanings.map(meaning => {
+                  if (lemma.published) {
+                    return (<li>{meaning}</li>);
+                  } else {
+                    return (<li style={{fontStyle: 'italic', color: '#ffea'}}>{meaning}</li>);
+                  }
+                })}
+              </ul>
+            </Collapsible> */}
           </QueryNavLink>
       ))}
     </>
   );
+};
+
+const LemmataListItem = props => {
+  const lemma = props.lemma;
+  return (
+    <>
+      {!lemma.published && (<span style={{fontStyle: 'italic', color: '#ffea'}}> – {lemma.transliteration} | {lemma.original} | {lemma.primary_meaning}</span>)}
+      {lemma.published && (<>{lemma.transliteration} | {lemma.original} | {lemma.primary_meaning}</>)}
+      &nbsp;&nbsp;
+    </>
+  )
 };
 
 export default LemmataList;
