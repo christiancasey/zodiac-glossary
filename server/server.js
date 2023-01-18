@@ -38,6 +38,9 @@ app.get('/api/lemma/get', db.getLemma);
 app.patch('/api/lemma/save', db.saveLemma);
 app.delete('/api/lemma/delete', db.deleteLemma);
 
+// Quotation => Meanings
+app.get('/api/meanings', db.getMeanings); // Unused endpoint, probably not needed
+
 // Autocomplete
 app.get('/api/autocomplete/meanings', ac.meaningCategories);
 app.get('/api/autocomplete/quotations', ac.quotationSource);

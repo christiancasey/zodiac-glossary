@@ -98,7 +98,6 @@ const getPartsOfSpeech = (request, response) => {
 ////////////////////////////////////////////////////////////////////////////////
 
 const getLemmataList = async (request, response) => {
-  console.log('getLemmataList()');
   const token = request.query.token;
   let sql = `
     SELECT lemma_id, published, original, translation, primary_meaning, transliteration, literal_translation2, languages.value AS language, m.value as meaning
@@ -134,42 +133,6 @@ const getLemmataList = async (request, response) => {
   }
   
   response.status(200).json(lemmata);
-
-  // const sqlMeanings = 'SELECT * FROM meanings';
-  // const sqlVariants = 'SELECT * FROM variants';
-
-  // try {
-  //   // var meaningsDB = await waitQuery(sqlMeanings);
-  //   // var variantsDB = await waitQuery(sqlVariants);
-
-  //   for (lemma of lemmata) {
-
-  //     lemma.meanings = [];
-  //     lemma.variants = [];
-
-  //     // for (let meaning of meaningsDB.rows) {
-  //     //   if (meaning.lemma_id === lemma.lemma_id) {
-  //     //     lemma.meanings.push(meaning.value);
-  //     //   }
-  //     // }
-
-  //     // for (let variant of variantsDB.rows) {
-  //     //   if (variant.lemma_id === lemma.lemma_id) {
-  //     //     lemma.variants.push(variant.original);
-  //     //     lemma.variants.push(variant.transliteration);
-  //     //   }
-  //     // }
-
-  //     lemma.lemmaId = lemma.lemma_id;
-  //     delete lemma.lemma_id;
-  //   }
-
-  //   response.status(200).json(lemmata);
-  // }
-  // catch (error) {
-  //   response.status(500);
-  //   console.log(error);
-  // }
 };
 
 const addNewLemma = (request, response) => {
@@ -452,13 +415,14 @@ const saveLemma = async (request, response) => {
         provenance = $8,
         date = $9,
         publication = $10,
-        link = $11
-      WHERE lemma_id = $1 AND quotation_id = $12
+        link = $11,
+        meaning_id = $12
+      WHERE lemma_id = $1 AND quotation_id = $13
     RETURNING *;
   `;
   const sqlQuotationsInsert = `
-    INSERT INTO quotations (lemma_id, original, transliteration, translation, source, line, genre, provenance, date, publication, link)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+    INSERT INTO quotations (lemma_id, original, transliteration, translation, source, line, genre, provenance, date, publication, link, meaning_id)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
     RETURNING quotation_id;
   `;
 
@@ -476,6 +440,7 @@ const saveLemma = async (request, response) => {
       quotation.date,
       quotation.publication,
       quotation.link,
+      quotation.meaning_id,
       isNaN(parseInt(quotation.id)) ? 0 : parseInt(quotation.id),
     ];
 
@@ -628,6 +593,20 @@ const deleteLemma = (request, response) => {
   response.status(202).json(request.query);
 };
 
+// Quotations to Meanings
+const getMeanings = async (request, response) => {
+  const lemmaId = request.query.id;
+  const sql =  `SELECT * FROM meanings WHERE lemma_id = $1;`;
+  pool.query(sql, [lemmaId], (error, results) => {
+    if (error) {
+      console.log(error);
+      response.status(500);
+    } else {
+      response.status(200).json(results.rows);
+    }
+  });
+};
+
 ////////////////////////////////////////////////////////////////////////////////
 // EXPORTS
 ////////////////////////////////////////////////////////////////////////////////
@@ -644,4 +623,5 @@ module.exports = {
   getLemma,
   saveLemma,
   deleteLemma,
+  getMeanings,
 };

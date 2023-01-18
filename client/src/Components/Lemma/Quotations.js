@@ -19,6 +19,7 @@ const Quotations = props => {
             language={props.language}
             quotation={quotation} 
             i={i} 
+            meanings={props.meanings}
             updateQuotation={props.updateQuotation}
             deleteQuotation={props.deleteQuotation}
           />

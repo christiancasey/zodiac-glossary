@@ -11,6 +11,7 @@ import styles from './Lemma.module.css';
 const Quotation = props => {
   const i = props.i;
   let [quotation, setQuotation] = React.useState(props.quotation);
+  let [meaningValue, setMeaningValue] = React.useState(getMeaning(props.quotation.meaning_id));
   const {user} = React.useContext(UserContext);
   
   const [style, setStyle] = React.useState({display: 'none'});
@@ -27,7 +28,7 @@ const Quotation = props => {
     getQuotationFields(setGenreAutocomplete, 'genre');
     getQuotationFields(setProvenanceAutocomplete, 'provenance');
     getQuotationFields(setPublicationAutocomplete, 'publication');
-  }, []);
+  }, [quotation]);
 
   // Whenever Source changes, set:
   // Genre, Provenance, Date, Publication, Link
@@ -38,6 +39,26 @@ const Quotation = props => {
     // There are some entries with empty sources, don't use them to autofill
     if (source) {
       getQuotationFromSource(setQuotationAutofill, source);
+    }
+  };
+
+  // Meaning link
+  function getMeaning(id) {
+    if (!id)
+      return '';
+    
+    let meaningMatch = props.meanings.find(meaning => meaning.id === id);
+    if (meaningMatch)
+      return meaningMatch.value + ' (' + meaningMatch.category + ')';
+    return '';
+  }
+
+  const updateMeaning = e => {
+    setMeaningValue(e.target.value);
+    const parts = e.target.value.split(/[()]/);
+    let meaningMatch = props.meanings.find(meaning => meaning.value === parts[0].trim() && meaning.category === parts[1].trim());
+    if (meaningMatch) {
+      props.updateQuotation("meaning_id", meaningMatch.id, quotation.id);
     }
   };
 
@@ -160,6 +181,34 @@ const Quotation = props => {
           onChange={e => props.updateQuotation("translation", e.target.value, quotation.id)} 
         />
       </div>
+      <div className={styles.row}>
+        <label className={styles.label} htmlFor={"meaning_"+quotation.id}>Meaning</label>
+        <input
+          type="text"
+          className={styles.inputWide}
+          name={"meaning_"+quotation.id}
+          placeholder="meaning"
+          value={meaningValue}
+          onChange={e => updateMeaning(e)}
+          list="meanings"
+        />
+        <datalist id="meanings">
+          {props.meanings.map((item, key) => (
+            <option key={key} value={item.value + ' (' + item.category + ')'} />
+          ))}
+        </datalist>
+      </div>
+      {/* Debug: show meaning_id value when the user enters a new meaning in the above input  */}
+      {/* <div className={styles.row}>
+        <label className={styles.label} htmlFor={"meaning_id_"+quotation.id}>Meaning ID</label>
+        <input
+          type="text"
+          className={styles.inputWide}
+          name={"meaning_id_"+quotation.id}
+          placeholder="meaning_id"
+          defaultValue={quotation.meaning_id}
+        />
+      </div> */}
       <div className={styles.row}>
         <label className={styles.label} htmlFor={"source_"+quotation.id}>Source</label>
         <input

@@ -85,9 +85,9 @@ const Help = props => {
         <p>I've put a todo list here for myself and so that everyone can see what's still pending.</p>
         <ul>
           <li>Fix Crosslinks to show lemma data and keep lemma id in the background.</li>
-          <li>Make a way to link Quotations to Meanings.</li>
           <li>Rich text input for Akkadian tranliteration?</li>
           <li>Microsign ontology? (Have to discuss this more. I don't get it.)</li>
+          <li className={styles.done}>Make a way to link Quotations to Meanings.</li>
           <li className={styles.done}>Add variants and meanings to search results.</li>
           <li className={styles.done}>Add meanings to lemma list in sidebar with dropdown function.</li>
           <li className={styles.done}>Add a dropdown for categories in Meanings.</li>

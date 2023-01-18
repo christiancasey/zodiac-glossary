@@ -412,6 +412,7 @@ const Lemma = props => {
         <Quotations
           quotations={lemma.quotations}
           language={lemma.language}
+          meanings={lemma.meanings}
           updateQuotation={updateQuotation}
           addNewQuotation={addNewQuotation}
           deleteQuotation={deleteQuotation}

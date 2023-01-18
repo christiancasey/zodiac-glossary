@@ -55,7 +55,6 @@ const quotationAutofillFromSource = (request, response) => {
       console.log(error);
       response.status(500).json([]);
     } else {
-      // console.log(results.rows);
       if (results.rows) {
         response.status(200).json(results.rows[0]);
       } else {
