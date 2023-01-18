@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
 import { getLemmataList } from '../Data/api';
+import { getMeaningCategories } from "../Data/autocomplete";
 
 import Sidebar from './Sidebar/Sidebar';
 
@@ -15,8 +16,12 @@ const Content = props => {
   let [contentLemma, setContentLemma] = React.useState();
   let [lemmataList, setLemmataList] = React.useState([]);
 
+  // Autocomplete data
+  let [meaningsCategories, setMeaningsCategories] = React.useState([]);
+
   React.useEffect(() => {
     getLemmataList(setLemmataList);
+    getMeaningCategories(setMeaningsCategories);
   }, []);
   
   // Really stupid cludge that forces the sidebar to update when the user saves a new lemma
@@ -34,7 +39,7 @@ const Content = props => {
     <section style={{height: '80vh'}}>
     <div className={styles.content}>
       <Sidebar sidebarUpdate={sidebarUpdate} setChanged={setChanged} contentLemma={contentLemma} lemmataList={lemmataList} setLemmataList={setLemmataList} />
-      <Outlet context={[updateLemmataList, changed, setChanged, setContentLemma, lemmataList]} />
+      <Outlet context={[updateLemmataList, changed, setChanged, setContentLemma, lemmataList, meaningsCategories]} />
     </div>
     </section>
   );

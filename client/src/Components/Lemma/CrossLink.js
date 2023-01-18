@@ -36,7 +36,7 @@ const CrossLink = props => {
     return (
       <div className={styles.label}>
         <QueryNavLink to={'/'+crossLink}>
-          {lemma.original} | {lemma.transliteration} | {lemma.translation}
+          {lemma.transliteration} | {lemma.original} | {lemma.primary_meaning}
           &nbsp;
           <IoIosOpen />
         </QueryNavLink>
@@ -77,12 +77,13 @@ const CrossLink = props => {
           className={styles.inputWide}
           name={"crossLink_"+i}
           defaultValue={crossLink}
-          onChange={event => updateCrossLink(event, i)}/>
+          onChange={event => updateCrossLink(event, i)}
+        />
         <datalist id="lemmata_list">
           {lemmata.map((lemma, j) => (
             <option
               key={j}
-              label={lemma.original + ' | ' + lemma.transliteration + ' | ' + lemma.translation}
+              label={lemma.transliteration + ' | ' + lemma.original + ' | ' + lemma.primary_meaning}
               data-id={lemma.lemmaId}
               value={lemma.lemmaId} 
             />
@@ -98,7 +99,7 @@ const CrossLink = props => {
         </label>
         {lemma ? 
           <QueryNavLink className={styles.label} to={'/'+crossLink}>
-            <>&nbsp;{lemma.original} | {lemma.transliteration} | {lemma.translation} <IoIosOpen /></>
+            <>&nbsp;{lemma.transliteration} | {lemma.original} | {lemma.primary_meaning} <IoIosOpen /></>
           </QueryNavLink>
         : <> | | </>}
       </div>

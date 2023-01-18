@@ -98,12 +98,14 @@ const getPartsOfSpeech = (request, response) => {
 ////////////////////////////////////////////////////////////////////////////////
 
 const getLemmataList = async (request, response) => {
+  console.log('getLemmataList()');
   const token = request.query.token;
   let sql = `
-    SELECT lemma_id, published, original, translation, primary_meaning, transliteration, languages.value AS language 
-    FROM lemmata 
+    SELECT lemma_id, published, original, translation, primary_meaning, transliteration, literal_translation2, languages.value AS language, m.value as meaning
+    FROM lemmata as l
     LEFT JOIN languages USING (language_id) 
     LEFT JOIN partsofspeech USING (partofspeech_id)
+    JOIN meanings as m USING (lemma_id);
   `;
 
   // If no user logged in, show only published lemmata
@@ -112,43 +114,62 @@ const getLemmataList = async (request, response) => {
   }
 
   const lemmataDB = await waitQuery(sql);
-  let lemmata = lemmataDB.rows;
+  const lemmataMeanings = lemmataDB.rows;
+  
+  // Now get all lemmata and meanings together at once (for fast querying)
+  // Then construct an object of lemmata with meanings as an array element
+  const lemmata = [];
+  for (let lemmataMeaning of lemmataMeanings) {
+    lemmataMeaning.lemmaId = lemmataMeaning.lemma_id;
+    delete lemmataMeaning.lemma_id;
 
-  const sqlMeanings = 'SELECT * FROM meanings';
-  const sqlVariants = 'SELECT * FROM variants';
-
-  try {
-    // var meaningsDB = await waitQuery(sqlMeanings);
-    // var variantsDB = await waitQuery(sqlVariants);
-
-    for (lemma of lemmata) {
-
-      lemma.meanings = [];
-      lemma.variants = [];
-
-      // for (let meaning of meaningsDB.rows) {
-      //   if (meaning.lemma_id === lemma.lemma_id) {
-      //     lemma.meanings.push(meaning.value);
-      //   }
-      // }
-
-      // for (let variant of variantsDB.rows) {
-      //   if (variant.lemma_id === lemma.lemma_id) {
-      //     lemma.variants.push(variant.original);
-      //     lemma.variants.push(variant.transliteration);
-      //   }
-      // }
-
-      lemma.lemmaId = lemma.lemma_id;
-      delete lemma.lemma_id;
+    const currentLemma = lemmata.find(lemma => lemma.lemmaId === lemmataMeaning.lemmaId);
+    if (currentLemma) {
+      currentLemma.meanings.push(lemmataMeaning.meaning)
+    } else {
+      lemmataMeaning.meanings = [lemmataMeaning.meaning];
+      delete lemmataMeaning.meaning;
+      lemmata.push(lemmataMeaning);
     }
+  }
+  
+  response.status(200).json(lemmata);
 
-    response.status(200).json(lemmata);
-  }
-  catch (error) {
-    response.status(500);
-    console.log(error);
-  }
+  // const sqlMeanings = 'SELECT * FROM meanings';
+  // const sqlVariants = 'SELECT * FROM variants';
+
+  // try {
+  //   // var meaningsDB = await waitQuery(sqlMeanings);
+  //   // var variantsDB = await waitQuery(sqlVariants);
+
+  //   for (lemma of lemmata) {
+
+  //     lemma.meanings = [];
+  //     lemma.variants = [];
+
+  //     // for (let meaning of meaningsDB.rows) {
+  //     //   if (meaning.lemma_id === lemma.lemma_id) {
+  //     //     lemma.meanings.push(meaning.value);
+  //     //   }
+  //     // }
+
+  //     // for (let variant of variantsDB.rows) {
+  //     //   if (variant.lemma_id === lemma.lemma_id) {
+  //     //     lemma.variants.push(variant.original);
+  //     //     lemma.variants.push(variant.transliteration);
+  //     //   }
+  //     // }
+
+  //     lemma.lemmaId = lemma.lemma_id;
+  //     delete lemma.lemma_id;
+  //   }
+
+  //   response.status(200).json(lemmata);
+  // }
+  // catch (error) {
+  //   response.status(500);
+  //   console.log(error);
+  // }
 };
 
 const addNewLemma = (request, response) => {
@@ -426,17 +447,18 @@ const saveLemma = async (request, response) => {
         transliteration = $3,
         translation = $4,
         source = $5,
-        genre = $6,
-        provenance = $7,
-        date = $8,
-        publication = $9,
-        link = $10
-      WHERE lemma_id = $1 AND quotation_id = $11
+        line = $6,
+        genre = $7,
+        provenance = $8,
+        date = $9,
+        publication = $10,
+        link = $11
+      WHERE lemma_id = $1 AND quotation_id = $12
     RETURNING *;
   `;
   const sqlQuotationsInsert = `
-    INSERT INTO quotations (lemma_id, original, transliteration, translation, source, genre, provenance, date, publication, link)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+    INSERT INTO quotations (lemma_id, original, transliteration, translation, source, line, genre, provenance, date, publication, link)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
     RETURNING quotation_id;
   `;
 
@@ -448,6 +470,7 @@ const saveLemma = async (request, response) => {
       quotation.transliteration,
       quotation.translation,
       quotation.source,
+      quotation.line,
       quotation.genre,
       quotation.provenance,
       quotation.date,

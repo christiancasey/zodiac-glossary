@@ -4,14 +4,56 @@ import { IoIosTrash, IoIosOpen } from "react-icons/io";
 
 import UserContext from '../../Contexts/UserContext';
 
+import { getQuotationFields, getQuotationFromSource } from "../../Data/autocomplete";
+
 import styles from './Lemma.module.css';
 
 const Quotation = props => {
-  const quotation = props.quotation;
   const i = props.i;
+  let [quotation, setQuotation] = React.useState(props.quotation);
   const {user} = React.useContext(UserContext);
   
   const [style, setStyle] = React.useState({display: 'none'});
+
+  let [quotationAutofill, setQuotationAutofill] = React.useState(props.quotation);
+
+  let [sourceAutocomplete, setSourceAutocomplete] = React.useState([]);
+  let [genreAutocomplete, setGenreAutocomplete] = React.useState([]);
+  let [provenanceAutocomplete, setProvenanceAutocomplete] = React.useState([]);
+  let [publicationAutocomplete, setPublicationAutocomplete] = React.useState([]);
+
+  React.useEffect(() => {
+    getQuotationFields(setSourceAutocomplete, 'source');
+    getQuotationFields(setGenreAutocomplete, 'genre');
+    getQuotationFields(setProvenanceAutocomplete, 'provenance');
+    getQuotationFields(setPublicationAutocomplete, 'publication');
+  }, []);
+
+  // Whenever Source changes, set:
+  // Genre, Provenance, Date, Publication, Link
+  const setSource = e => {
+    const source = e.target.value;
+    props.updateQuotation("source", source, quotation.id);
+
+    // There are some entries with empty sources, don't use them to autofill
+    if (source) {
+      getQuotationFromSource(setQuotationAutofill, source);
+    }
+  };
+
+  React.useEffect(() => {
+    if (quotationAutofill) {
+      // Need to do it this way so that fields are only updated when they're empty
+      let newQuotation = quotation;
+      newQuotation.genre = (quotation.genre ? quotation.genre : quotationAutofill.genre);
+      newQuotation.provenance = (quotation.provenance ? quotation.provenance : quotationAutofill.provenance);
+      newQuotation.date = (quotation.date ? quotation.date : quotationAutofill.date);
+      newQuotation.publication = (quotation.publication ? quotation.publication : quotationAutofill.publication);
+      newQuotation.link = (quotation.link ? quotation.link : quotationAutofill.link);
+      setQuotation(newQuotation);
+    }
+  }, [quotationAutofill]);
+  
   
   if (!user.token) {
     return (
@@ -126,7 +168,32 @@ const Quotation = props => {
           name={"source_"+quotation.id}
           placeholder="source"
           value={quotation.source}
-          onChange={e => props.updateQuotation("source", e.target.value, quotation.id)} 
+          onChange={e => setSource(e)} 
+          list="quotation_sources"
+        />
+        <datalist id="quotation_sources">
+          {sourceAutocomplete.map((item, key) => (
+            <option key={key} value={item} />
+          ))}
+        </datalist>
+      </div>
+      <div className={styles.row}>
+        <label
+          className={styles.label}
+          htmlFor={"line_"+quotation.id}
+          data-tip="Part of source text where quote is found<br />Perhaps a line or column number"
+          data-for={"line_"+quotation.id}
+        >
+          Line/Column
+        </label>
+        <ReactTooltip id={"line_"+quotation.id} type="light" html={true} />
+        <input
+          type="text"
+          className={styles.inputWide}
+          name={"line_"+quotation.id}
+          placeholder="line or column"
+          value={quotation.line}
+          onChange={e => props.updateQuotation("line", e.target.value, quotation.id)} 
         />
       </div>
       <div className={styles.row}>
@@ -137,8 +204,14 @@ const Quotation = props => {
           name={"genre_"+quotation.id}
           placeholder="genre"
           value={quotation.genre}
-          onChange={e => props.updateQuotation("genre", e.target.value, quotation.id)} 
+          onChange={e => props.updateQuotation("genre", e.target.value, quotation.id)}
+          list="quotation_genre"
         />
+        <datalist id="quotation_genre">
+          {genreAutocomplete.map((item, key) => (
+            <option key={key} value={item} />
+          ))}
+        </datalist>
       </div>
       <div className={styles.row}>
         <label className={styles.label} htmlFor={"provenance_"+quotation.id}>Provenance</label>
@@ -149,7 +222,13 @@ const Quotation = props => {
           placeholder="provenance"
           value={quotation.provenance}
           onChange={e => props.updateQuotation("provenance", e.target.value, quotation.id)} 
+          list="quotation_provenance"
         />
+        <datalist id="quotation_provenance">
+          {provenanceAutocomplete.map((item, key) => (
+            <option key={key} value={item} />
+          ))}
+        </datalist>
       </div>
       <div className={styles.row}>
         <label className={styles.label} htmlFor={"date_"+quotation.id}>Date</label>
@@ -171,7 +250,13 @@ const Quotation = props => {
           placeholder="publication"
           value={quotation.publication}
           onChange={e => props.updateQuotation("publication", e.target.value, quotation.id)} 
+          list="quotation_publication"
         />
+        <datalist id="quotation_publication">
+          {publicationAutocomplete.map((item, key) => (
+            <option key={key} value={item} />
+          ))}
+        </datalist>
       </div>
       <div className={styles.row}>
         <label className={styles.label} htmlFor={"link_"+quotation.id}>Link</label>

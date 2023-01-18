@@ -54,7 +54,16 @@ const Meaning = props => {
           placeholder="category"
           value={meaning.category}
           onChange={e => props.updateMeaning('category', e.target.value, meaning.id)}
+          list="meaning_categories"
         />
+        <datalist id="meaning_categories">
+          {props.meaningsCategories.map((category, key) => (
+            <option
+              key={key}
+              value={category}
+            />
+          ))}
+        </datalist>
       </>
       <button className={styles.delete} style={style} onClick={() => props.deleteMeaning(meaning.id)}><IoIosTrash /></button>
     </div>

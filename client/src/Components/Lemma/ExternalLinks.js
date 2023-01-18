@@ -45,6 +45,9 @@ const ExternalLinks = props => {
           <li><a target="_blank" rel="noopener noreferrer" href="http://129.206.5.162/beta/search/search.html">
             Demotic Palaeographical Database Project
           </a></li>
+          <li><a target="_blank" rel="noopener noreferrer" href="https://coptic-dictionary.org/">
+            Coptic Dictionary Online
+          </a></li>
         </ul>
       </>
       )}

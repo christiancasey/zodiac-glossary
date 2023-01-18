@@ -10,7 +10,6 @@ import styles from './Lemma.module.css';
 
 const BasicInfo = props => {
   let lemma = props.lemma;
-  console.log(lemma);
   let onChange = props.onChange;
   const {user} = React.useContext(UserContext);
   

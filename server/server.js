@@ -4,6 +4,7 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 const db = require('./queries');
+const ac = require('./autocomplete');
 
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 app.use(express.json());
@@ -37,11 +38,14 @@ app.get('/api/lemma/get', db.getLemma);
 app.patch('/api/lemma/save', db.saveLemma);
 app.delete('/api/lemma/delete', db.deleteLemma);
 
+// Autocomplete
+app.get('/api/autocomplete/meanings', ac.meaningCategories);
+app.get('/api/autocomplete/quotations', ac.quotationSource);
+app.get('/api/autocomplete/quotation_from_source', ac.quotationAutofillFromSource);
 
 app.get('*', (request, response) => {
   response.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
 });
-
 
 
 

@@ -72,11 +72,11 @@ const LemmataList = props => {
       <h2>Lemmata</h2>
       <div className={styles.sortButtons}>
         Sort by: 
-          <button className={styles.sortButtons} onClick={e => setLemmataSortField('primary_meaning')}>Dictionary</button> |
           <button className={styles.sortButtons} onClick={e => setLemmataSortField('transliteration')}>Transliteration</button> |
-          <button className={styles.sortButtons} onClick={e => setLemmataSortField('translation')}>Translation</button>
-          {/* A nice idea, but breaks sorting above because language can be null, but sorting needs to use the .toLowerCase() function
-            <button className={styles.sortButtons} onClick={e => setLemmataSortField('language')}>Language</button> */}
+          <button className={styles.sortButtons} onClick={e => setLemmataSortField('original')}>Original</button> |
+          <button className={styles.sortButtons} onClick={e => setLemmataSortField('primary_meaning')}>Meaning</button>
+          {/* Breaks formatting and language is not displayed in this list, so results are confusing */}
+          {/* | <button className={styles.sortButtons} onClick={e => setLemmataSortField('language')}>Language</button> */}
       </div>
 
       {lemmataFiltered
@@ -90,22 +90,22 @@ const LemmataList = props => {
             key={lemma.lemmaId}
           >
             <LemmataListItem lemma={lemma} />
-            {/* <Collapsible 
+            <Collapsible 
               trigger={<MdExpandMore />}
               triggerWhenOpen={<MdExpandLess />}
               contentContainerTagName="span"
               transitionTime={200}
             >
               <ul>
-                {lemma.meanings.map(meaning => {
+                {lemma.meanings.map((meaning, key) => {
                   if (lemma.published) {
-                    return (<li>{meaning}</li>);
+                    return (<li key={key}>{meaning}</li>);
                   } else {
-                    return (<li style={{fontStyle: 'italic', color: '#ffea'}}>{meaning}</li>);
+                    return (<li key={key} style={{fontStyle: 'italic', color: '#ffea'}}>{meaning}</li>);
                   }
                 })}
               </ul>
-            </Collapsible> */}
+            </Collapsible>
           </QueryNavLink>
       ))}
     </>

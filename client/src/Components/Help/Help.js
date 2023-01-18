@@ -84,21 +84,21 @@ const Help = props => {
         <h1>Todo</h1>
         <p>I've put a todo list here for myself and so that everyone can see what's still pending.</p>
         <ul>
-          <li>Add variants and meanings to search results.</li>
-          <li>Add meanings to lemma list in sidebar with dropdown function.</li>
-          <li>Add a dropdown for categories in Meanings.</li>
+          <li>Fix Crosslinks to show lemma data and keep lemma id in the background.</li>
           <li>Make a way to link Quotations to Meanings.</li>
-          <li>Autocomplete for publication in Quotations.</li>
-          <li>Autocomplete for genre in Quotations.</li>
-          <li className={styles.done}>Make all crosslinks ambidirectional.</li>
           <li>Rich text input for Akkadian tranliteration?</li>
           <li>Microsign ontology? (Have to discuss this more. I don't get it.)</li>
+          <li className={styles.done}>Add variants and meanings to search results.</li>
+          <li className={styles.done}>Add meanings to lemma list in sidebar with dropdown function.</li>
+          <li className={styles.done}>Add a dropdown for categories in Meanings.</li>
+          <li className={styles.done}>Autocomplete for publication in Quotations.</li>
+          <li className={styles.done}>Autocomplete for genre in Quotations.</li>
+          <li className={styles.done}>Make all crosslinks ambidirectional.</li>
           <li className={styles.done}>Add letters to Akkadian keyboard: t with dot, u with carrot.</li>
-          <li>Search includes leading spaces for matching things like "Month I"</li>
-          <li>Split Source into Text and Line Number</li>
-          <li>Autocomplete for Provencance in Quotations</li>
-          <li>Autocomplete other fields on selection of Source: Date, Provenance, etc.</li>
-          <li>Fix Crosslinks to show lemma data and keep lemma id in the background.</li>
+          <li className={styles.done}>Search includes leading spaces for matching things like "Month I"</li>
+          <li className={styles.done}>Split Source into Text and Line Number</li>
+          <li className={styles.done}>Autocomplete for Provencance in Quotations</li>
+          <li className={styles.done}>Autocomplete other fields on selection of Source: Date, Provenance, etc.</li>
         </ul>
       </div>
     </div>

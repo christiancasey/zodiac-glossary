@@ -27,7 +27,7 @@ const Lemma = props => {
   
   // Really stupid cludge that forces the sidebar to update when the user saves a new lemma
   // It's either this or raise all of the lemma state and redo the routing just for that one edge case
-  let [updateLemmataList, changed, setChanged, setContentLemma, lemmataList] = useOutletContext(); 
+  let [updateLemmataList, changed, setChanged, setContentLemma, lemmataList, meaningsCategories] = useOutletContext(); 
   
   React.useEffect(() => {
     var lemmaId = parseInt(params.lemmaId);
@@ -87,7 +87,7 @@ const Lemma = props => {
   };
   
   const saveLemma = () => {
-    updateLemmataList();
+    // updateLemmataList(); // Commenting this out prevents multiple API calls –CDC 2023-01-17
     setChanged(false);
     saveLemmaToDB(setLemma, lemma);
     setContentLemma(lemma);
@@ -395,6 +395,7 @@ const Lemma = props => {
         <BasicInfo lemma={lemma} onChange={onChange} />
         <Meanings
           meanings={lemma.meanings}
+          meaningsCategories={meaningsCategories}
           updateMeaning={updateMeaning}
           addNewMeaning={addNewMeaning}
           deleteMeaning={deleteMeaning}

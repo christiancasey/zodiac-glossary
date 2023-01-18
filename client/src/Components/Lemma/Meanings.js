@@ -21,6 +21,7 @@ const Meanings = props => {
             i={i}
             updateMeaning={props.updateMeaning}
             deleteMeaning={props.deleteMeaning}
+            meaningsCategories={props.meaningsCategories}
           />
         )
       })}

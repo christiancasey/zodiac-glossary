@@ -4,10 +4,11 @@
 // What else?
 
 const replacements = [
-  {
-    original: /[ỉjy]/g,
-    replacement: 'i'
-  },
+  // Had to delete this one because it matches too many things in languages besides Egy
+  // {
+  //   original: /[ỉjy]/g,
+  //   replacement: 'i'
+  // },
   {
     original: /[᾽ι᾿῀῁῍῎῏῝῞῟῭΅`´῾]/g,
     replacement: ''
@@ -23,8 +24,17 @@ const replacements = [
 ]
 
 const softenString = string => {
+  
+  // Prevent stupid error if string is undefined
+  if (!string) {
+    return '';
+  }
+
   let softString = string.slice();
   
+  // Keep leading spaces in search for matching things like "Month I" with searches like " I"
+  let leadingSpace = (softString.charAt(0) === ' ' ? ' ' : '');
+
   softString = softString.trim();
   softString = softString.toLowerCase();
   softString = softString.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
@@ -33,33 +43,10 @@ const softenString = string => {
     softString = softString.replace(replacements[i].original, replacements[i].replacement);
   }
   
+  softString = leadingSpace + softString; // Replace the leading space if necessary
+  
   return softString;
 }
-
-export function searchLemmata(lemmata, search) {
-  let lemmataFiltered = lemmata;
-
-  lemmataFiltered = lemmata.filter(lemma => {
-    let match = false;
-
-    search = softenString(search);
-
-    match = match || softenString(lemma.original).includes(search);
-    match = match || softenString(lemma.transliteration).includes(search);
-    match = match || softenString(lemma.translation).includes(search);
-
-    for (let meaning of lemma.meanings) {
-      match = match || softenString(meaning).includes(search);
-    }
-    for (let variant of lemma.variants) {
-      match = match || softenString(variant).includes(search);
-    }
-
-    return match;
-  });
-
-  return lemmataFiltered;
-};
 
 export function searchLemma(lemma, search) {
   let match = false;
@@ -69,12 +56,11 @@ export function searchLemma(lemma, search) {
   match = match || softenString(lemma.original).includes(search);
   match = match || softenString(lemma.transliteration).toLowerCase().includes(search);
   match = match || softenString(lemma.translation).includes(search);
+  match = match || softenString(lemma.primary_meaning).includes(search);
+  match = match || softenString(lemma.literal_translation2).includes(search);
   
   for (let meaning of lemma.meanings) {
     match = match || softenString(meaning).includes(search);
-  }
-  for (let variant of lemma.variants) {
-    match = match || softenString(variant).includes(search);
   }
 
   return match;

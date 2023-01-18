@@ -123,10 +123,10 @@
   border-radius: 10px;
 }
 .basic {
-  height: 24vw;
+  height: 30vw;
 }
 .meanings, .variants {
-  height: 11vw;
+  height: 14vw;
 }
 .quotations, .crossLinks, .deleteLemma {
   width: 60vw;
