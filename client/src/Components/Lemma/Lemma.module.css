@@ -17,7 +17,7 @@
   padding: 0.5vw 1vw 0 0;
   vertical-align: top;
 }
-.input, .inputSearch, .inputMeaning, .inputTransliteration, .inputWide, .inputTransliterationWide, .inputKeyboard {
+.input, .inputSearch, .inputMeaning, .inputTransliteration, .inputWide, .inputTransliterationWide, .inputKeyboard, .textareaWide {
   font: 1.2vw book-antiqua, 'Book Antiqua', serif;
   display: table-cell;
   width: 11vw;
@@ -68,11 +68,14 @@
 .inputTransliteration, .inputTransliterationWide {
   font-style: italic;
 }
-.inputWide, .inputTransliterationWide, .inputDelete {
+.inputWide, .inputTransliterationWide, .inputDelete, .textareaWide {
   width: 48vw;
 }
 .inputMeaning {
   width: 22.5vw;
+}
+.textareaWide {
+  height: 6vw;
 }
 .inputDelete {
   font: 1.2vw book-antiqua, 'Book Antiqua', serif;

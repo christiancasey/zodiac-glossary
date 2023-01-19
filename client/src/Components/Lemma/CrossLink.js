@@ -66,10 +66,10 @@ const CrossLink = props => {
         <label
           className={styles.label}
           htmlFor={"crossLink_"+i}
-          data-tip="Add a link to another related lemma"
+          data-tip="A link to the related lemma.<br />Do not modify this value manually.<br />Use the selector function to fill."
           data-for={"crossLink_"+i}
         >
-          Linked Lemma
+          Linked ID
         </label>
         <ReactTooltip id={"crossLink_"+i} type="light" html={true} />
         <input 

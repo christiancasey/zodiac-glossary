@@ -337,6 +337,7 @@ const Lemma = props => {
     const newCrossLink = {
       id: uuidv4(),
       link: '',
+      lemmaId: lemma.lemmaId,
     }
     
     setLemma(prevLemma => {

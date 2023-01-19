@@ -517,8 +517,14 @@ const saveLemma = async (request, response) => {
   // Clean up crossLinks in DB
   // Check what's in there and delete any rows that are not in the lemma object anymore
   // ... because they have been deleted by the user on the front end
-  var crossLinkCleanUpResults = await waitQuery('SELECT * FROM cross_links WHERE lemma_id = $1', [lemma.lemmaId]);
+  // Make sure to select both incoming and outgoing links so deletion works for both
+  const sqlCrossLinks = `
+    SELECT * FROM cross_links WHERE lemma_id = $1
+    UNION
+    SELECT * FROM cross_links WHERE link = $1;`;
+  var crossLinkCleanUpResults = await waitQuery(sqlCrossLinks, [lemma.lemmaId]);
   let crossLinkIds = lemma.crossLinks.map(crossLink => crossLink.id);
+  console.log(crossLinkIds);
   for (crossLink of crossLinkCleanUpResults.rows) {
     if (!crossLinkIds.includes(crossLink.cross_link_id)) {
       pool.query('DELETE FROM cross_links WHERE cross_link_id = $1', [crossLink.cross_link_id], (error, results) => {

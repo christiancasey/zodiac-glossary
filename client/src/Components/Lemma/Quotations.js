@@ -12,13 +12,13 @@ const Quotations = props => {
   return (
     <div className={styles.quotations}>
       <h3>Quotations</h3>
-      {props.quotations.map((quotation,i) => {
+      {props.quotations.map((quotation, quotationIndex) => {
         return (
-          <Quotation 
+          <Quotation
             key={quotation.id}
             language={props.language}
             quotation={quotation} 
-            i={i} 
+            quotationIndex={quotationIndex} 
             meanings={props.meanings}
             updateQuotation={props.updateQuotation}
             deleteQuotation={props.deleteQuotation}

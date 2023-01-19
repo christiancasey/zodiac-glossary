@@ -9,19 +9,19 @@ import { getQuotationFields, getQuotationFromSource } from "../../Data/autocompl
 import styles from './Lemma.module.css';
 
 const Quotation = props => {
-  const i = props.i;
-  let [quotation, setQuotation] = React.useState(props.quotation);
-  let [meaningValue, setMeaningValue] = React.useState(getMeaning(props.quotation.meaning_id));
+  const quotationIndex = props.quotationIndex;
+  const quotation = props.quotation;
+  const [meaningValue, setMeaningValue] = React.useState(getMeaning(props.quotation.meaning_id));
   const {user} = React.useContext(UserContext);
   
   const [style, setStyle] = React.useState({display: 'none'});
 
-  let [quotationAutofill, setQuotationAutofill] = React.useState(props.quotation);
+  const [quotationAutofill, setQuotationAutofill] = React.useState(props.quotation);
 
-  let [sourceAutocomplete, setSourceAutocomplete] = React.useState([]);
-  let [genreAutocomplete, setGenreAutocomplete] = React.useState([]);
-  let [provenanceAutocomplete, setProvenanceAutocomplete] = React.useState([]);
-  let [publicationAutocomplete, setPublicationAutocomplete] = React.useState([]);
+  const [sourceAutocomplete, setSourceAutocomplete] = React.useState([]);
+  const [genreAutocomplete, setGenreAutocomplete] = React.useState([]);
+  const [provenanceAutocomplete, setProvenanceAutocomplete] = React.useState([]);
+  const [publicationAutocomplete, setPublicationAutocomplete] = React.useState([]);
 
   React.useEffect(() => {
     getQuotationFields(setSourceAutocomplete, 'source');
@@ -65,13 +65,10 @@ const Quotation = props => {
   React.useEffect(() => {
     if (quotationAutofill) {
       // Need to do it this way so that fields are only updated when they're empty
-      let newQuotation = quotation;
-      newQuotation.genre = (quotation.genre ? quotation.genre : quotationAutofill.genre);
-      newQuotation.provenance = (quotation.provenance ? quotation.provenance : quotationAutofill.provenance);
-      newQuotation.date = (quotation.date ? quotation.date : quotationAutofill.date);
-      newQuotation.publication = (quotation.publication ? quotation.publication : quotationAutofill.publication);
-      newQuotation.link = (quotation.link ? quotation.link : quotationAutofill.link);
-      setQuotation(newQuotation);
+      const fields = [ 'genre', 'provenance', 'date', 'publication', 'link' ];
+      for (let field of fields)
+        if (!quotation[field])
+          props.updateQuotation(field, quotationAutofill[field], quotation.id);
     }
   }, [quotationAutofill]);
   
@@ -79,7 +76,7 @@ const Quotation = props => {
   if (!user.token) {
     return (
       <div className={styles.quotationsList}>
-        <h4>{i+1}</h4>
+        <h4>{quotationIndex+1}</h4>
         <div className={styles.row}>
           <div className={styles.label}>Original</div>
           <div className={styles.label}>{quotation.original}</div>
@@ -132,7 +129,7 @@ const Quotation = props => {
         setStyle({display: 'none'});
       }}
     >
-      <h4>{i+1}</h4>
+      <h4>{quotationIndex+1}</h4>
       
       <div className={styles.row}>
         <label
@@ -145,7 +142,7 @@ const Quotation = props => {
         </label>
         <ReactTooltip id={"phonetic_"+quotation.id} type="light" html={true} />
         <textarea
-          className={styles.inputWide}
+          className={styles.textareaWide}
           style={{fontStyle: (props.language === "akkadian" || 'italic')}}
           name={"transliteration_"+quotation.id}
           placeholder={props.language === "akkadian" ? 'normalized' : 'transliteration'}
@@ -164,7 +161,7 @@ const Quotation = props => {
         </label>
         <ReactTooltip id={"original_"+quotation.id} type="light" html={true} />
         <textarea
-          className={styles.inputWide}
+          className={styles.textareaWide}
           name={"original_"+quotation.id}
           placeholder={props.language === "akkadian" ? 'transliteration' : 'original'}
           value={quotation.original}
@@ -174,7 +171,7 @@ const Quotation = props => {
       <div className={styles.row}>
         <label className={styles.label} htmlFor={"translation_"+quotation.id}>Translation</label>
         <textarea
-          className={styles.inputWide}
+          className={styles.textareaWide}
           name={"translation_"+quotation.id}
           placeholder="original"
           value={quotation.translation}
@@ -308,7 +305,10 @@ const Quotation = props => {
         </datalist>
       </div>
       <div className={styles.row}>
-        <label className={styles.label} htmlFor={"link_"+quotation.id}>Link</label>
+        <label className={styles.label} htmlFor={"link_"+quotation.id}>
+          Link &nbsp;
+          {(quotation.link ? (<a href={quotation.link} target="_blank" rel="noopener noreferrer"><IoIosOpen /></a>) : '')}
+        </label>
         <input
           className={styles.inputWide}
           type="text"

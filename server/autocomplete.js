@@ -47,16 +47,35 @@ const quotationSource = (request, response) => {
   });
 };
 
+const findLongestQuotation = quotations => {
+  const lenArray = quotations.map(quotation => 
+    (quotation.genre + quotation.provenance + quotation.date + quotation.link).length
+  );
+  const maxIndex = lenArray.indexOf(Math.max(...lenArray));
+  return quotations[maxIndex];
+};
+
 const quotationAutofillFromSource = (request, response) => {
   const source = request.query.source;
-  const sql =  `SELECT * FROM quotations WHERE source = $1 LIMIT 1;`;
+  const sql =  `SELECT * FROM quotations WHERE source = $1;`;
   pool.query(sql, [source], (error, results) => {
     if (error) {
       console.log(error);
       response.status(500).json([]);
     } else {
-      if (results.rows) {
-        response.status(200).json(results.rows[0]);
+      let quotations = results.rows;
+
+      console.log(quotations);
+
+      if (quotations.length > 1)
+        quotations = findLongestQuotation(quotations);
+      else if (quotations.length === 1)
+        quotations = quotations[0];
+      else
+        quotations = null;
+
+      if (quotations) {
+        response.status(200).json(quotations);
       } else {
         response.status(400).json(null);
       }
