@@ -100,11 +100,11 @@ const getPartsOfSpeech = (request, response) => {
 const getLemmataList = async (request, response) => {
   const token = request.query.token;
   let sql = `
-    SELECT lemma_id, published, original, translation, primary_meaning, transliteration, literal_translation2, languages.value AS language, m.value as meaning
+    SELECT lemma_id, published, original, translation, primary_meaning, transliteration, literal_translation2, languages.value AS language, m.value, m.category
     FROM lemmata as l
     LEFT JOIN languages USING (language_id) 
     LEFT JOIN partsofspeech USING (partofspeech_id)
-    JOIN meanings as m USING (lemma_id);
+    LEFT JOIN meanings as m USING (lemma_id);
   `;
 
   // If no user logged in, show only published lemmata
@@ -124,10 +124,19 @@ const getLemmataList = async (request, response) => {
 
     const currentLemma = lemmata.find(lemma => lemma.lemmaId === lemmataMeaning.lemmaId);
     if (currentLemma) {
-      currentLemma.meanings.push(lemmataMeaning.meaning)
+      currentLemma.meanings.push({
+        value: lemmataMeaning.value,
+        category: lemmataMeaning.category
+      });
     } else {
-      lemmataMeaning.meanings = [lemmataMeaning.meaning];
-      delete lemmataMeaning.meaning;
+      if (lemmataMeaning.value) {
+        lemmataMeaning.meanings = [{
+          value: lemmataMeaning.value,
+          category: lemmataMeaning.category
+        }];
+      } else {
+        lemmataMeaning.meanings = [];
+      }
       lemmata.push(lemmataMeaning);
     }
   }
@@ -285,21 +294,23 @@ const saveLemma = async (request, response) => {
 		    language_id = (SELECT language_id FROM languages WHERE value = $7),
         primary_meaning = $8,
         editor = $9,
-        literal_translation2 = $10
+        literal_translation2 = $10,
+        last_edit = (to_timestamp($11 / 1000.0))
     WHERE lemma_id = $1;
     `;
 
     const values = [
       lemma.lemmaId, 
       lemma.published, 
-      lemma.original, 
-      lemma.translation, 
-      lemma.transliteration,
+      lemma.original.trim(), 
+      lemma.translation.trim(), 
+      lemma.transliteration.trim(),
       lemma.partOfSpeech,
       lemma.language,
-      lemma.primary_meaning,
-      lemma.editor,
-      lemma.literal_translation2,
+      lemma.primary_meaning.trim(),
+      lemma.editor.trim(),
+      lemma.literal_translation2.trim(),
+      Date.now(),
     ];
 
   pool.query(sqlLemma, values, (error, results) => {
@@ -325,8 +336,8 @@ const saveLemma = async (request, response) => {
 
     const values = [
       lemma.lemmaId,
-      meaning.value,
-      meaning.category,
+      meaning.value.trim(),
+      meaning.category.trim(),
       isNaN(parseInt(meaning.id)) ? 0 : parseInt(meaning.id),
     ];
 
@@ -373,9 +384,9 @@ const saveLemma = async (request, response) => {
 
     const values = [
       lemma.lemmaId,
-      variant.original,
-      variant.transliteration,
-      variant.comment,
+      variant.original.trim(),
+      variant.transliteration.trim(),
+      variant.comment.trim(),
       isNaN(parseInt(variant.id)) ? 0 : parseInt(variant.id),
     ];
 
@@ -415,14 +426,15 @@ const saveLemma = async (request, response) => {
         provenance = $8,
         date = $9,
         publication = $10,
-        link = $11,
-        meaning_id = $12
-      WHERE lemma_id = $1 AND quotation_id = $13
+        page = $11,
+        link = $12,
+        meaning_id = $13
+      WHERE lemma_id = $1 AND quotation_id = $14
     RETURNING *;
   `;
   const sqlQuotationsInsert = `
-    INSERT INTO quotations (lemma_id, original, transliteration, translation, source, line, genre, provenance, date, publication, link, meaning_id)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+    INSERT INTO quotations (lemma_id, original, transliteration, translation, source, line, genre, provenance, date, publication, page, link, meaning_id)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
     RETURNING quotation_id;
   `;
 
@@ -430,27 +442,32 @@ const saveLemma = async (request, response) => {
 
     const values = [
       lemma.lemmaId,
-      quotation.original,
-      quotation.transliteration,
-      quotation.translation,
-      quotation.source,
-      quotation.line,
-      quotation.genre,
-      quotation.provenance,
-      quotation.date,
-      quotation.publication,
-      quotation.link,
-      quotation.meaning_id,
+      quotation.original.trim(),
+      quotation.transliteration.trim(),
+      quotation.translation.trim(),
+      quotation.source.trim(),
+      quotation.line.trim(),
+      quotation.genre.trim(),
+      quotation.provenance.trim(),
+      quotation.date.trim(),
+      quotation.publication.trim(),
+      (!quotation.page ? '' : quotation.page.trim()),
+      quotation.link.trim(),
+      (isNaN(parseInt(quotation.meaning_id)) || !quotation.meaning_id) ? 0 : parseInt(quotation.meaning_id),
       isNaN(parseInt(quotation.id)) ? 0 : parseInt(quotation.id),
     ];
 
-    var quotationUpdateResults = await waitQuery(sqlQuotationsUpdate, values);
+    try {
+      var quotationUpdateResults = await waitQuery(sqlQuotationsUpdate, values);
 
-    // If the quotation is not in the DB, add it
-    // Reset the id of the lemma object with the new auto value from the DB
-    if (!quotationUpdateResults.rows.length) {
-      var results = await waitQuery(sqlQuotationsInsert, values.slice(0,-1));
-      quotation.id = results.rows[0].quotation_id;
+      // If the quotation is not in the DB, add it
+      // Reset the id of the lemma object with the new auto value from the DB
+      if (!quotationUpdateResults.rows.length) {
+        var results = await waitQuery(sqlQuotationsInsert, values.slice(0,-1));
+        quotation.id = results.rows[0].quotation_id;
+      }
+    } catch (error) {
+      console.log('Error saving quotation', error);
     }
   }
 
@@ -524,7 +541,6 @@ const saveLemma = async (request, response) => {
     SELECT * FROM cross_links WHERE link = $1;`;
   var crossLinkCleanUpResults = await waitQuery(sqlCrossLinks, [lemma.lemmaId]);
   let crossLinkIds = lemma.crossLinks.map(crossLink => crossLink.id);
-  console.log(crossLinkIds);
   for (crossLink of crossLinkCleanUpResults.rows) {
     if (!crossLinkIds.includes(crossLink.cross_link_id)) {
       pool.query('DELETE FROM cross_links WHERE cross_link_id = $1', [crossLink.cross_link_id], (error, results) => {
@@ -552,8 +568,8 @@ const saveLemma = async (request, response) => {
     
     const values = [
       lemma.lemmaId,
-      externalLink.url,
-      externalLink.display,
+      externalLink.url.trim(),
+      externalLink.display.trim(),
       isNaN(parseInt(externalLink.id)) ? 0 : parseInt(externalLink.id),
     ];
 
@@ -593,7 +609,8 @@ const deleteLemma = (request, response) => {
     ];
 
   pool.query(sql, values, (error, results) => {
-    if (error) throw error;
+    if (error)
+      console.log(error);
   });
 
   response.status(202).json(request.query);

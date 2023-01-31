@@ -38,7 +38,7 @@ const quotationSource = (request, response) => {
   const sql = `SELECT ${field} FROM quotations WHERE ${field} <> '' GROUP BY ${field} ORDER BY ${field};`;
   pool.query(sql, (error, results) => {
     if (error) {
-      console.log(error);
+      console.error(error);
       response.status(500);
     } else {
       const list = results.rows.map(row => row[field]);
@@ -60,12 +60,10 @@ const quotationAutofillFromSource = (request, response) => {
   const sql =  `SELECT * FROM quotations WHERE source = $1;`;
   pool.query(sql, [source], (error, results) => {
     if (error) {
-      console.log(error);
+      console.error(error);
       response.status(500).json([]);
     } else {
       let quotations = results.rows;
-
-      console.log(quotations);
 
       if (quotations.length > 1)
         quotations = findLongestQuotation(quotations);

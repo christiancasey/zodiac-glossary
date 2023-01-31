@@ -60,7 +60,7 @@ export function searchLemma(lemma, search) {
   match = match || softenString(lemma.literal_translation2).includes(search);
   
   for (let meaning of lemma.meanings) {
-    match = match || softenString(meaning).includes(search);
+    match = match || softenString(meaning.value).includes(search);
   }
 
   return match;

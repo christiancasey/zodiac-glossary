@@ -240,6 +240,7 @@ const Lemma = props => {
       date: '',
       publication: '',
       link: '',
+      line: '',
     }
     
     setLemma(prevLemma => {

@@ -34,7 +34,6 @@ const Content = props => {
     setSidebarUpdate(uuidv4());
   };
   
-  
   return (
     <section style={{height: '80vh'}}>
     <div className={styles.content}>

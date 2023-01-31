@@ -75,7 +75,6 @@ const BasicInfo = props => {
           name="language"
           label="Language"
           value={lemma.language}
-          // options={[{id: 0, value: ''}, ...languageOptions]} // Old way of adding a blank space
           options={languageOptions}
           onChange={onChange} 
         />
@@ -83,7 +82,6 @@ const BasicInfo = props => {
           name="partOfSpeech"
           label="Part of Speech"
           value={lemma.partOfSpeech}
-          // options={[{id: 0, value: ''}, ...partOfSpeechOptions]} // Old way of adding a blank space
           options={partOfSpeechOptions}
           onChange={onChange} 
         />

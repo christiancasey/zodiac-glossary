@@ -24,7 +24,7 @@ const LemmataList = props => {
   const lemmataList = props.lemmataList;
   const setLemmataList = props.setLemmataList;
   
-  const [lemmataSortField, setLemmataSortField] = React.useState('primary_meaning');
+  const [lemmataSortField, setLemmataSortField] = React.useState('transliteration');
   
   // Forces a refresh of the list when a new lemma is added (and on load)
   // Uses a dummy lemma variable in content to detect saves and update the list
@@ -90,6 +90,7 @@ const LemmataList = props => {
             key={lemma.lemmaId}
           >
             <LemmataListItem lemma={lemma} />
+            {lemma.meanings.length > 0 &&
             <Collapsible 
               trigger={<MdExpandMore />}
               triggerWhenOpen={<MdExpandLess />}
@@ -99,13 +100,13 @@ const LemmataList = props => {
               <ul>
                 {lemma.meanings.map((meaning, key) => {
                   if (lemma.published) {
-                    return (<li key={key}>{meaning}</li>);
+                    return (<li key={key}>{meaning.value} ({meaning.category})</li>);
                   } else {
-                    return (<li key={key} style={{fontStyle: 'italic', color: '#ffea'}}>{meaning}</li>);
+                    return (<li key={key} style={{fontStyle: 'italic', color: '#ffea'}}>{meaning.value} ({meaning.category})</li>);
                   }
                 })}
               </ul>
-            </Collapsible>
+            </Collapsible>}
           </QueryNavLink>
       ))}
     </>

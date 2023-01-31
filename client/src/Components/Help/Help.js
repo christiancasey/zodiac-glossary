@@ -2,7 +2,17 @@ import React from 'react';
 
 import styles from './Help.module.css';
 
+import { getTodoList } from "../../Data/todo";
+
 const Help = props => {
+
+  const [todoList, setTodoList] = React.useState([]);
+
+  React.useEffect(() => {
+    getTodoList(setTodoList);
+  }, []);
+
+
   return (
     <div className={styles.content}>
       <div className={styles.container}>
@@ -64,19 +74,24 @@ const Help = props => {
           <li>
             We have established a stylesheet for citations in the Publication field.
             <ul>
-            <li>
-              <span style={{fontWeight: 'bold'}}>Journals: </span><br />
-              Rochberg, F., 1987. TCL 6 13: Mixed Traditions in Late Babylonian Astrology, Zeitschrift für Assyriologie 77: 207-228.
-            </li>
-            <li>
-              <span style={{fontWeight: 'bold'}}>Monographs: </span><br />
-              Ossendrijver, M., 2012. Babylonian Mathematical Astronomy: Procedure Texts. New York: Springer.
-            </li>
-            <li>
-              <span style={{fontWeight: 'bold'}}>Edited Volumes: </span><br />
-              Hunger, H. 2004. Stars, Cities, and Predictions. In: Studies in the History of the Exact Sciences in Honour of David Pingree, eds. Charles Burnett, Jan Hogendijk, Kim Plofker and Michio Yano. Leiden: Brill: 16–32
-            </li>
-          </ul>
+              <li>
+                <span style={{fontWeight: 'bold'}}>Journals: </span><br />
+                Rochberg, F., 1987. TCL 6 13: Mixed Traditions in Late Babylonian Astrology, Zeitschrift für Assyriologie 77: 207-228.
+              </li>
+              <li>
+                <span style={{fontWeight: 'bold'}}>Monographs: </span><br />
+                Ossendrijver, M., 2012. Babylonian Mathematical Astronomy: Procedure Texts. New York: Springer.
+              </li>
+              <li>
+                <span style={{fontWeight: 'bold'}}>Edited Volumes: </span><br />
+                Hunger, H. 2004. Stars, Cities, and Predictions. In: Studies in the History of the Exact Sciences in Honour of David Pingree, eds. Charles Burnett, Jan Hogendijk, Kim Plofker and Michio Yano. Leiden: Brill: 16–32
+              </li>
+            </ul>
+          </li>
+          <li>
+            Note that there is also a Page Number field.
+            Use this if the citation is from a specific page. 
+            Continue to use page numbers in the Publication field when they delineate the entire article, etc.
           </li>
         </ul>
 
@@ -84,26 +99,9 @@ const Help = props => {
         <h1>Todo</h1>
         <p>I've put a todo list here for myself and so that everyone can see what's still pending.</p>
         <ul>
-          <li>Change meaning selector in Quotation to work with a simple dropdown.</li>
-          <li>Fix problem where lemma always starts out as unsaved when selected.</li>
-          <li>Fix Crosslinks to show lemma data and keep lemma id in the background.</li>
-          <li>Rich text input for Akkadian tranliteration?</li>
-          <li>Microsign ontology? (Have to discuss this more. I don't get it.)</li>
-          <li className={styles.done}>Fix crosslink deletion so that they are deleted even when they're incoming.</li>
-          <li className={styles.done}>Fix problem where new Crosslinks won't save properly.</li>
-          <li className={styles.done}>Fix problem where typing in quotations stops working after saving.</li>
-          <li className={styles.done}>Make a way to link Quotations to Meanings.</li>
-          <li className={styles.done}>Add variants and meanings to search results.</li>
-          <li className={styles.done}>Add meanings to lemma list in sidebar with dropdown function.</li>
-          <li className={styles.done}>Add a dropdown for categories in Meanings.</li>
-          <li className={styles.done}>Autocomplete for publication in Quotations.</li>
-          <li className={styles.done}>Autocomplete for genre in Quotations.</li>
-          <li className={styles.done}>Make all crosslinks ambidirectional.</li>
-          <li className={styles.done}>Add letters to Akkadian keyboard: t with dot, u with carrot.</li>
-          <li className={styles.done}>Search includes leading spaces for matching things like "Month I"</li>
-          <li className={styles.done}>Split Source into Text and Line Number</li>
-          <li className={styles.done}>Autocomplete for Provencance in Quotations</li>
-          <li className={styles.done}>Autocomplete other fields on selection of Source: Date, Provenance, etc.</li>
+          {todoList.map(todo => (
+            <li className={(todo.complete && styles.done)}> {todo.item}</li>
+          ))}
         </ul>
       </div>
     </div>

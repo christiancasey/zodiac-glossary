@@ -11,7 +11,6 @@ import styles from './Lemma.module.css';
 const Quotation = props => {
   const quotationIndex = props.quotationIndex;
   const quotation = props.quotation;
-  const [meaningValue, setMeaningValue] = React.useState(getMeaning(props.quotation.meaning_id));
   const {user} = React.useContext(UserContext);
   
   const [style, setStyle] = React.useState({display: 'none'});
@@ -42,27 +41,13 @@ const Quotation = props => {
     }
   };
 
-  // Meaning link
-  function getMeaning(id) {
-    if (!id)
-      return '';
-    
-    let meaningMatch = props.meanings.find(meaning => meaning.id === id);
-    if (meaningMatch)
-      return meaningMatch.value + ' (' + meaningMatch.category + ')';
-    return '';
-  }
-
-  const updateMeaning = e => {
-    setMeaningValue(e.target.value);
-    const parts = e.target.value.split(/[()]/);
-    let meaningMatch = props.meanings.find(meaning => meaning.value === parts[0].trim() && meaning.category === parts[1].trim());
-    if (meaningMatch) {
-      props.updateQuotation("meaning_id", meaningMatch.id, quotation.id);
-    }
-  };
-
   React.useEffect(() => {
+    
+    // Stop this from running when the component loads
+    // Otherwise it sets the changed state of the lemma to true, even though it isn't
+    if (quotationAutofill === props.quotation)
+      return;
+    
     if (quotationAutofill) {
       // Need to do it this way so that fields are only updated when they're empty
       const fields = [ 'genre', 'provenance', 'date', 'publication', 'link' ];
@@ -180,32 +165,21 @@ const Quotation = props => {
       </div>
       <div className={styles.row}>
         <label className={styles.label} htmlFor={"meaning_"+quotation.id}>Meaning</label>
-        <input
-          type="text"
+        <select
           className={styles.inputWide}
           name={"meaning_"+quotation.id}
-          placeholder="meaning"
-          value={meaningValue}
-          onChange={e => updateMeaning(e)}
-          list="meanings"
-        />
-        <datalist id="meanings">
+          value={(quotation.meaning_id ? quotation.meaning_id : 0)}
+          // onChange={e => updateMeaning(e)}
+          onChange={e => props.updateQuotation("meaning_id", e.target.value, quotation.id)}
+        >
+          <option key={'empty'} value={0}></option>
           {props.meanings.map((item, key) => (
-            <option key={key} value={item.value + ' (' + item.category + ')'} />
+            <option key={key} value={item.id}>
+              {item.value + (item.category ? ' (' + item.category + ')' : '')}
+            </option>
           ))}
-        </datalist>
+        </select>
       </div>
-      {/* Debug: show meaning_id value when the user enters a new meaning in the above input  */}
-      {/* <div className={styles.row}>
-        <label className={styles.label} htmlFor={"meaning_id_"+quotation.id}>Meaning ID</label>
-        <input
-          type="text"
-          className={styles.inputWide}
-          name={"meaning_id_"+quotation.id}
-          placeholder="meaning_id"
-          defaultValue={quotation.meaning_id}
-        />
-      </div> */}
       <div className={styles.row}>
         <label className={styles.label} htmlFor={"source_"+quotation.id}>Source</label>
         <input
@@ -303,6 +277,19 @@ const Quotation = props => {
             <option key={key} value={item} />
           ))}
         </datalist>
+      </div>
+      <div className={styles.row}>
+        <label className={styles.label} htmlFor={"page_"+quotation.id}>
+          Page Number
+        </label>
+        <input
+          className={styles.inputWide}
+          type="text"
+          name={"page_"+quotation.id}
+          placeholder="page number"
+          value={quotation.page ? quotation.page : ''}
+          onChange={e => props.updateQuotation("page", e.target.value, quotation.id)} 
+        />
       </div>
       <div className={styles.row}>
         <label className={styles.label} htmlFor={"link_"+quotation.id}>

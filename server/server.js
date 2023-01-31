@@ -5,6 +5,7 @@ const port = process.env.PORT || 3001;
 
 const db = require('./queries');
 const ac = require('./autocomplete');
+const td = require('./todo');
 
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 app.use(express.json());
@@ -45,6 +46,9 @@ app.get('/api/meanings', db.getMeanings); // Unused endpoint, probably not neede
 app.get('/api/autocomplete/meanings', ac.meaningCategories);
 app.get('/api/autocomplete/quotations', ac.quotationSource);
 app.get('/api/autocomplete/quotation_from_source', ac.quotationAutofillFromSource);
+
+// Todo List
+app.get('/api/todo/list', td.getTodoList);
 
 app.get('*', (request, response) => {
   response.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
