@@ -101,6 +101,16 @@
 
 .lemmaListEntry {
   text-decoration: none;
+  color: #FFEA;
+  display: block;
+  margin: 0.5rem 0;
+}
+.lemmaListEntryActive {
+  text-decoration: none;
+  color: #FFEF;
+  filter: drop-shadow(0 0 2px #FFE6);
+  display: block;
+  margin: 0.5rem 0;
 }
 
 
@@ -243,7 +253,7 @@
 }
 
 .lemmaList {
-  color: #ffef;
+  color: #ffea;
   background: #fff0;
   border: none;
   padding: 0.2vw;

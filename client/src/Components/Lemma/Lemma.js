@@ -30,6 +30,13 @@ const Lemma = props => {
   let [updateLemmataList, changed, setChanged, setContentLemma, lemmataList, meaningsCategories] = useOutletContext(); 
   
   React.useEffect(() => {
+    // Scroll lemma to top on load
+    const element = document.getElementById('lemma-component');
+    if (element) {
+      // 👇 Will scroll smoothly to the top of the next section
+      element.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     var lemmaId = parseInt(params.lemmaId);
 
     // On refresh or load from URL, lemmaId in the route gets changed to null by React Router
@@ -384,7 +391,7 @@ const Lemma = props => {
   
   // Full lemma display
   return (
-    <main className={styles.lemma}>
+    <main className={styles.lemma} id="lemma-component">
       <h1>
         {changed ? <i>Lemma (unsaved)</i> : 'Lemma'}
         {(user && user.token) ? (
@@ -393,7 +400,7 @@ const Lemma = props => {
       </h1>
       
       <fieldset disabled={user.token===null} style={{border: 'none', margin: 0, padding: 0}}>
-        
+
         <BasicInfo lemma={lemma} onChange={onChange} />
         <Meanings
           meanings={lemma.meanings}

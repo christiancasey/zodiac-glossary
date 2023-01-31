@@ -1,6 +1,5 @@
 export function getTodoList(setTodoList) {
   let url = '/api/todo/list';
-
   fetch(url, {
     method: "GET",
   })

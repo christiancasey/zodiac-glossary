@@ -9,7 +9,7 @@ import UserContext from '../../Contexts/UserContext';
 import { getLemmataList } from '../../Data/api';
 import { searchLemma } from '../../Functions/searchLemmata';
 
-import styles from '../Lemma.module.css';
+import styles from '../Lemma/Lemma.module.css';
 
 const LemmataList = props => {
   const {user} = React.useContext(UserContext);
@@ -82,10 +82,7 @@ const LemmataList = props => {
       {lemmataFiltered
         .map(lemma => (
           <QueryNavLink 
-            className={styles.lemmaListEntry} 
-            style={({ isActive }) => {
-                return { display: "block", margin: "1rem 0", filter: isActive ? "drop-shadow(0 0 2px #ffe6)" : ""};
-              }}
+            className={({isActive}) => (isActive ? styles.lemmaListEntryActive : styles.lemmaListEntry)}
             to={lemma.lemmaId} 
             key={lemma.lemmaId}
           >
@@ -102,7 +99,7 @@ const LemmataList = props => {
                   if (lemma.published) {
                     return (<li key={key}>{meaning.value} ({meaning.category})</li>);
                   } else {
-                    return (<li key={key} style={{fontStyle: 'italic', color: '#ffea'}}>{meaning.value} ({meaning.category})</li>);
+                    return (<li key={key} style={{fontStyle: 'italic'}}>{meaning.value} ({meaning.category})</li>);
                   }
                 })}
               </ul>
@@ -117,7 +114,7 @@ const LemmataListItem = props => {
   const lemma = props.lemma;
   return (
     <>
-      {!lemma.published && (<span style={{fontStyle: 'italic', color: '#ffea'}}> – {lemma.transliteration} | {lemma.original} | {lemma.primary_meaning}</span>)}
+      {!lemma.published && (<span style={{fontStyle: 'italic'}}> – {lemma.transliteration} | {lemma.original} | {lemma.primary_meaning}</span>)}
       {lemma.published && (<>{lemma.transliteration} | {lemma.original} | {lemma.primary_meaning}</>)}
       &nbsp;&nbsp;
     </>

@@ -60,7 +60,7 @@ const Variant = props => {
           type="text"
           name={"original_"+variant.id}
           placeholder={props.language === "akkadian" ? 'transliteration' : 'original'}
-          value={variant.original}
+          value={(variant.original ? variant.original : '')}
           onChange={e => props.updateVariant("original", e.target.value, variant.id)} 
         />
         <input
@@ -68,7 +68,7 @@ const Variant = props => {
           type="text"
           name={"comment_"+variant.id}
           placeholder="comment"
-          value={variant.comment}
+          value={(variant.comment ? variant.comment : '')}
           onChange={e => props.updateVariant("comment", e.target.value, variant.id)} 
         />
       </>
