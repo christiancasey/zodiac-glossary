@@ -46,7 +46,7 @@ const ExternalLink = props => {
         <input
           className={styles.inputWide}
           name={"externalLink_URL_"+i}
-          placeholder="URL"
+          placeholder="URL to link to"
           value={props.externalLink.url}
           onChange={e => props.updateExternalLink('url', e.target.value, props.externalLink.id)} 
         />
@@ -64,7 +64,7 @@ const ExternalLink = props => {
         <input
           className={styles.inputWide}
           name={"externalLink_display_"+i}
-          placeholder="URL"
+          placeholder="Text to show in link"
           value={props.externalLink.display}
           onChange={e => props.updateExternalLink('display', e.target.value, props.externalLink.id)} 
         />

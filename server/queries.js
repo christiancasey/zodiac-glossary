@@ -1,4 +1,24 @@
-const pool = require('./pool');
+const Pool = require('pg').Pool;
+require('dotenv').config();
+
+var pool;
+if (process.env.LOCAL_DEV === "true") {
+  pool = new Pool({
+    host: process.env.DB_HOST_LOCAL,
+    database: process.env.DB_NAME,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    port: process.env.DB_PORT,
+  });
+} else {
+  pool = new Pool({
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    port: process.env.DB_PORT,
+  });
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // USER creation and authentication
@@ -80,7 +100,7 @@ const getPartsOfSpeech = (request, response) => {
 const getLemmataList = async (request, response) => {
   const token = request.query.token;
   let sql = `
-    SELECT lemma_id, published, original, translation, primary_meaning, transliteration, literal_translation2, languages.value AS language, m.value, m.category
+    SELECT lemma_id, editor, published, original, translation, primary_meaning, transliteration, literal_translation2, languages.value AS language, m.value, m.category
     FROM lemmata as l
     LEFT JOIN languages USING (language_id) 
     LEFT JOIN partsofspeech USING (partofspeech_id)
@@ -257,8 +277,9 @@ const getLemma = async (request, response) => {
   response.status(200).json(lemma);
 };
 
-const saveLemma = async (request, response) => {
-  const lemma = request.body;
+const saveLemma = async ({ body: lemma }, response) => {
+
+  // console.log(lemma);
 
   console.log('saveLemma in queries.js, Editor: ', lemma.editor, ' Lemma ID: ', lemma.lemmaId);
 
@@ -282,14 +303,14 @@ const saveLemma = async (request, response) => {
     const values = [
       lemma.lemmaId, 
       lemma.published, 
-      lemma.original.trim(), 
-      lemma.translation.trim(), 
-      lemma.transliteration.trim(),
+      (lemma.original ? lemma.original.trim() : ''),
+      (lemma.translation ? lemma.translation.trim() : ''),
+      (lemma.transliteration ? lemma.transliteration.trim() : ''),
       lemma.partOfSpeech,
       lemma.language,
-      lemma.primary_meaning.trim(),
-      lemma.editor.trim(),
-      lemma.literal_translation2.trim(),
+      (lemma.primary_meaning ? lemma.primary_meaning.trim() : ''),
+      (lemma.editor ? lemma.editor.trim() : ''),
+      (lemma.literal_translation2 ? lemma.literal_translation2.trim() : ''),
       Date.now(),
     ];
 
@@ -302,13 +323,14 @@ const saveLemma = async (request, response) => {
     UPDATE meanings
       SET
         value = $2,
-        category = $3
-      WHERE lemma_id = $1 AND meaning_id = $4
+        category = $3,
+        comment = $4
+      WHERE lemma_id = $1 AND meaning_id = $5
     RETURNING *;
   `;
   const sqlMeaningsInsert = `
-    INSERT INTO meanings (lemma_id, value, category)
-      VALUES ($1, $2, $3)
+    INSERT INTO meanings (lemma_id, value, category, comment)
+      VALUES ($1, $2, $3, $4)
     RETURNING meaning_id;
   `;
 
@@ -316,18 +338,23 @@ const saveLemma = async (request, response) => {
 
     const values = [
       lemma.lemmaId,
-      meaning.value.trim(),
-      meaning.category.trim(),
+      (meaning.value ? meaning.value.trim() : ''),
+      (meaning.category ? meaning.category.trim() : ''),
+      (meaning.comment ? meaning.comment.trim() : ''),
       isNaN(parseInt(meaning.id)) ? 0 : parseInt(meaning.id),
     ];
 
-    var meaningUpdateResults = await waitQuery(sqlMeaningsUpdate, values);
+    try {
+      var meaningUpdateResults = await waitQuery(sqlMeaningsUpdate, values);
 
-    // If the meaning is not in the DB, add it
-    // Reset the id of the lemma object with the new auto value from the DB
-    if (!meaningUpdateResults.rows.length) {
-      var results = await waitQuery(sqlMeaningsInsert, values.slice(0,-1));
-      meaning.id = results.rows[0].meaning_id;
+      // If the meaning is not in the DB, add it
+      // Reset the id of the lemma object with the new auto value from the DB
+      if (!meaningUpdateResults.rows.length) {
+        var results = await waitQuery(sqlMeaningsInsert, values.slice(0,-1));
+        meaning.id = results.rows[0].meaning_id;
+      }
+    } catch (error) {
+      console.error('Error saving meaning', error, 'lemma ID', lemma.lemmaId);
     }
   }
 
@@ -364,19 +391,23 @@ const saveLemma = async (request, response) => {
 
     const values = [
       lemma.lemmaId,
-      variant.original.trim(),
-      variant.transliteration.trim(),
-      variant.comment.trim(),
+      (variant.original ? variant.original.trim() : ''),
+      (variant.transliteration ? variant.transliteration.trim() : ''),
+      (variant.comment ? variant.comment.trim() : ''),
       isNaN(parseInt(variant.id)) ? 0 : parseInt(variant.id),
     ];
 
-    var variantUpdateResults = await waitQuery(sqlVariantsUpdate, values);
+    try {
+      var variantUpdateResults = await waitQuery(sqlVariantsUpdate, values);
 
-    // If the variant is not in the DB, add it
-    // Reset the id of the lemma object with the new auto value from the DB
-    if (!variantUpdateResults.rows.length) {
-      var results = await waitQuery(sqlVariantsInsert, values.slice(0,-1));
-      variant.id = results.rows[0].variant_id;
+      // If the variant is not in the DB, add it
+      // Reset the id of the lemma object with the new auto value from the DB
+      if (!variantUpdateResults.rows.length) {
+        var results = await waitQuery(sqlVariantsInsert, values.slice(0,-1));
+        variant.id = results.rows[0].variant_id;
+      }
+    } catch (error) {
+      console.error('Error saving variant', error, 'lemma ID', lemma.lemmaId);
     }
   }
 
@@ -422,17 +453,17 @@ const saveLemma = async (request, response) => {
 
     const values = [
       lemma.lemmaId,
-      quotation.original.trim(),
-      quotation.transliteration.trim(),
-      quotation.translation.trim(),
-      quotation.source.trim(),
-      quotation.line.trim(),
-      quotation.genre.trim(),
-      quotation.provenance.trim(),
-      quotation.date.trim(),
-      quotation.publication.trim(),
-      (!quotation.page ? '' : quotation.page.trim()),
-      quotation.link.trim(),
+      (quotation.original ? quotation.original.trim() : ''),
+      (quotation.transliteration ? quotation.transliteration.trim() : ''),
+      (quotation.translation ? quotation.translation.trim() : ''),
+      (quotation.source ? quotation.source.trim() : ''),
+      (quotation.line ? quotation.line.trim() : ''),
+      (quotation.genre ? quotation.genre.trim() : ''),
+      (quotation.provenance ? quotation.provenance.trim() : ''),
+      (quotation.date ? quotation.date.trim() : ''),
+      (quotation.publication ? quotation.publication.trim() : ''),
+      (quotation.page ? quotation.page.trim() : ''),
+      (quotation.link ? quotation.link.trim() : ''),
       (isNaN(parseInt(quotation.meaning_id)) || !quotation.meaning_id) ? 0 : parseInt(quotation.meaning_id),
       isNaN(parseInt(quotation.id)) ? 0 : parseInt(quotation.id),
     ];
@@ -447,7 +478,7 @@ const saveLemma = async (request, response) => {
         quotation.id = results.rows[0].quotation_id;
       }
     } catch (error) {
-      console.log('Error saving quotation', error);
+      console.error('Error saving quotation', error, 'lemma ID', lemma.lemmaId);
     }
   }
 
@@ -501,13 +532,17 @@ const saveLemma = async (request, response) => {
       isNaN(parseInt(crossLink.id)) ? 0 : parseInt(crossLink.id),
     ];
 
-    var crossLinkUpdateResults = await waitQuery(sqlCrossLinksUpdate, values);
+    try {
+      var crossLinkUpdateResults = await waitQuery(sqlCrossLinksUpdate, values);
 
-    // If the crossLink is not in the DB, add it
-    // Reset the id of the lemma object with the new auto value from the DB
-    if (!crossLinkUpdateResults.rows.length) {
-      var results = await waitQuery(sqlCrossLinksInsert, values.slice(0,-1));
-      crossLink.id = results.rows[0].cross_link_id;
+      // If the crossLink is not in the DB, add it
+      // Reset the id of the lemma object with the new auto value from the DB
+      if (!crossLinkUpdateResults.rows.length) {
+        var results = await waitQuery(sqlCrossLinksInsert, values.slice(0,-1));
+        crossLink.id = results.rows[0].cross_link_id;
+      }
+    } catch (error) {
+      console.error('Error saving cross link', error, 'lemma ID', lemma.lemmaId);
     }
   }
 
@@ -548,8 +583,8 @@ const saveLemma = async (request, response) => {
     
     const values = [
       lemma.lemmaId,
-      externalLink.url.trim(),
-      externalLink.display.trim(),
+      (externalLink.url ? externalLink.url.trim() : ''),
+      (externalLink.display ? externalLink.display.trim() : ''),
       isNaN(parseInt(externalLink.id)) ? 0 : parseInt(externalLink.id),
     ];
 

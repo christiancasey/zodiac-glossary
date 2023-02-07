@@ -10,7 +10,7 @@
   font-size: inherit;
   display: table-row;
   margin: 0;
-  /* margin-top: 5px; */
+  padding: 0 10px 0 0;
 }
 .label {
   display: table-cell;

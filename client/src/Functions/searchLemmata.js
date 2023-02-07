@@ -50,9 +50,12 @@ const softenString = string => {
 
 export function searchLemma(lemma, search) {
   let match = false;
-  
+
+  console.log(lemma);
+
   search = softenString(search);
 
+  match = match || softenString('editor:' + lemma.editor).includes(search);
   match = match || softenString(lemma.original).includes(search);
   match = match || softenString(lemma.transliteration).toLowerCase().includes(search);
   match = match || softenString(lemma.translation).includes(search);
@@ -61,6 +64,7 @@ export function searchLemma(lemma, search) {
   
   for (let meaning of lemma.meanings) {
     match = match || softenString(meaning.value).includes(search);
+    match = match || softenString(meaning.category).includes(search);
   }
 
   return match;

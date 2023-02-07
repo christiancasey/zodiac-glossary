@@ -94,10 +94,16 @@ const Lemma = props => {
   };
   
   const saveLemma = () => {
-    // updateLemmataList(); // Commenting this out prevents multiple API calls –CDC 2023-01-17
+    updateLemmataList();
     setChanged(false);
     saveLemmaToDB(setLemma, lemma);
     setContentLemma(lemma);
+    
+    // Remind users to fill the editor field if it is blank
+    if (!lemma.editor) {
+      alert('Please add your name to the editor field and save again.');
+      setChanged(true);
+    }
   };
   
   const deleteLemma = () => {
@@ -144,6 +150,8 @@ const Lemma = props => {
     const newMeaning = {
       id: uuidv4(),
       value: '',
+      category: '',
+      comment: '',
     };
     
     setLemma(prevLemma => {
@@ -192,6 +200,7 @@ const Lemma = props => {
       id: uuidv4(),
       original: '',
       transliteration: '', 
+      comment: '',
     };
     
     setLemma(prevLemma => {
@@ -248,6 +257,8 @@ const Lemma = props => {
       publication: '',
       link: '',
       line: '',
+      page: '',
+      meaning_id: 0,
     }
     
     setLemma(prevLemma => {

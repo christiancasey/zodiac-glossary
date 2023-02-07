@@ -15,7 +15,7 @@ const Meanings = props => {
       <h3>Meanings</h3>
       {meanings.map((meaning, i) => {
         return (
-          <Meaning 
+          <Meaning
             key={meaning.id}
             meaning={meaning}
             i={i}

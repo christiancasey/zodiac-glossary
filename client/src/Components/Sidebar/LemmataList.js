@@ -87,23 +87,6 @@ const LemmataList = props => {
             key={lemma.lemmaId}
           >
             <LemmataListItem lemma={lemma} />
-            {lemma.meanings.length > 0 &&
-            <Collapsible 
-              trigger={<MdExpandMore />}
-              triggerWhenOpen={<MdExpandLess />}
-              contentContainerTagName="span"
-              transitionTime={200}
-            >
-              <ul>
-                {lemma.meanings.map((meaning, key) => {
-                  if (lemma.published) {
-                    return (<li key={key}>{meaning.value} ({meaning.category})</li>);
-                  } else {
-                    return (<li key={key} style={{fontStyle: 'italic'}}>{meaning.value} ({meaning.category})</li>);
-                  }
-                })}
-              </ul>
-            </Collapsible>}
           </QueryNavLink>
       ))}
     </>
@@ -117,6 +100,24 @@ const LemmataListItem = props => {
       {!lemma.published && (<span style={{fontStyle: 'italic'}}> – {lemma.transliteration} | {lemma.original} | {lemma.primary_meaning}</span>)}
       {lemma.published && (<>{lemma.transliteration} | {lemma.original} | {lemma.primary_meaning}</>)}
       &nbsp;&nbsp;
+      {lemma.meanings.length > 0 &&
+        <Collapsible 
+          trigger={<MdExpandMore />}
+          triggerWhenOpen={<MdExpandLess />}
+          contentContainerTagName="span"
+          transitionTime={200}
+        >
+          <ul>
+            {lemma.meanings.map((meaning, key) => {
+              if (lemma.published) {
+                return (<li key={key}>{meaning.value}{meaning.category ? ' (' + meaning.category + ')' : ''}</li>);
+              } else {
+                return (<li key={key} style={{fontStyle: 'italic'}}>{meaning.value}{meaning.category ? ' (' + meaning.category + ')' : ''}</li>);
+              }
+            })}
+          </ul>
+        </Collapsible>
+      }
     </>
   )
 };
