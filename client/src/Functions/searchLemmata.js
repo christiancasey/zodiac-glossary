@@ -55,7 +55,9 @@ export function searchLemma(lemma, search) {
 
   search = softenString(search);
 
+  // Secret feature, allows to filter by editor – CDC 2023-02-08
   match = match || softenString('editor:' + lemma.editor).includes(search);
+
   match = match || softenString(lemma.original).includes(search);
   match = match || softenString(lemma.transliteration).toLowerCase().includes(search);
   match = match || softenString(lemma.translation).includes(search);
