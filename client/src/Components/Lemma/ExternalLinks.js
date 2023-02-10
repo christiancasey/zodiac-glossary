@@ -36,8 +36,11 @@ const ExternalLinks = props => {
           <li><a target="_blank" rel="noopener noreferrer" href="https://www.perseus.tufts.edu/hopper/resolveform">
             Perseus Project
           </a></li>
-          <li><a target="_blank" rel="noopener noreferrer" href="http://aaew2.bbaw.de/tla/servlet/BwlSearch?u=guest&f=0&l=0&db=1">
-            Thesaurus Linguae Aegyptiae
+          {/* <li><a target="_blank" rel="noopener noreferrer" href="http://aaew2.bbaw.de/tla/servlet/BwlSearch?u=guest&f=0&l=0&db=1">
+            Thesaurus Linguae Aegyptiae (Old)
+          </a></li> */}
+          <li><a target="_blank" rel="noopener noreferrer" href="https://thesaurus-linguae-aegyptiae.de/search">
+            Thesaurus Linguae Aegyptiae (New)
           </a></li>
           <li><a target="_blank" rel="noopener noreferrer" href="https://www.dwl.aegyptologie.lmu.de/suche.php">
             Demotische Wortliste

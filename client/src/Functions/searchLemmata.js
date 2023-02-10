@@ -51,8 +51,6 @@ const softenString = string => {
 export function searchLemma(lemma, search) {
   let match = false;
 
-  console.log(lemma);
-
   search = softenString(search);
 
   // Secret feature, allows to filter by editor – CDC 2023-02-08

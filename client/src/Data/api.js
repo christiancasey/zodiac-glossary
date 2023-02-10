@@ -33,13 +33,34 @@ export function addNewLemma(setNewLemmaId, token = true) {
 ////////////////////////////////////////////////////////////////////////////////
 
 export function getLemmaDB(setLemma, lemmaId) {
+
+  // Skip the fetch process if the lemmaId is missing
+  console.log(lemmaId);
+  if (!lemmaId) {
+    console.log('skip querying lemma');
+    setLemma();
+    return;
+  }
+
   let url = '/api/lemma/get';
   const params = new URLSearchParams({lemmaId});
   url += '?' + params.toString();
   
   fetch(url)
-  .then(res => res.json())
-  .then(data => setLemma(data));
+  .then(response => {
+    // Make sure that the lemmaId is valid, or set lemma to undefined
+    // Needed to prevent panic in Lemma and subparts when the id is invalid
+    if (response.ok) {
+      return response.json();
+    } else {
+      setLemma();
+    }
+  })
+  .then(data => setLemma(data))
+  .catch(error => {
+    setLemma();
+    console.error(error);
+  });
 }
 
 export function saveLemmaToDB(setLemma, lemma) {
