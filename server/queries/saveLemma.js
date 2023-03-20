@@ -16,7 +16,8 @@ const saveLemma = async (pool, lemma) => {
         primary_meaning = $8,
         editor = $9,
         literal_translation2 = $10,
-        last_edit = (to_timestamp($11 / 1000.0))
+        comment = $11,
+        last_edit = (to_timestamp($12 / 1000.0))
     WHERE lemma_id = $1;
     `;
 
@@ -31,6 +32,7 @@ const saveLemma = async (pool, lemma) => {
       (lemma.primary_meaning ? lemma.primary_meaning.trim() : ''),
       (lemma.editor ? lemma.editor.trim() : ''),
       (lemma.literal_translation2 ? lemma.literal_translation2.trim() : ''),
+      (lemma.comment ? lemma.comment.trim() : ''),
       Date.now(),
     ];
 
@@ -59,7 +61,7 @@ const saveLemma = async (pool, lemma) => {
     const values = [
       lemma.lemmaId,
       (meaning.value ? meaning.value.trim() : ''),
-      (meaning.category ? meaning.category.trim() : ''),
+      (meaning.category ? meaning.category.trim().toLowerCase() : ''),
       (meaning.comment ? meaning.comment.trim() : ''),
       isNaN(parseInt(meaning.id)) ? 0 : parseInt(meaning.id),
     ];
@@ -178,7 +180,7 @@ const saveLemma = async (pool, lemma) => {
       (quotation.translation ? quotation.translation.trim() : ''),
       (quotation.source ? quotation.source.trim() : ''),
       (quotation.line ? quotation.line.trim() : ''),
-      (quotation.genre ? quotation.genre.trim() : ''),
+      (quotation.genre ? quotation.genre.trim().toLowerCase() : ''),
       (quotation.provenance ? quotation.provenance.trim() : ''),
       (quotation.date ? quotation.date.trim() : ''),
       (quotation.publication ? quotation.publication.trim() : ''),

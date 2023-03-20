@@ -5,6 +5,7 @@ import { IoIosTrash, IoIosOpen } from "react-icons/io";
 import UserContext from '../../Contexts/UserContext';
 
 import { getQuotationFields, getQuotationFromSource } from "../../Data/autocomplete";
+import { checkUrlForHttp } from "../../Functions/checkUrlForHttp";
 
 import styles from './Lemma.module.css';
 
@@ -294,7 +295,7 @@ const Quotation = props => {
       <div className={styles.row}>
         <label className={styles.label} htmlFor={"link_"+quotation.id}>
           Link &nbsp;
-          {(quotation.link ? (<a href={quotation.link} target="_blank" rel="noopener noreferrer"><IoIosOpen /></a>) : '')}
+          {(quotation.link ? (<a href={checkUrlForHttp(quotation.link)} target="_blank" rel="noopener noreferrer"><IoIosOpen /></a>) : '')}
         </label>
         <input
           className={styles.inputWide}
@@ -302,7 +303,7 @@ const Quotation = props => {
           name={"link_"+quotation.id}
           placeholder="URL link to publication"
           value={quotation.link}
-          onChange={e => props.updateQuotation("link", e.target.value, quotation.id)} 
+          onChange={e => props.updateQuotation("link", checkUrlForHttp(e.target.value), quotation.id)} 
         />
       </div>
       <div className={styles.row}>

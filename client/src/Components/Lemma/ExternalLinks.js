@@ -30,6 +30,9 @@ const ExternalLinks = props => {
       <>
         <h4>Dictionary Searches</h4>
         <ul>
+          <li><a target="_blank" rel="noopener noreferrer" href="http://oracc.museum.upenn.edu/adsd/corpus">
+            ORACC
+          </a></li>
           <li><a target="_blank" rel="noopener noreferrer" href="http://stephanus.tlg.uci.edu/Iris/inst/lexica.jsp">
             Thesaurus Linguae Graecae
           </a></li>

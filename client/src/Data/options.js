@@ -6,6 +6,7 @@ export const languageOptions = [
   { id: 4, value: 'greek',    label: 'Greek' },
   { id: 5, value: 'hebrew',   label: 'Hebrew' },
   { id: 6, value: 'latin',    label: 'Latin' },
+  { id: 7, value: 'sanskrit', label: 'Sanskrit' },
 ];
 
 export const partOfSpeechOptions = [

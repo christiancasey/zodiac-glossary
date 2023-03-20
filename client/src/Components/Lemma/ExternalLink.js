@@ -4,6 +4,8 @@ import { IoIosTrash, IoIosOpen } from "react-icons/io";
 
 import UserContext from '../../Contexts/UserContext';
 
+import { checkUrlForHttp } from "../../Functions/checkUrlForHttp";
+
 import styles from './Lemma.module.css';
 
 const ExternalLink = props => {
@@ -48,7 +50,7 @@ const ExternalLink = props => {
           name={"externalLink_URL_"+i}
           placeholder="URL to link to"
           value={props.externalLink.url}
-          onChange={e => props.updateExternalLink('url', e.target.value, props.externalLink.id)} 
+          onChange={e => props.updateExternalLink('url', checkUrlForHttp(e.target.value), props.externalLink.id)} 
         />
       </div>
       <div className={styles.row}>
@@ -76,7 +78,7 @@ const ExternalLink = props => {
         >
           Sample Link
         </label>
-        <a className={styles.label} target="_blank" rel="noopener noreferrer" href={props.externalLink.url}>
+        <a className={styles.label} target="_blank" rel="noopener noreferrer" href={checkUrlForHttp(props.externalLink.url)}>
           &nbsp;
           {props.externalLink.display}
           &nbsp;

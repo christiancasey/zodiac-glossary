@@ -188,6 +188,24 @@ const BasicInfo = props => {
             {!user.token && (<div>{lemma.primary_meaning}</div>)}
           </td>
         </tr>
+        <tr>
+          <td>
+            <label className={styles.label} htmlFor="comment">
+              Comment
+            </label>
+          </td>
+          <td>
+            {user.token && (<textarea
+              className={styles.input}
+              type="text"
+              name="comment"
+              placeholder="comment"
+              value={lemma.comment}
+              onChange={onChange}
+            ></textarea>)}
+            {!user.token && (<div>{lemma.comment}</div>)}
+          </td>
+        </tr>
       </tbody></table>
     </div>
   );

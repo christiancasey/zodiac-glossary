@@ -3,7 +3,7 @@ import { useParams, useNavigate, useLocation, useOutletContext } from "react-rou
 import { v4 as uuidv4 } from "uuid";
 
 // import { deleteLemmaFromDB } from "../../Data/sample-data";
-import { getLemmaDB, saveLemmaToDB, deleteLemmaFromDB } from "../../Data/api";
+import { getLemmaFromDB, saveLemmaToDB, deleteLemmaFromDB } from "../../Data/api";
 
 import BasicInfo from './BasicInfo';
 import Meanings from './Meanings';
@@ -41,14 +41,13 @@ const Lemma = props => {
 
     // On refresh or load from URL, lemmaId in the route gets changed to null by React Router
     // This fixes it by temporarily saving the most recent lemma id and using that when the route has null
-    console.log('Lemma comp', lemmaId);
-    if (false) { //(isNaN(lemmaId)) {
+    if (isNaN(lemmaId)) {
         lemmaId = localStorage.getItem('currentLemmaId');
         if (lemmaId) {
           navigate('/' + lemmaId + location.search);
         }
     } else {
-      getLemmaDB(setLemma, lemmaId);
+      getLemmaFromDB(setLemma, lemmaId);
       localStorage.setItem('currentLemmaId', lemmaId);
     }
 

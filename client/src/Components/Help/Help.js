@@ -22,6 +22,9 @@ const Help = props => {
         <ul>
         <h2>General Notes</h2>
           <li>
+            Prefer British English spellings.
+          </li>
+          <li>
             You can add new issues at any time to the <a href="https://github.com/christiancasey/zodiac-glossary/issues" target="_blank" rel="noopener noreferrer">github issues page</a>.
           </li>
           <li>
@@ -29,6 +32,10 @@ const Help = props => {
           </li>
           <li>
             Scheduled maintenance time is 10.00–11.00 CET. Data entry may be affected by changes to the website during this time.
+          </li>
+          <li>
+            Constellations are defined according to the <a href="https://en.wikipedia.org/wiki/IAU_designated_constellations" target="_blank" rel="noopener noreferrer">IAU list of designated constellations</a>. 
+            Do not ascribe to ancient constellations modern designations except where certain.
           </li>
         
         <h2>Lemmata</h2>
@@ -57,10 +64,13 @@ const Help = props => {
 
         <h2>Meanings and Variants</h2>
           <li>
-            There are now fields for meaning category (e.g. zodiac sign) and variant comment (e.g. time period).
+            The normal form in Basic should also be included as a meaning and a variant.
           </li>
           <li>
             Meaning categories will eventually be selected with a dropdown. Right now you just have to type them in. Don't worry too much about consistency for now. I can fix them later.
+          </li>
+          <li>
+            There are now fields for meaning category (e.g. zodiac sign) and variant comment (e.g. time period).
           </li>
 
         <h2>Quotations</h2>
