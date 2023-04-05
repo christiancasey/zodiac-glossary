@@ -94,7 +94,11 @@ const Help = props => {
               </li>
               <li>
                 <span style={{fontWeight: 'bold'}}>Edited Volumes: </span><br />
-                Hunger, H. 2004. Stars, Cities, and Predictions. In: Studies in the History of the Exact Sciences in Honour of David Pingree, eds. Charles Burnett, Jan Hogendijk, Kim Plofker and Michio Yano. Leiden: Brill: 16–32
+                Hunger, H. 2004. Stars, Cities, and Predictions. In: Studies in the History of the Exact Sciences in Honour of David Pingree, eds. Charles Burnett, Jan Hogendijk, Kim Plofker and Michio Yano. Leiden: Brill: 16–32.
+              </li>
+              <li>
+                <span style={{fontWeight: 'bold'}}>Modern editions of ancient texts: </span><br />
+                Geminus. 1898. Γεμίνου Εἰσαγωγή εἰς τὰ Φαινόμενα, Gemini Elementa Astronomiae, ed. C.H.A. Manitius. Leipzig: B.G. Teubner.
               </li>
             </ul>
           </li>

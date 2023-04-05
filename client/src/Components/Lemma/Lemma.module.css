@@ -17,7 +17,7 @@
   padding: 0.5vw 1vw 0 0;
   vertical-align: top;
 }
-.input, .inputSearch, .inputMeaning, .inputTransliteration, .inputWide, .inputTransliterationWide, .inputKeyboard, .textareaWide {
+.input, .inputSearch, .inputMeaning, .inputTransliteration, .inputWide, .inputTransliterationWide, .inputKeyboard, .textareaWide, .inputComment {
   font: 1.2vw book-antiqua, 'Book Antiqua', serif;
   display: table-cell;
   width: 11vw;
@@ -32,6 +32,9 @@
   height: 2vw;
   /* margin-top: 5px;
   margin-right: 5px; */
+}
+.inputComment {
+  height: 8vw;
 }
 .inputKeyboard {
   border-radius: 0.5vw 0 0 0.5vw;
@@ -136,10 +139,10 @@
   border-radius: 10px;
 }
 .basic {
-  height: 32vw;
+  height: 36vw;
 }
 .meanings, .variants {
-  height: 15vw;
+  height: 17vw;
 }
 .quotations, .crossLinks, .deleteLemma {
   width: 60vw;

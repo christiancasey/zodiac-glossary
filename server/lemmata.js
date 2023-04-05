@@ -59,7 +59,7 @@ const addNewLemma = (request, response) => {
 
   pool.query(sql, (error, results) => {
     if (error) throw error;
-    response.status(200).json(results.rows[0].lemma_id);
+    response.status(201).json(results.rows[0].lemma_id);
   });
 };
 
@@ -107,6 +107,31 @@ const deleteLemma = (request, response) => {
   response.status(202).json(request.query);
 };
 
+const checkLemma = (request, response) => {
+  
+  // Protect against sending other fields to the api, SQL injection, etc...
+  if (request.body.field !== 'checked' && request.body.field !== 'attention') {
+    response.status(500);
+    return;
+  }
+
+  const sql = `UPDATE lemmata SET ${request.body.field} = $2 where lemma_id = $1;`;
+  // const sql = `UPDATE lemmata SET $3 = $2 where lemma_id = $1;`;
+
+  const values = [
+    request.body.lemmaId,
+    request.body.checked,
+  ];
+
+
+  pool.query(sql, values, (error, results) => {
+    if (error)
+      console.log(error);
+  });
+
+  response.status(202).json(request.body);
+};
+
 ////////////////////////////////////////////////////////////////////////////////
 // MEANINGS (for linking Quotations to Meanings)
 ////////////////////////////////////////////////////////////////////////////////
@@ -132,5 +157,6 @@ module.exports = {
   getLemma,
   saveLemma,
   deleteLemma,
+  checkLemma,
   getMeanings,
 };

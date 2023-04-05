@@ -102,6 +102,9 @@
 }
 .home {
   float: left;
+  margin-left: 10px;
+  text-align: center;
+  width: 25px;
 }
 
 .bodyBackground {

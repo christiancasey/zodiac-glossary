@@ -1,7 +1,9 @@
+const parseDate = require('postgres-date');
+
 const getLemmataList = (pool, token) => {
   return new Promise((resolve, reject) => {
     let sql = `
-    SELECT lemma_id, editor, published, original, translation, primary_meaning, transliteration, literal_translation2, languages.value AS language, m.value, m.category
+    SELECT lemma_id, editor, published, original, translation, primary_meaning, transliteration, literal_translation2, checked, attention, last_edit, languages.value AS language, m.value, m.category
     FROM lemmata as l
     LEFT JOIN languages USING (language_id) 
     LEFT JOIN partsofspeech USING (partofspeech_id)
@@ -12,6 +14,9 @@ const getLemmataList = (pool, token) => {
     if (!token) {
       sql = sql + ' WHERE published = TRUE';
     }
+
+    // Order for use in Recents; doesn't affect anything else
+    sql += ' ORDER BY last_edit DESC;';
 
     pool.query(sql, (error, { rows: lemmataMeanings }) => {
       if (!error) {

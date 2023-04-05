@@ -196,7 +196,7 @@ const BasicInfo = props => {
           </td>
           <td>
             {user.token && (<textarea
-              className={styles.input}
+              className={styles.inputComment}
               type="text"
               name="comment"
               placeholder="comment"

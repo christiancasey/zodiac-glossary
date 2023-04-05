@@ -35,6 +35,8 @@ app.get('/api/lemma/get', lemmata.getLemma);
 app.patch('/api/lemma/save', lemmata.saveLemma);
 app.delete('/api/lemma/delete', lemmata.deleteLemma);
 
+app.patch('/api/lemma/check', lemmata.checkLemma);
+
 // Quotation => Meanings
 app.get('/api/meanings', lemmata.getMeanings); // Unused endpoint, probably not needed
 

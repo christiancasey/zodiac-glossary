@@ -108,7 +108,7 @@ const getLemma = async (pool, lemmaId) => {
     .catch(error => console.error(`\nError in getLemma.js\nCouldn't fetch Cross Links for lemmaId: ${lemmaId}\n${error}`));
 
   // Add EXTERNAL LINKS to lemma object
-  const sqlExternalLinks = `SELECT * FROM external_links WHERE lemma_id = $1;`;
+  const sqlExternalLinks = `SELECT * FROM external_links WHERE lemma_id = $1 ORDER BY external_link_id;`;
   // var externalLinksDB = await waitQuery(pool, sqlExternalLinks, [lemmaId]);
   lemma.externalLinks = [];
   await waitQuery(pool, sqlExternalLinks, [lemmaId])

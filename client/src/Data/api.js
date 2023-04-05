@@ -15,7 +15,30 @@ export function getLemmataList(setLemmataList, token = true) {
   
   fetch(url)
   .then(response => response.json())
+  .then(data => data.map(lemma => {
+    lemma.last_edit = new Date(lemma.last_edit);
+    return lemma;
+  }))
   .then(data => setLemmataList(data));
+}
+
+// Streamlines the use of state functions in components
+export function getLemmataListPromise(setLemmataList, token = true) {
+  let url = '/api/lemmata/list';
+  const params = new URLSearchParams({token});
+  url += '?' + params.toString();
+
+  return new Promise((resolve, reject) => {
+
+    fetch(url)
+    .then(response => response.json())
+    .then(data => data.map(lemma => {
+      lemma.last_edit = new Date(lemma.last_edit);
+      return lemma;
+    }))
+    .then(data => resolve(data))
+    .catch(error => reject(error));
+  });
 }
 
 export function addNewLemma(setNewLemmaId, token = true) {
@@ -88,4 +111,22 @@ export function deleteLemmaFromDB(lemmaId) {
   .then(response => response.json())
   .then(data => console.log(data))
   .catch(data => console.log(data));
+}
+
+export function checkLemma(lemmaId, checked = false, field = "checked") {
+  // console.log('checkLemma()', lemmaId, checked);
+  
+  let url = '/api/lemma/check';
+  
+  fetch(url, {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    method: "PATCH",
+    body: JSON.stringify({lemmaId, checked, field}),
+  })
+  .then(response => response.json())
+  // .then(data => console.log(data))
+  .catch(data => console.error(data)); // Add error handling that will show the lemma as unsaved if the operation fails
 }

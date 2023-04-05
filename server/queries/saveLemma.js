@@ -17,6 +17,7 @@ const saveLemma = async (pool, lemma) => {
         editor = $9,
         literal_translation2 = $10,
         comment = $11,
+        checked = FALSE,
         last_edit = (to_timestamp($12 / 1000.0))
     WHERE lemma_id = $1;
     `;
@@ -172,6 +173,9 @@ const saveLemma = async (pool, lemma) => {
   `;
 
   for (quotation of lemma.quotations) {
+    // Temporarily log the saving of meaning_id in Quotations because Thomas has noticed them not saving –CDC 2023-03-21
+    console.log('Checking for problems saving quotation-meaning, given meaning_id:', quotation.meaning_id);
+    console.log('Saved meaning_id value:', (isNaN(parseInt(quotation.meaning_id)) || !quotation.meaning_id) ? 0 : parseInt(quotation.meaning_id));
 
     const values = [
       lemma.lemmaId,
