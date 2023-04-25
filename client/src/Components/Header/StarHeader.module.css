@@ -98,7 +98,7 @@
   margin-top: 0.5vw;
 }
 .playPause:hover, .home:hover {  
-  filter:drop-shadow(0 0 3px #ffe8);
+  filter: drop-shadow(0 0 3px #ffe8);
 }
 .home {
   float: left;

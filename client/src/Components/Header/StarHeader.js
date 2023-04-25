@@ -28,6 +28,7 @@ const StarHeader = () => {
   } else {
     startStyle = {animationPlayState: 'running'};
   }
+  startStyle = {animationPlayState: 'paused'};
   const [style, setStyle] = React.useState(startStyle);
 
   React.useEffect(() => {
@@ -87,9 +88,9 @@ const StarHeader = () => {
       {(user && user.token) ? (
         <div className={styles.username}>{user.username}</div>
       ) : null}
-      <button className={styles.playPause} onClick={playPause}>
+      {/* <button className={styles.playPause} onClick={playPause}>
         {(style.animationPlayState === 'running') ? (<IoIosPause />) : <IoIosPlay />}
-      </button>
+      </button> */}
       <LogIn
         visible={loginVisible}
         setLoginVisible={setLoginVisible}
