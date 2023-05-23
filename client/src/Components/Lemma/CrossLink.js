@@ -14,8 +14,11 @@ const CrossLink = props => {
   const i = props.i;
   const {user} = React.useContext(UserContext);
   const [crossLink, setCrossLink] = React.useState(props.crossLink);
-  const [lemma, setLemma] = React.useState(getLemmaById(lemmata, props.crossLink));
-  // const [lemmata, setLemmata] = React.useState([]);
+  
+  // Changed to a normal variable to ensure it updates before the component.
+  // Before, things were taking to long to load, leaving sample links blank – CDC 2023-04-25
+  // const [lemma, setLemma] = React.useState(getLemmaById(lemmata, props.crossLink)); 
+  let lemma = getLemmaById(lemmata, props.crossLink);
   
   const [style, setStyle] = React.useState({display: 'none'});
 
@@ -26,7 +29,8 @@ const CrossLink = props => {
   // Needed to make sure the crossLinks update when the user follows a crossLink to a new lemma
   React.useEffect(() => {
     setCrossLink(props.crossLink);
-    setLemma(getLemmaById(lemmata, props.crossLink));
+    // setLemma(getLemmaById(lemmata, props.crossLink));
+    lemma = getLemmaById(lemmata, props.crossLink);
   }, [props.crossLink, crossLink]);
   
   if (!user.token) {
@@ -48,7 +52,8 @@ const CrossLink = props => {
     if (event.target.value) {
       props.updateCrossLink(event.target.value, id);
       setCrossLink(event.target.value);
-      setLemma(getLemmaById(lemmata, event.target.value));
+      // setLemma(getLemmaById(lemmata, event.target.value));
+      lemma = getLemmaById(lemmata, props.crossLink);
     }
   }
   

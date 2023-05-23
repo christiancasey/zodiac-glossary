@@ -28,6 +28,7 @@ const StarHeader = () => {
   } else {
     startStyle = {animationPlayState: 'running'};
   }
+  startStyle = {animationPlayState: 'paused'};
   const [style, setStyle] = React.useState(startStyle);
 
   React.useEffect(() => {

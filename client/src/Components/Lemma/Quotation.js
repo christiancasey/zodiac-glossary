@@ -307,6 +307,23 @@ const Quotation = props => {
         />
       </div>
       <div className={styles.row}>
+        <label
+          className={styles.label}
+          htmlFor={"comment_"+quotation.id}
+          data-tip="Strictly optional!<br />Additional comments about this quotation"
+          data-for={"comment_"+quotation.id}
+        >
+          Comment
+        </label>
+        <ReactTooltip id={"comment_"+quotation.id} type="light" html={true} />
+        <textarea
+          className={styles.textareaWide}
+          name={"comment_"+quotation.id}
+          value={quotation.comment}
+          onChange={e => props.updateQuotation("comment", e.target.value, quotation.id)} 
+        />
+      </div>
+      <div className={styles.row}>
         <div style={{display: (user.token ? 'inline' : 'none')}}>
           <button className={styles.add} style={style} onClick={() => props.deleteQuotation(quotation.id)}><IoIosTrash /></button>
         </div>

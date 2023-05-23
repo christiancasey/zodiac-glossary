@@ -162,13 +162,14 @@ const saveLemma = async (pool, lemma) => {
         publication = $10,
         page = $11,
         link = $12,
-        meaning_id = $13
-      WHERE lemma_id = $1 AND quotation_id = $14
+        meaning_id = $13,
+        comment = $14
+      WHERE lemma_id = $1 AND quotation_id = $15
     RETURNING *;
   `;
   const sqlQuotationsInsert = `
-    INSERT INTO quotations (lemma_id, original, transliteration, translation, source, line, genre, provenance, date, publication, page, link, meaning_id)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+    INSERT INTO quotations (lemma_id, original, transliteration, translation, source, line, genre, provenance, date, publication, page, link, meaning_id, comment)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
     RETURNING quotation_id;
   `;
 
@@ -191,6 +192,7 @@ const saveLemma = async (pool, lemma) => {
       (quotation.page ? quotation.page.trim() : ''),
       (quotation.link ? quotation.link.trim() : ''),
       (isNaN(parseInt(quotation.meaning_id)) || !quotation.meaning_id) ? 0 : parseInt(quotation.meaning_id),
+      (quotation.comment ? quotation.comment.trim() : ''),
       isNaN(parseInt(quotation.id)) ? 0 : parseInt(quotation.id),
     ];
 
