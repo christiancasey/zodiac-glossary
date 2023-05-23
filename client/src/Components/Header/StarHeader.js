@@ -3,7 +3,7 @@ import React from 'react';
 
 import { useNavigate } from "react-router-dom";
 // import { IoIosPlay, IoIosPause, IoIosHome, IoIosLogIn, IoIosLogOut } from 'react-icons/io';
-import { IoIosPlay, IoIosPause, IoIosHome, IoIosHelpCircle, IoIosClock } from 'react-icons/io';
+import { IoIosHome, IoIosHelpCircle, IoIosClock } from 'react-icons/io';
 
 import UserContext from '../../Contexts/UserContext';
 import LogIn from './LogIn.js';
@@ -87,9 +87,9 @@ const StarHeader = () => {
       {(user && user.token) ? (
         <div className={styles.username}>{user.username}</div>
       ) : null}
-      <button className={styles.playPause} onClick={playPause}>
+      {/* <button className={styles.playPause} onClick={playPause}>
         {(style.animationPlayState === 'running') ? (<IoIosPause />) : <IoIosPlay />}
-      </button>
+      </button> */}
       <LogIn
         visible={loginVisible}
         setLoginVisible={setLoginVisible}

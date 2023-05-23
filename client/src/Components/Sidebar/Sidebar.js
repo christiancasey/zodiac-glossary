@@ -85,12 +85,12 @@ const Sidebar = props => {
     <nav className={styles.sidebar}>
       <Search />
       <LanguageList languages={languages} selectLanguage={selectLanguage} />
-      <LemmataList languages={languages} setSelectedLemmaId={setSelectedLemmaId} contentLemma={props.contentLemma} lemmataList={props.lemmataList} setLemmataList={props.setLemmataList} />
-      <div style={{display: (user.token ? 'block' : 'none')}}>
+      <LemmataList languages={languages} setSelectedLemmaId={setSelectedLemmaId} contentLemma={props.contentLemma} lemmataList={props.lemmataList} setLemmataList={props.setLemmataList} changed={props.changed} setChanged={props.setChanged} />
+      {/* <div style={{display: (user.token ? 'block' : 'none')}}>
         <button className={styles.addNewLemma} onClick={e => addNewLemmaButton()}>
           <IoIosAddCircle /> Add new lemma...
         </button>
-      </div>
+      </div> */}
     </nav>
   );
 };

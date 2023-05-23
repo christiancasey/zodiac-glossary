@@ -100,7 +100,7 @@ const Lemma = props => {
     setContentLemma(lemma);
     
     // Remind users to fill the editor field if it is blank
-    if (!lemma.editor) {
+    if (!lemma || !lemma.editor) {
       alert('Please add your name to the editor field and save again.');
       setChanged(true);
     }

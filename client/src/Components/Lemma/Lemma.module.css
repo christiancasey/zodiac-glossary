@@ -102,20 +102,6 @@
   opacity: 1;
 }
 
-.lemmaListEntry {
-  text-decoration: none;
-  color: #FFEA;
-  display: block;
-  margin: 0.5rem 0;
-}
-.lemmaListEntryActive {
-  text-decoration: none;
-  color: #FFEF;
-  filter: drop-shadow(0 0 2px #FFE6);
-  display: block;
-  margin: 0.5rem 0;
-}
-
 
 .label:focus, .input:focus, .inputWide:focus, .inputTransliteration:focus, .inputTransliteration:focus, .inputTransliterationWide:focus  {
   color: #FFE;
@@ -265,4 +251,21 @@
 }
 .lemmaList:hover {
   text-shadow: 0 0 4px #FFE6;
+}
+
+
+.lemmaListEntry, .lemmaListEntryActive {
+  text-decoration: none;
+  background: none!important;
+  border: none;
+  padding: 0 !important;
+  color: #FFEA;
+  color: red;
+  /* display: inline-block; */
+  margin: 0.5rem 0;
+  cursor: pointer;
+}
+.lemmaListEntryActive {
+  color: #FFEF;
+  filter: drop-shadow(0 0 2px #FFE6);
 }

@@ -1,0 +1,55 @@
+
+
+.sortButtons {
+  color: #ffef;
+  background: #fff0;
+  border: none;
+  outline: none;
+  margin-top: 0.5vw;
+  font: 1vw book-antiqua, 'Book Antiqua', serif;
+  text-shadow: 0 0 3px #FFD2;
+}
+.sortButtons:hover {
+  filter: drop-shadow(0 0 3px #ffe6);
+}
+
+.addNewLemma {
+  color: #ffef;
+  background: #fff0;
+  border: none;
+  outline: none;
+  margin-top: 0.5vw;
+  font: 1.2vw book-antiqua, 'Book Antiqua', serif;
+  text-shadow: 0 0 3px #FFD2;
+}
+.addNewLemma:hover {
+  filter: drop-shadow(0 0 3px #ffe6);
+}
+
+.lemmaList {
+  color: #ffea;
+  background: #fff0;
+  border: none;
+  padding: 0.2vw;
+  outline: none;
+  text-shadow: 0 0 8px #2D3B62FF;
+}
+.lemmaList:hover {
+  text-shadow: 0 0 4px #FFE6;
+}
+
+
+.lemmaListEntry, .lemmaListEntryActive {
+  text-decoration: none;
+  background: none!important;
+  border: none;
+  padding: 0 !important;
+  color: #FFEA;
+  display: inline-block;
+  margin: 0.5rem 0;
+  cursor: pointer;
+}
+.lemmaListEntryActive {
+  color: #FFEF;
+  filter: drop-shadow(0 0 2px #FFE6);
+}

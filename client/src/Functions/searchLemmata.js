@@ -1,27 +1,67 @@
 
-// Flesh this out to make search softer
-// DONE ~~e.g. ignore case, Greek accents, diff between ỉ/j/i~~
-// What else?
-
-const replacements = [
+const replacements = [  
   // Had to delete this one because it matches too many things in languages besides Egy
   // {
   //   original: /[ỉjy]/g,
-  //   replacement: 'i'
+  //   replacement: 'i',
   // },
   {
     original: /[᾽ι᾿῀῁῍῎῏῝῞῟῭΅`´῾]/g,
-    replacement: ''
+    replacement: '',
   },
   {
     original: /[ῤῥῬ]/g,
-    replacement: 'ρ'
+    replacement: 'ρ',
   },
   {
     original: /[ς]/g,
-    replacement: 'σ'
+    replacement: 'σ',
   },
-]
+  {
+    original: /[ₓ]/g,
+    replacement: 'x',
+  },
+  {
+    original: /[₀]/g,
+    replacement: '0',
+  },
+  {
+    original: /[₁]/g,
+    replacement: '1',
+  },
+  {
+    original: /[₂]/g,
+    replacement: '2',
+  },
+  {
+    original: /[₃]/g,
+    replacement: '3',
+  },
+  {
+    original: /[₄]/g,
+    replacement: '4',
+  },
+  {
+    original: /[₅]/g,
+    replacement: '5',
+  },
+  {
+    original: /[₆]/g,
+    replacement: '6',
+  },
+  {
+    original: /[₇]/g,
+    replacement: '7',
+  },
+  {
+    original: /[₈]/g,
+    replacement: '8',
+  },
+  {
+    original: /[₉]/g,
+    replacement: '9',
+  },
+];
 
 const softenString = string => {
   
@@ -46,7 +86,7 @@ const softenString = string => {
   softString = leadingSpace + softString; // Replace the leading space if necessary
   
   return softString;
-}
+};
 
 export function searchLemma(lemma, search) {
   let match = false;

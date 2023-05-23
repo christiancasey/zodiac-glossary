@@ -1,15 +1,17 @@
 import React from "react";
-import { useSearchParams, useLocation } from "react-router-dom";
+import { useSearchParams, useLocation, useNavigate } from "react-router-dom";
 import Collapsible from "react-collapsible";
 import {MdExpandMore, MdExpandLess} from 'react-icons/md';
+import { IoIosAddCircle } from "react-icons/io";
 
-import QueryNavLink from '../QueryNavLink';
+// import QueryNavLink from '../QueryNavLink'; // Replaced with button for the discard changes dialog – CDC 2023-05-16
 import UserContext from '../../Contexts/UserContext';
 
 import { getLemmataList } from '../../Data/api';
+import { addNewLemma } from '../../Data/api';
 import { searchLemma } from '../../Functions/searchLemmata';
 
-import styles from '../Lemma/Lemma.module.css';
+import styles from './LemmataList.module.css';
 
 const LemmataList = props => {
   const {user} = React.useContext(UserContext);
@@ -17,7 +19,8 @@ const LemmataList = props => {
   let [searchParams] = useSearchParams();
   let search = searchParams.get('search');
   let location = useLocation();
-
+  let navigate = useNavigate();
+  let currentLemmaId = +location.pathname.replace('/','');
 
   // const [lemmataList, setLemmataList] = React.useState([]); 
   // Moved up to content to be shared with cross links
@@ -66,10 +69,43 @@ const LemmataList = props => {
     setLemmataFiltered(tempLemmataFiltered);
 
   }, [lemmataList, search, lemmataSortField, props.languages]);
+
+  // Replaces the old NavLink method
+  // Allows for a confirm dialog to avoid discarding changes to open lemma
+  const navigateToLemma = (to) => {
+    // Don't do anything if the user clicks the link to the lemma that is currently open
+    if (currentLemmaId === to) {
+      return;
+    }
+
+    // Check whether there are unsaved changes and confirm with user before leaving lemma
+    if (props.changed) {
+      const discardChanges = window.confirm(`Current lemma has not been saved.\nDo you want to leave this page and discard changes?`);
+
+      if (discardChanges) {
+        navigate('/' + to + location.search);
+      }
+    } else {
+      navigate('/' + to + location.search);
+    }
+    
+  };
+
+  function addNewLemmaButton() {
+    addNewLemma(props.setSelectedLemmaId);
+    props.setChanged(true);
+  };
   
   return (
     <>
       <h2>Lemmata</h2>
+
+      <div style={{display: (user.token ? 'block' : 'none')}}>
+        <button className={styles.addNewLemma} onClick={e => addNewLemmaButton()}>
+          <IoIosAddCircle /> Add new lemma...
+        </button>
+      </div>
+
       <div className={styles.sortButtons}>
         Sort by: 
           <button className={styles.sortButtons} onClick={e => setLemmataSortField('transliteration')}>Transliteration</button> |
@@ -81,13 +117,25 @@ const LemmataList = props => {
 
       {lemmataFiltered
         .map(lemma => (
-          <QueryNavLink 
-            className={({isActive}) => (isActive ? styles.lemmaListEntryActive : styles.lemmaListEntry)}
-            to={lemma.lemmaId} 
+          // Changed this to implement the check for discard changes feature
+          // – CDC 2023-05-16
+          // <QueryNavLink 
+          //   className={({isActive}) => (isActive ? styles.lemmaListEntryActive : styles.lemmaListEntry)}
+          //   key={lemma.lemmaId}
+          //   to={lemma.lemmaId}
+          // >
+          //   <LemmataListItem lemma={lemma} />
+          // </QueryNavLink>
+
+          // Need to replace with a button and implement proper styling
+          // – CDC 2023-05-16
+          <a 
+            className={((currentLemmaId===lemma.lemmaId) ? styles.lemmaListEntryActive : styles.lemmaListEntry)}
             key={lemma.lemmaId}
+            onClick={e => navigateToLemma(lemma.lemmaId)}
           >
             <LemmataListItem lemma={lemma} />
-          </QueryNavLink>
+          </a>
       ))}
     </>
   );
@@ -96,7 +144,7 @@ const LemmataList = props => {
 const LemmataListItem = props => {
   const lemma = props.lemma;
   return (
-    <>
+    <div>
       {!lemma.published && (<span style={{fontStyle: 'italic'}}> – {lemma.transliteration} | {lemma.original} | {lemma.primary_meaning}</span>)}
       {lemma.published && (<>{lemma.transliteration} | {lemma.original} | {lemma.primary_meaning}</>)}
       &nbsp;&nbsp;
@@ -118,7 +166,7 @@ const LemmataListItem = props => {
           </ul>
         </Collapsible>
       }
-    </>
+    </div>
   )
 };
 

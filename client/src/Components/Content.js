@@ -37,7 +37,7 @@ const Content = props => {
   return (
     <section style={{height: '80vh'}}>
     <div className={styles.content}>
-      <Sidebar sidebarUpdate={sidebarUpdate} setChanged={setChanged} contentLemma={contentLemma} lemmataList={lemmataList} setLemmataList={setLemmataList} />
+      <Sidebar sidebarUpdate={sidebarUpdate} changed={changed} setChanged={setChanged} contentLemma={contentLemma} lemmataList={lemmataList} setLemmataList={setLemmataList} />
       <Outlet context={[updateLemmataList, changed, setChanged, setContentLemma, lemmataList, meaningsCategories]} />
     </div>
     </section>
