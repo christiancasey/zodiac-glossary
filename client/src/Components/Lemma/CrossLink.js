@@ -18,6 +18,8 @@ const CrossLink = props => {
   // Changed to a normal variable to ensure it updates before the component.
   // Before, things were taking to long to load, leaving sample links blank – CDC 2023-04-25
   // const [lemma, setLemma] = React.useState(getLemmaById(lemmata, props.crossLink)); 
+  //////////////
+  // This did not fix it. Need to come back and try again after auth is done – CDC 2023-05-23
   let lemma = getLemmaById(lemmata, props.crossLink);
   
   const [style, setStyle] = React.useState({display: 'none'});
@@ -71,7 +73,7 @@ const CrossLink = props => {
         <label
           className={styles.label}
           htmlFor={"crossLink_"+i}
-          data-tip="A link to the related lemma.<br />Do not modify this value manually.<br />Use the selector function to fill."
+          data-tip="A link to the related lemma.<br />Do not modify this value manually.<br />Use the selector to fill."
           data-for={"crossLink_"+i}
         >
           Linked ID
