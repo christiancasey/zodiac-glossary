@@ -53,3 +53,9 @@
   color: #FFEF;
   filter: drop-shadow(0 0 2px #FFE6);
 }
+
+.lemmataListItem {
+  display: list-item;
+  min-width: 20vw;
+  max-width: 28vw;
+}

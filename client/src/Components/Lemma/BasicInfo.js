@@ -12,9 +12,14 @@ const BasicInfo = props => {
   let lemma = props.lemma;
   let onChange = props.onChange;
   const {user} = React.useContext(UserContext);
+
+  // If the editor field is blank, put in the username
+  if (!lemma.editor || !lemma.editor.trim()) {
+    lemma.editor = (user.user ? user.user.username : '');
+  }
   
   return (
-    <div className={styles.basic}>
+    <div className={user.token ? styles.basic : styles.basicPublic}>
       <h3>Basic</h3>
       <table><tbody>
         {/* <tr>
@@ -24,12 +29,13 @@ const BasicInfo = props => {
         {/* comment out the above when routing is finished */}
 
         {/* Temporary: Editor field. Delete after user authentication is ready */}
+        {user.token && (
         <tr>
         <td>
             <label
               className={styles.label}
               htmlFor="editor"
-              data-tip="Put your name here any time you edit a lemma."
+              data-tip="Put your name here<br />any time you edit a lemma."
               data-for="editor"
             >
               Editor
@@ -37,17 +43,16 @@ const BasicInfo = props => {
             <ReactTooltip id="editor" type="light" html={true} />
           </td>
           <td>
-            {user.token && (<input
+            <input
               className={styles.input}
               type="text"
               name="editor"
               placeholder="editor"
               value={lemma.editor}
               onChange={onChange}
-            />)}
-            {!user.token && (<div>{lemma.editor}</div>)}
+            />
           </td>
-        </tr>
+        </tr>)}
         {/* Temporary: Delete when user authentication is working */}
 
         <tr style={{display: (user.token ? 'table-row' : 'none')}}>
@@ -188,24 +193,23 @@ const BasicInfo = props => {
             {!user.token && (<div>{lemma.primary_meaning}</div>)}
           </td>
         </tr>
-        <tr>
+        {user.token && (<tr>
           <td>
             <label className={styles.label} htmlFor="comment">
               Comment
             </label>
           </td>
           <td>
-            {user.token && (<textarea
+            <textarea
               className={styles.inputComment}
               type="text"
               name="comment"
               placeholder="comment"
               value={lemma.comment}
               onChange={onChange}
-            ></textarea>)}
-            {!user.token && (<div>{lemma.comment}</div>)}
+            ></textarea>
           </td>
-        </tr>
+        </tr>)}
       </tbody></table>
     </div>
   );

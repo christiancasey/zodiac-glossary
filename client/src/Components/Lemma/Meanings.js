@@ -11,7 +11,7 @@ const Meanings = props => {
   const {user} = React.useContext(UserContext);
   
   return (
-    <div className={styles.meanings}>
+    <div className={user.token ? styles.meanings : styles.meaningsPublic}>
       <h3>Meanings</h3>
       {meanings.map((meaning, i) => {
         return (

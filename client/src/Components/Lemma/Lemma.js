@@ -12,6 +12,7 @@ import Quotations from './Quotations';
 import CrossLinks from './CrossLinks';
 import ExternalLinks from './ExternalLinks';
 import DeleteLemma from './DeleteLemma';
+import EditHistory from './EditHistory';
 
 import UserContext from '../../Contexts/UserContext';
 
@@ -53,7 +54,7 @@ const Lemma = props => {
 
     // Mark changed as false (don't alert user to save) any time a new lemma is selected
     setChanged(false);
-  }, [params.lemmaId]);
+  }, [params.lemmaId, user]);
   
   // Keyboard shortcuts
   const handleKeyPress = e => {
@@ -96,7 +97,7 @@ const Lemma = props => {
   const saveLemma = () => {
     updateLemmataList();
     setChanged(false);
-    saveLemmaToDB(setLemma, lemma);
+    saveLemmaToDB(setLemma, lemma, user.token);
     setContentLemma(lemma);
     
     // Remind users to fill the editor field if it is blank
@@ -107,7 +108,7 @@ const Lemma = props => {
   };
   
   const deleteLemma = () => {
-    deleteLemmaFromDB(lemma.lemmaId);
+    deleteLemmaFromDB(lemma.lemmaId, user.token);
     navigate('/' + location.search);
     setLemma(null);
     setContentLemma(null);
@@ -452,6 +453,8 @@ const Lemma = props => {
           addNewExternalLink={addNewExternalLink}
           deleteExternalLink={deleteExternalLink}
         />
+
+        {user.token && <EditHistory lemma={lemma} />}
         
         <DeleteLemma lemma={lemma} deleteLemma={deleteLemma} />
       </fieldset>

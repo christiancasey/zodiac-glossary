@@ -9,6 +9,8 @@ const users = require('./users');
 const ac = require('./autocomplete');
 const td = require('./todo');
 
+const auth = require('./middleware/auth');
+
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 app.use(express.json());
 
@@ -28,14 +30,15 @@ app.get('/api/partsofspeech', settings.getPartsOfSpeech);
 
 // Lemmata list
 app.get('/api/lemmata/list', lemmata.getLemmataList);
-app.get('/api/lemmata/add', lemmata.addNewLemma);
+app.get('/api/lemmata/add', auth, lemmata.addNewLemma);
 
 // Lemma
 app.get('/api/lemma/get', lemmata.getLemma);
-app.patch('/api/lemma/save', lemmata.saveLemma);
-app.delete('/api/lemma/delete', lemmata.deleteLemma);
+app.patch('/api/lemma/save', auth, lemmata.saveLemma);
+app.delete('/api/lemma/delete', auth, lemmata.deleteLemma);
+app.get('/api/lemma/history', auth, lemmata.getEditHistory);
 
-app.patch('/api/lemma/check', lemmata.checkLemma);
+app.patch('/api/lemma/check', auth, lemmata.checkLemma);
 
 // Quotation => Meanings
 app.get('/api/meanings', lemmata.getMeanings); // Unused endpoint, probably not needed
@@ -48,12 +51,10 @@ app.get('/api/autocomplete/quotation_from_source', ac.quotationAutofillFromSourc
 // Todo List
 app.get('/api/todo/list', td.getTodoList);
 
-// User authentication (TBD – CDC 2023-02-09)
-app.get('/api/users', users.getUsers);
-app.get('/api/users/:id', users.getUserById);
+// User authentication
 app.post('/api/users', users.createUser);
-app.put('/api/users/:id', users.updateUser);
-app.delete('/api/users/:id', users.deleteUser);
+app.post('/api/users/login', users.loginUser);
+app.get('/api/users/profile', auth, users.getUser);
 
 app.get('*', (request, response) => {
   response.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));

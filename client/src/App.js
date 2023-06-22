@@ -14,7 +14,7 @@ import UserContext from './Contexts/UserContext';
 
 
 function App() {
-  const [user, setUser] = React.useState({token: localStorage.getItem('token')});
+  const [user, setUser] = React.useState(JSON.parse(localStorage.getItem('user')) || {token: null, user: ''});
 
   return (
     <UserContext.Provider value={{

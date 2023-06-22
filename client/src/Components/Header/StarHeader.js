@@ -2,8 +2,8 @@ import React from 'react';
 // import ReactTooltip from 'react-tooltip'; // Maybe add a tooltip to the pause button
 
 import { useNavigate } from "react-router-dom";
-// import { IoIosPlay, IoIosPause, IoIosHome, IoIosLogIn, IoIosLogOut } from 'react-icons/io';
-import { IoIosHome, IoIosHelpCircle, IoIosClock } from 'react-icons/io';
+// import { IoIosPlay, IoIosPause, } from 'react-icons/io';
+import { IoIosHome, IoIosHelpCircle, IoIosClock, IoIosLogIn, IoIosLogOut, } from 'react-icons/io';
 
 import UserContext from '../../Contexts/UserContext';
 import LogIn from './LogIn.js';
@@ -17,10 +17,6 @@ const StarHeader = () => {
   const {user, setUser} = React.useContext(UserContext);
   let navigate = useNavigate();
   const [loginVisible, setLoginVisible] = React.useState(false);
-  
-  // React.useEffect(() => {
-  //   setUser({token: null});
-  // }, []);
 
   let startStyle;
   if (localStorage.getItem('pauseStarChart') === 'true') {
@@ -30,24 +26,17 @@ const StarHeader = () => {
   }
   startStyle = {animationPlayState: 'paused'};
   const [style, setStyle] = React.useState(startStyle);
-
-  React.useEffect(() => {
-    setUser({token: true});
-    localStorage.setItem('token', true);
-  }, []);
   
-  // Commented out to suppress annoying React warning that clutters up the console
-  // Reinstate when authentication stuff is ready
-  // CDC 2022-11-08
-  // function logout() {
-  //   setUser({token: null});
-  //   localStorage.removeItem('token');
-  //   setLoginVisible(false);
-  // }
+  function logout() {
+    const emptyUser = {user: {}, token: null};
+    setUser(emptyUser);
+    localStorage.setItem('user', JSON.stringify(emptyUser));
+    setLoginVisible(false);
+  }
   
-  // function login() {
-  //   setLoginVisible(true);
-  // }
+  function login() {
+    setLoginVisible(true);
+  }
   
   const playPause = () => {
     setStyle(prevStyle => {
@@ -75,7 +64,7 @@ const StarHeader = () => {
       <a className={styles.home} href="/recents" target="_blank" rel="noopener noreferrer">
         <IoIosClock />
       </a>
-      {/* {(user && user.token) ? null : (
+      {(user && user.token) ? null : (
         <button className={styles.home} onClick={login}>
           <IoIosLogIn />
         </button>
@@ -84,9 +73,9 @@ const StarHeader = () => {
         <button className={styles.home} onClick={logout}>
           <IoIosLogOut />
         </button>
-      ) : null} */}
-      {(user && user.token) ? (
-        <div className={styles.username}>{user.username}</div>
+      ) : null}
+      {(user.user.username) ? (
+        <div className={styles.username}> &nbsp;{user.user.username}</div>
       ) : null}
       {/* <button className={styles.playPause} onClick={playPause}>
         {(style.animationPlayState === 'running') ? (<IoIosPause />) : <IoIosPlay />}

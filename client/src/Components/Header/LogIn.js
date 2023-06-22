@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { IoIosCloseCircle } from "react-icons/io";
-import axios from 'axios';
 
 import UserContext from '../../Contexts/UserContext';
 
@@ -16,32 +15,30 @@ const LogIn = props => {
   
   function handleSubmit(event) {
     event.preventDefault();
+
+    let url = '/api/users/login';
     
-    // login user
-    axios.post('https://reqres.in/api/login', {username, password})
-      .then(({data}) => {
-        // set token in localStorage
-        localStorage.setItem('token', data.token);
-        setUser({
-          username,
-          password,
-          token: data.token
-        });
-        localStorage.setItem('token', data.token);
-        setInvalidLogin(false);
-        props.setLoginVisible(false);
-      })
-      .catch(err => {
-        console.error(err);
-        if (err.response.status === 400) {
-          setInvalidLogin(true);
-          setUser({
-            username,
-            password,
-            token: null
-          });
-        }
-      })
+    fetch(url, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: "POST",
+      body: JSON.stringify({username, password}),
+    })
+    .then(response => response.json())
+    .then(data => {
+      setUser(data);
+      localStorage.setItem('user', JSON.stringify(data));
+      setInvalidLogin(false);
+      props.setLoginVisible(false);
+    })
+    .catch(data => {
+      const emptyUser = {user: {}, token: null};
+      setUser(emptyUser);
+      localStorage.setItem('user', JSON.stringify(emptyUser));
+      setInvalidLogin(true);
+    });
   }
   
   return (

@@ -108,7 +108,7 @@
   outline: none;
   border-color: #FFE;
 }
-.basic, .meanings, .variants, .quotations, .crossLinks, .deleteLemma {
+.basic, .meanings, .variants, .quotations, .crossLinks, .deleteLemma, .basicPublic, .meaningsPublic, .variantsPublic {
   /* height: calc(100% - 20px); */
   /* height: 22vw; */
   width: 29vw;
@@ -125,10 +125,16 @@
   border-radius: 10px;
 }
 .basic {
-  height: 36vw;
+  height: 40vw;
+}
+.basicPublic {
+  height: 26vw;
 }
 .meanings, .variants {
-  height: 17vw;
+  height: 19vw;
+}
+.meaningsPublic, .variantsPublic {
+  height: 12vw;
 }
 .quotations, .crossLinks, .deleteLemma {
   width: 60vw;

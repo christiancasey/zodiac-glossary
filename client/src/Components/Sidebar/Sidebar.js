@@ -1,14 +1,11 @@
 import React from "react";
 import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
-import { IoIosAddCircle } from "react-icons/io";
 
 import Search from './Search';
 import LanguageList from './LanguageList';
 import LemmataList from './LemmataList';
-import UserContext from '../../Contexts/UserContext';
 
 import { languageOptions } from '../../Data/options';
-import { addNewLemma } from '../../Data/api';
 
 import styles from '../Lemma.module.css';
 
@@ -18,7 +15,6 @@ const Sidebar = props => {
   let location = useLocation();
   const [languages, setLanguages] = React.useState(getLanguageList(languageOptions));
   const [selectedLemmaId, setSelectedLemmaId] = React.useState(null);
-  const {user} = React.useContext(UserContext);
   
   // // Force language list to update on location change
   // // Needed to keep the values current when some action strips away the query string
@@ -74,11 +70,6 @@ const Sidebar = props => {
     setSearchParams(newSearchParams);
     
     setLanguages(newLanguages);
-  }
-  
-  function addNewLemmaButton() {
-    addNewLemma(setSelectedLemmaId);
-    props.setChanged(true);
   }
   
   return (

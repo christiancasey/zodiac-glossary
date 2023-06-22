@@ -13,7 +13,7 @@ const SignUp = props => {
   const [firstName, setFirstName] = React.useState('');
   const [lastName, setLastName] = React.useState('');
   const [email, setEmail] = React.useState('');
-  const [userName, setUserName] = React.useState('');
+  const [username, setUserName] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [confirm, setConfirm] = React.useState('');
   
@@ -22,6 +22,8 @@ const SignUp = props => {
   const [validMatch, setValidMatch] = React.useState(false);
 
   const [enableSubmit, setEnableSubmit] = React.useState(false);
+
+  const [message, setMessage] = React.useState('');
 
   React.useEffect(() => {
     setValidEmail(EMAIL_REGEX.test(email));
@@ -39,22 +41,55 @@ const SignUp = props => {
     const flag = (
       firstName &&
       lastName &&
-      userName &&
+      username &&
       validEmail &&
       validPassword &&
       validMatch
     );
     // console.log(flag);
     setEnableSubmit(flag);
-  }, [firstName, lastName, userName, validEmail, validPassword, validMatch]);
+  }, [firstName, lastName, username, validEmail, validPassword, validMatch]);
+
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    let url = '/api/users';
+    fetch(url, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: "POST",
+      body: JSON.stringify({
+        first_name: firstName.trim(),
+        last_name: lastName.trim(),
+        email: email.trim(),
+        username: username.trim(),
+        password: password.trim(),
+      }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data)
+      setMessage(`User ${data.username} created successfully. You will receive an email when your account is approved.`);
+      // setEnableSubmit(false);
+    })
+    .catch(data => {
+      setMessage(`There was an error creating your account. Please check your account information, or contact the administrator for help.`);
+      setEnableSubmit(false);
+    });
+  }
 
   return (
     <div className={styles.content}>
       <div className={styles.container}>
         <h1>Sign Up</h1>
-        <p>Note that this feature is currently only available to members of the <a href="https://www.geschkult.fu-berlin.de/en/e/zodiac/index.html" target="_blank" rel="noopener noreferrer">Zodiac Project</a>.</p>
-        <p>All new registrations require direct approval from the Zodiac team.</p>
-        <form style={{marginTop: '20px'}}>
+        <div>
+          <p>Note that this feature is currently only available to members of the <a href="https://www.geschkult.fu-berlin.de/en/e/zodiac/index.html" target="_blank" rel="noopener noreferrer">Zodiac Project</a>.</p>
+          <p>All new registrations require direct approval from the Zodiac team.</p>
+          <p>You will receive an email informing you whether your registration has been approved.</p>
+        </div>
+        <form style={{marginTop: '20px'}} onSubmit={handleSubmit}>
 
           <div className={styles.row}>
             <label className={styles.label} htmlFor="firstName">First Name</label>
@@ -96,13 +131,13 @@ const SignUp = props => {
           </div>
 
           <div className={styles.row}>
-            <label className={styles.label} htmlFor="userName">Username</label>
+            <label className={styles.label} htmlFor="username">Username</label>
             <input
               className={styles.input}
               type="text"
-              id="userName"
+              id="username"
               placeholder="username"
-              value={userName}
+              value={username}
               onChange={e => {setUserName(e.target.value)}}
               required
             />
@@ -143,6 +178,9 @@ const SignUp = props => {
           </p>
           <p className={styles.warning} style={(!confirm || validMatch ? {display: 'none'} : null)}>
             Passwords do not match.
+          </p>
+          <p className={styles.warning} style={(!message ? {display: 'none'} : null)}>
+            {message}
           </p>
 
           <button

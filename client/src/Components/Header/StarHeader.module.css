@@ -142,10 +142,10 @@
 .login {
   position: fixed;
   width: 24vw;
-  height: 16vw;
+  height: 18vw;
   left: 2vw;
   top: 2vw;
-  overflow: scroll;
+  overflow: none;
   
   padding: 0.5vw;
   

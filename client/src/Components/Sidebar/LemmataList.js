@@ -34,7 +34,7 @@ const LemmataList = props => {
   // Plus location because that changes when a new lemma is added
   React.useEffect(() => {
     getLemmataList(setLemmataList, user && user.token);
-  }, [props.contentLemma, location]);
+  }, [props.contentLemma, location, user]);
 
   React.useEffect(() => {
 
@@ -92,7 +92,7 @@ const LemmataList = props => {
   };
 
   function addNewLemmaButton() {
-    addNewLemma(props.setSelectedLemmaId);
+    addNewLemma(props.setSelectedLemmaId, user.token);
     props.setChanged(true);
   };
   
@@ -144,7 +144,7 @@ const LemmataList = props => {
 const LemmataListItem = props => {
   const lemma = props.lemma;
   return (
-    <div>
+    <div className={styles.lemmataListItem}>
       {!lemma.published && (<span style={{fontStyle: 'italic'}}> – {lemma.transliteration} | {lemma.original} | {lemma.primary_meaning}</span>)}
       {lemma.published && (<>{lemma.transliteration} | {lemma.original} | {lemma.primary_meaning}</>)}
       &nbsp;&nbsp;

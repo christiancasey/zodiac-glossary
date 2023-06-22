@@ -144,3 +144,8 @@ ol {
 a {
   text-decoration: underline;
 }
+
+p {
+  margin: 0 !important;
+  padding: 0;
+}

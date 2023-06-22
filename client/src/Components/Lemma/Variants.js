@@ -10,7 +10,7 @@ const Variants = props => {
   const {user} = React.useContext(UserContext);
   
   return (
-    <div className={styles.variants}>
+    <div className={user.token ? styles.variants : styles.variantsPublic}>
       <h3>Variants</h3>
       {props.variants.map((variant,i) => {
         return (
