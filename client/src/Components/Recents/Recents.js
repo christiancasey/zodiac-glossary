@@ -3,12 +3,14 @@ import React from 'react';
 import styles from './Recents.module.css';
 
 import { getLemmataListPromise, checkLemma } from '../../Data/api';
+import UserContext from '../../Contexts/UserContext';
 
 const LemmaCheck = props => {
   const [lemma, setLemma] = React.useState(props.lemma);
+  const {user} = React.useContext(UserContext);
 
   const checkLemmaChange = (lemmaId, checked, field = "checked") => {
-    checkLemma(lemmaId, checked, field);
+    checkLemma(lemmaId, checked, field, user.token);
     setLemma(prevLemma => ({
       ...prevLemma,
       [field]: checked,
@@ -71,11 +73,12 @@ const WeekBatch = props => {
 };
 
 const Recents = props => {
+  const {user} = React.useContext(UserContext);
 
   const [lemmata, setLemmata] = React.useState([]);
 
   React.useEffect(() => {
-    getLemmataListPromise()
+    getLemmataListPromise(user.token)
     .then(lemmata => setLemmata(lemmata))
     .catch(error => console.error(error));
   }, []);
@@ -93,7 +96,8 @@ const Recents = props => {
     let prevMonday = new Date(nextMonday);
     prevMonday.setDate(prevMonday.getDate() - 7);
 
-    let newLemmata = lemmata.filter(lemma => (lemma.last_edit > prevMonday && lemma.last_edit < nextMonday));
+    let newLemmata = lemmata.filter(lemma => !lemma.published);
+    newLemmata = newLemmata.filter(lemma => (lemma.last_edit > prevMonday && lemma.last_edit < nextMonday));
     newLemmata.sort((a, b) => (a.checked < b.checked ? -1 : 1)); // put checked ones at the bottom
     newLemmata.sort((a, b) => (a.attention > b.attention ? -1 : 1)); // put ones that need attention at the top
 
@@ -116,7 +120,7 @@ const Recents = props => {
   return (
     <div className={styles.content}>
       <div className={styles.container}>
-      <h1>Recent Edits</h1>
+      <h1>Recent Edits to Double Check</h1>
       {weeklyLemmata.map(weekBatch => (<WeekBatch key={weekBatch.id} batch={weekBatch} />))}
       </div>
     </div>

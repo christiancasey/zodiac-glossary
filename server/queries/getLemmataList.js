@@ -1,6 +1,7 @@
 const parseDate = require('postgres-date');
 
 const getLemmataList = (pool, token) => {
+
   return new Promise((resolve, reject) => {
     let sql = `
     SELECT lemma_id, editor, published, original, translation, primary_meaning, transliteration, literal_translation2, checked, attention, last_edit, languages.value AS language, m.value, m.category
@@ -11,7 +12,7 @@ const getLemmataList = (pool, token) => {
     `;
 
     // If no user logged in, show only published lemmata
-    if (!token) {
+    if (!token || token === 'null') {
       sql = sql + ' WHERE published = TRUE';
     }
 

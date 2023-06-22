@@ -6,6 +6,7 @@ import { getLemmataList } from '../Data/api';
 import { getMeaningCategories } from "../Data/autocomplete";
 
 import Sidebar from './Sidebar/Sidebar';
+import UserContext from '../Contexts/UserContext';
 
 import styles from './Content.module.css';
 
@@ -15,12 +16,13 @@ const Content = props => {
   let [changed, setChanged] = React.useState(false);
   let [contentLemma, setContentLemma] = React.useState();
   let [lemmataList, setLemmataList] = React.useState([]);
+  const {user} = React.useContext(UserContext);
 
   // Autocomplete data
   let [meaningsCategories, setMeaningsCategories] = React.useState([]);
 
   React.useEffect(() => {
-    getLemmataList(setLemmataList);
+    getLemmataList(setLemmataList, user.token);
     getMeaningCategories(setMeaningsCategories);
   }, []);
   

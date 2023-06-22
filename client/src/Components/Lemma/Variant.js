@@ -22,56 +22,37 @@ const Variant = props => {
         setStyle({display: 'none'});
       }}
     >
-      {/*{user.token && (
-        <>
-          <label className={styles.label} htmlFor={"original_"+variant.id}>{i+1}</label>
-          <input
-            className={styles.input}
-            type="text"
-            name={"original_"+variant.id}
-            placeholder="original"
-            value={variant.original}
-            onChange={e => props.updateVariant("original", e.target.value, variant.id)} 
-          />
-          <input
-            className={styles.inputTransliteration}
-            type="text"
-            name={"transliteration_"+variant.id}
-            placeholder="transliteration"
-            value={variant.transliteration}
-            onChange={e => props.updateVariant("transliteration", e.target.value, variant.id)} 
-          />
-        </>
-      )}
-      {!user.token && (<div>{i+1} {variant.original} {variant.transliteration}</div>)} */}
-      <>
-        <label className={styles.label} htmlFor={"original_"+variant.id}>{i+1}</label>
-        <input
-          className={styles.input}
-          style={{fontStyle: (props.language === "akkadian" || 'italic')}}
-          type="text"
-          name={"transliteration_"+variant.id}
-          placeholder={props.language === "akkadian" ? 'normalized' : 'transliteration'}
-          value={variant.transliteration}
-          onChange={e => props.updateVariant("transliteration", e.target.value, variant.id)} 
-        />
-        <input
-          className={styles.input}
-          type="text"
-          name={"original_"+variant.id}
-          placeholder={props.language === "akkadian" ? 'transliteration' : 'original'}
-          value={(variant.original ? variant.original : '')}
-          onChange={e => props.updateVariant("original", e.target.value, variant.id)} 
-        />
-        <input
-          className={styles.inputMeaning}
-          type="text"
-          name={"comment_"+variant.id}
-          placeholder="comment"
-          value={(variant.comment ? variant.comment : '')}
-          onChange={e => props.updateVariant("comment", e.target.value, variant.id)} 
-        />
-      </>
+      <label className={styles.label} htmlFor={"original_"+variant.id}>{i+1}</label>
+      <input
+        style={{
+          display: (user.token || variant.transliteration ? 'inline' : 'none'),
+          fontStyle: (props.language === "akkadian" || 'italic')
+        }}
+        className={styles.input}
+        type="text"
+        name={"transliteration_"+variant.id}
+        placeholder={user.token ? (props.language === "akkadian" ? 'normalized' : 'transliteration') : ''}
+        value={variant.transliteration}
+        onChange={e => props.updateVariant("transliteration", e.target.value, variant.id)} 
+      />
+      <input
+        style={{display: (user.token || variant.original ? 'inline' : 'none')}}
+        className={styles.input}
+        type="text"
+        name={"original_"+variant.id}
+        placeholder={user.token ? (props.language === "akkadian" ? 'transliteration' : 'original') : ''}
+        value={(variant.original ? variant.original : '')}
+        onChange={e => props.updateVariant("original", e.target.value, variant.id)} 
+      />
+      <input
+        style={{display: (user.token || variant.comment ? 'inline' : 'none')}}
+        className={styles.inputMeaning}
+        type="text"
+        name={"comment_"+variant.id}
+        placeholder={user.token ? "comment" : ''}
+        value={(variant.comment ? variant.comment : '')}
+        onChange={e => props.updateVariant("comment", e.target.value, variant.id)} 
+      />
       <div style={{display: (user.token ? 'inline' : 'none')}}>
         <button className={styles.delete} style={style} onClick={() => props.deleteVariant(variant.id)}><IoIosTrash /></button>
       </div>

@@ -24,17 +24,19 @@ if (process.env.LOCAL_DEV === "true") {
 // Asynchronous Query, Returns Promise
 ////////////////////////////////////////////////////////////////////////////////
 
-function waitQuery(query, params=[]) {
-  return new Promise((resolve, reject) => {
-    pool.query(query, params, (error, results) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(results);
-      }
-    });
-  });
-}
+// DEP on 2023-06-21 –CDC
+
+// function waitQuery(query, params=[]) {
+//   return new Promise((resolve, reject) => {
+//     pool.query(query, params, (error, results) => {
+//       if (error) {
+//         reject(error);
+//       } else {
+//         resolve(results);
+//       }
+//     });
+//   });
+// }
 
 ////////////////////////////////////////////////////////////////////////////////
 // LEMMATA LIST
@@ -54,98 +56,146 @@ const getLemmataList = (request, response) => {
 ////////////////////////////////////////////////////////////////////////////////
 
 const addNewLemma = (request, response) => {
-  const token = request.query.token; // Will need this later for authentication
-  const sql = 'INSERT INTO lemmata VALUES (DEFAULT) RETURNING lemma_id';
+  try {
+    const sql = 'INSERT INTO lemmata VALUES (DEFAULT) RETURNING lemma_id';
 
-  pool.query(sql, (error, results) => {
-    if (error) throw error;
-    response.status(201).json(results.rows[0].lemma_id);
-  });
+    pool.query(sql, (error, results) => {
+      if (error) throw error;
+      response.status(201).json(results.rows[0].lemma_id);
+    });
+  } catch (error) {
+    console.log(error);
+    response.status(500).send();
+  }
 };
 
 const getLemmaQuery = require('./queries/getLemma');
 const getLemma = (request, response) => {
+  try {  
+    var lemmaId = request.query.lemmaId;
+
+    // Temporary patch to deal with React Router making lemmaId = null in URL
+    // Needs a proper fix on client side –CDC 2022-11-29
+    if (!lemmaId || lemmaId == "null") {
+      response.status(500);
+      return;
+    }
+
+    // Patch to deal with fake lemma id's for new cross links
+    lemmaId = parseInt(lemmaId);
+
+    getLemmaQuery(pool, lemmaId)
+      .then(lemma => response.status(200).json(lemma))
+      .catch(error => response.status(404).send(error));
   
-  var lemmaId = request.query.lemmaId;
-
-  // Temporary patch to deal with React Router making lemmaId = null in URL
-  // Needs a proper fix on client side –CDC 2022-11-29
-  if (!lemmaId || lemmaId == "null") {
-    response.status(500);
-    return;
+  } catch (error) {
+    console.log(error);
+    response.status(500).send();
   }
-
-  // Patch to deal with fake lemma id's for new cross links
-  lemmaId = parseInt(lemmaId);
-
-  getLemmaQuery(pool, lemmaId)
-    .then(lemma => response.status(200).json(lemma))
-    .catch(error => response.status(404).send(error));
 };
 
 const saveLemmaQuery = require('./queries/saveLemma');
-const saveLemma = ({ body: lemma }, response) => {
-  saveLemmaQuery(pool, lemma)
-    .then(lemma => response.status(200).json(lemma))
-    .catch(error => response.status(500).send(error));
+const saveLemma = (request, response) => {
+  try {
+    const lemma = request.body;
+    const username = request.decoded.username;
+    saveLemmaQuery(pool, lemma, username)
+      .then(lemma => response.status(200).json(lemma))
+      .catch(error => response.status(500).send(error));
+  } catch (error) {
+    response.status(400).send("Error saving lemma");
+  }
 };
 
 const deleteLemma = (request, response) => {
-  const lemmaId = request.query.lemmaId;
+  try {
+    const lemmaId = request.query.lemmaId;
 
-  const sql = `DELETE FROM lemmata WHERE lemma_id = $1;`;
+    const sql = `DELETE FROM lemmata WHERE lemma_id = $1;`;
 
-  const values = [
-    lemmaId,
-  ];
+    const values = [
+      lemmaId,
+    ];
 
-  pool.query(sql, values, (error, results) => {
-    if (error)
-      console.log(error);
-  });
+    pool.query(sql, values, (error, results) => {
+      if (error)
+        console.log(error);
+    });
 
-  response.status(202).json(request.query);
+    response.status(202).json(request.query);
+  } catch (error) {
+    console.log(error);
+    response.status(500).send();
+  }
 };
 
 const checkLemma = (request, response) => {
-  
-  // Protect against sending other fields to the api, SQL injection, etc...
-  if (request.body.field !== 'checked' && request.body.field !== 'attention') {
-    response.status(500);
-    return;
+  try {
+    // Protect against sending other fields to the api, SQL injection, etc...
+    if (request.body.field !== 'checked' && request.body.field !== 'attention') {
+      response.status(500);
+      return;
+    }
+
+    const sql = `UPDATE lemmata SET ${request.body.field} = $2 where lemma_id = $1;`;
+    // const sql = `UPDATE lemmata SET $3 = $2 where lemma_id = $1;`;
+
+    const values = [
+      request.body.lemmaId,
+      request.body.checked,
+    ];
+
+
+    pool.query(sql, values, (error, results) => {
+      if (error)
+        console.log(error);
+    });
+
+    response.status(202).json(request.body);
+  } catch (error) {
+    console.log(error);
+    response.status(500).send();
   }
+};
 
-  const sql = `UPDATE lemmata SET ${request.body.field} = $2 where lemma_id = $1;`;
-  // const sql = `UPDATE lemmata SET $3 = $2 where lemma_id = $1;`;
-
-  const values = [
-    request.body.lemmaId,
-    request.body.checked,
-  ];
-
-
-  pool.query(sql, values, (error, results) => {
-    if (error)
-      console.log(error);
-  });
-
-  response.status(202).json(request.body);
+const getEditHistory = (request, response) => {
+  try {
+    const lemmaId = request.query.lemmaId;
+    console.log('getEditHistory')
+    const sql =  `SELECT * FROM edit_history WHERE lemma_id = $1 ORDER BY timestamp DESC;`;
+    pool.query(sql, [lemmaId], (error, results) => {
+      if (error) {
+        console.log(error);
+        response.status(500);
+      } else {
+        response.status(200).json(results.rows);
+      }
+    });
+  } catch (error) {
+    console.log('Error in getEditHistory with lemmaId: ' + lemmaId, error);
+    response.status(500).send();
+  }
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 // MEANINGS (for linking Quotations to Meanings)
 ////////////////////////////////////////////////////////////////////////////////
 const getMeanings = (request, response) => {
-  const lemmaId = request.query.id;
-  const sql =  `SELECT * FROM meanings WHERE lemma_id = $1;`;
-  pool.query(sql, [lemmaId], (error, results) => {
-    if (error) {
-      console.log(error);
-      response.status(500);
-    } else {
-      response.status(200).json(results.rows);
-    }
-  });
+  try {
+    const lemmaId = request.query.id;
+    const sql =  `SELECT * FROM meanings WHERE lemma_id = $1;`;
+    pool.query(sql, [lemmaId], (error, results) => {
+      if (error) {
+        console.log(error);
+        response.status(500);
+      } else {
+        response.status(200).json(results.rows);
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    response.status(500).send();
+  }
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -159,4 +209,5 @@ module.exports = {
   deleteLemma,
   checkLemma,
   getMeanings,
+  getEditHistory,
 };

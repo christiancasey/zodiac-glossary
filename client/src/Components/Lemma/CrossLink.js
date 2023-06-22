@@ -33,6 +33,15 @@ const CrossLink = props => {
     lemma = getLemmaById(lemmata, props.crossLink);
   }, [props.crossLink, crossLink]);
   
+  function updateCrossLink(event, id) {
+    if (event.target.value) {
+      props.updateCrossLink(event.target.value, id);
+      setCrossLink(event.target.value);
+      // setLemma(getLemmaById(lemmata, event.target.value));
+      lemma = getLemmaById(lemmata, props.crossLink);
+    }
+  }
+
   if (!user.token) {
     if (!lemma || !lemma.published)
       return <></>;
@@ -47,16 +56,7 @@ const CrossLink = props => {
       </div>
     )
   }
-  
-  function updateCrossLink(event, id) {
-    if (event.target.value) {
-      props.updateCrossLink(event.target.value, id);
-      setCrossLink(event.target.value);
-      // setLemma(getLemmaById(lemmata, event.target.value));
-      lemma = getLemmaById(lemmata, props.crossLink);
-    }
-  }
-  
+
   return (
     <div 
       className={styles.crossLinksList}

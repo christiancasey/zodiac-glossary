@@ -8,7 +8,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 // Change token default to null after adding authentication
-export function getLemmataList(setLemmataList, token = true) {
+export function getLemmataList(setLemmataList, token = '') {
   let url = '/api/lemmata/list';
   const params = new URLSearchParams({token});
   url += '?' + params.toString();
@@ -23,14 +23,21 @@ export function getLemmataList(setLemmataList, token = true) {
 }
 
 // Streamlines the use of state functions in components
-export function getLemmataListPromise(setLemmataList, token = true) {
+export function getLemmataListPromise(token = '') {
   let url = '/api/lemmata/list';
   const params = new URLSearchParams({token});
   url += '?' + params.toString();
 
   return new Promise((resolve, reject) => {
 
-    fetch(url)
+    fetch(url, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+      },
+      method: "GET",
+    })
     .then(response => response.json())
     .then(data => data.map(lemma => {
       lemma.last_edit = new Date(lemma.last_edit);
@@ -41,12 +48,17 @@ export function getLemmataListPromise(setLemmataList, token = true) {
   });
 }
 
-export function addNewLemma(setNewLemmaId, token = true) {
+export function addNewLemma(setNewLemmaId, token = '') {
   let url = '/api/lemmata/add';
-  const params = new URLSearchParams({token});
-  url += '?' + params.toString();
 
-  fetch(url)
+  fetch(url, {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token,
+    },
+    method: "GET",
+  })
   .then(response => response.json())
   .then(data => setNewLemmaId(data));
 }
@@ -84,36 +96,44 @@ export function getLemmaFromDB(setLemma, lemmaId) {
   });
 }
 
-export function saveLemmaToDB(setLemma, lemma) {
+export function saveLemmaToDB(setLemma, lemma, token = '') {
   let url = '/api/lemma/save';
 
   fetch(url, {
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token,
     },
     method: "PATCH",
     body: JSON.stringify(lemma),
   })
   .then(response => response.json())
   .then(data => setLemma(data))
-  .catch(data => console.log(data)); // Add error handling that will show the lemma as unsaved if the operation fails
+  .catch(data => {
+    console.log(data);
+    setLemma({});
+  }); // Add error handling that will show the lemma as unsaved if the operation fails
 }
 
-export function deleteLemmaFromDB(lemmaId) {
+export function deleteLemmaFromDB(lemmaId, token = '') {
   let url = '/api/lemma/delete';
   const params = new URLSearchParams({lemmaId});
   url += '?' + params.toString();
 
   fetch(url, {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token,
+    },
     method: "DELETE",
   })
   .then(response => response.json())
-  .then(data => console.log(data))
   .catch(data => console.log(data));
 }
 
-export function checkLemma(lemmaId, checked = false, field = "checked") {
+export function checkLemma(lemmaId, checked = false, field = "checked", token = '') {
   // console.log('checkLemma()', lemmaId, checked);
   
   let url = '/api/lemma/check';
@@ -121,12 +141,68 @@ export function checkLemma(lemmaId, checked = false, field = "checked") {
   fetch(url, {
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token,
     },
     method: "PATCH",
     body: JSON.stringify({lemmaId, checked, field}),
   })
   .then(response => response.json())
-  // .then(data => console.log(data))
   .catch(data => console.error(data)); // Add error handling that will show the lemma as unsaved if the operation fails
 }
+
+export function getEditHistory(lemmaId, token = '') {
+  let url = '/api/lemma/history';
+  const params = new URLSearchParams({lemmaId});
+  url += '?' + params.toString();
+
+  return new Promise((resolve, reject) => {
+    fetch(url, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+      },
+      method: "GET",
+    })
+    .then(response => response.json())
+    .then(data => data.map(edit => {
+      edit.timestamp = new Date(edit.timestamp);
+      return edit;
+    }))
+    .then(data => resolve(data))
+    .catch(error => reject(error));
+  })
+}
+
+// React.useEffect(() => {
+//   getLemmataListPromise(user.token)
+//   .then(lemmata => setLemmata(lemmata))
+//   .catch(error => console.error(error));
+// }, []);
+
+// // Streamlines the use of state functions in components
+// export function getLemmataListPromise(token = '') {
+//   let url = '/api/lemmata/list';
+//   const params = new URLSearchParams({token});
+//   url += '?' + params.toString();
+
+//   return new Promise((resolve, reject) => {
+
+//     fetch(url, {
+//       headers: {
+//         'Accept': 'application/json',
+//         'Content-Type': 'application/json',
+//         'Authorization': 'Bearer ' + token,
+//       },
+//       method: "GET",
+//     })
+//     .then(response => response.json())
+//     .then(data => data.map(lemma => {
+//       lemma.last_edit = new Date(lemma.last_edit);
+//       return lemma;
+//     }))
+//     .then(data => resolve(data))
+//     .catch(error => reject(error));
+//   });
+// }
