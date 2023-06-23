@@ -81,7 +81,7 @@ const Recents = props => {
     getLemmataListPromise(user.token)
     .then(lemmata => setLemmata(lemmata))
     .catch(error => console.error(error));
-  }, []);
+  }, [user]);
 
   let today = new Date();
   let zodiacStart = new Date("2023-01-01 10:00");

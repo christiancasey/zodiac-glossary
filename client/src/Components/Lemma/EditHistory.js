@@ -10,7 +10,8 @@ const EditHistory = props => {
   const lemma = props.lemma;
   const [edits, setEdits] = React.useState([]);
   const {user} = React.useContext(UserContext);
-  
+
+  const [showAll, setShowAll] = React.useState(false);
 
   React.useEffect(() => {
     if (user.token) {
@@ -31,6 +32,10 @@ const EditHistory = props => {
       <h3>Edit History</h3>
       <table><tbody>
       {edits.map((edit, i) => {
+        if (!showAll && i >= 5) {
+          return;
+        }
+
         return (
           <tr key={edit.id}>
             <td>
@@ -46,18 +51,7 @@ const EditHistory = props => {
         )
       })}
       </tbody></table>
-
-      {/* {props.externalLinks.map((externalLink, i) => {
-        return (
-          <ExternalLink 
-            key={externalLink.id} 
-            externalLink={externalLink} 
-            i={i} 
-            updateExternalLink={props.updateExternalLink}
-            deleteExternalLink={props.deleteExternalLink}
-          />
-        )
-      })} */}
+      {showAll || edits.length <= 5 || <button className={styles.sortButtons} onClick={e => setShowAll(true)}>Show all...</button>}
     </div>
   );
 };

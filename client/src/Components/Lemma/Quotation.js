@@ -12,6 +12,9 @@ import styles from './Lemma.module.css';
 const Quotation = props => {
   const quotationIndex = props.quotationIndex;
   const quotation = props.quotation;
+  const meaning = props.meanings.find(meaning => meaning.id === quotation.meaning_id);
+  const meaningString = meaning ? meaning.value + (meaning.category ? ' (' + meaning.category + ')' : '') : '';
+  
   const {user} = React.useContext(UserContext);
   
   const [style, setStyle] = React.useState({display: 'none'});
@@ -76,8 +79,16 @@ const Quotation = props => {
           <div className={styles.label}>{quotation.translation}</div>
         </div>
         <div className={styles.row}>
+          <div className={styles.label}>Meaning</div>
+          <div className={styles.label}>{meaningString}</div>
+        </div>
+        <div className={styles.row}>
           <div className={styles.label}>Source</div>
           <div className={styles.label}>{quotation.source}</div>
+        </div>
+        <div className={styles.row}>
+          <div className={styles.label}>Line/Column</div>
+          <div className={styles.label}>{quotation.line}</div>
         </div>
         <div className={styles.row}>
           <div className={styles.label}>Genre</div>
@@ -100,6 +111,14 @@ const Quotation = props => {
               </a>
             ) : quotation.publication }
           </div>
+        </div>
+        <div className={styles.row}>
+          <div className={styles.label}>Page Number</div>
+          <div className={styles.label}>{quotation.page}</div>
+        </div>
+        <div className={styles.row}>
+          <div className={styles.label}>Comment</div>
+          <div className={styles.label}>{quotation.comment}</div>
         </div>
       </div>
     );

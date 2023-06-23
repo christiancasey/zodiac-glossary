@@ -5,7 +5,7 @@ const auth = async (request, response, next) => {
 		const token = request.header('Authorization').replace('Bearer ', '');
 		const decoded = jwt.verify(token, 'animalitos');
 
-		console.log('Authentication middleware', decoded);
+		// console.log('Authentication middleware', decoded);
 
 		request.token = token;
 		request.decoded = decoded;
