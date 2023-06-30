@@ -33,7 +33,7 @@ const EditHistory = props => {
       <table><tbody>
       {edits.map((edit, i) => {
         if (!showAll && i >= 5) {
-          return;
+          return null;
         }
 
         return (
