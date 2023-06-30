@@ -12,6 +12,28 @@ const Meaning = props => {
   
   const [style, setStyle] = React.useState({display: 'none'});
   
+  if (user && !user.token) {
+    return (
+      <div 
+        className={styles.row}
+      >
+        <h4>{i+1}</h4>
+        <div className={styles.row}>
+          <div className={styles.label}>Meaning</div>
+          <div className={styles.label}>{meaning.value}</div>
+        </div>
+        <div className={styles.row}>
+          <div className={styles.label}>Category</div>
+          <div className={styles.label}>{meaning.category}</div>
+        </div>
+        <div className={styles.row}>
+          <div className={styles.label}>Comment</div>
+          <div className={styles.label}>{meaning.comment}</div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div 
       className={styles.row}

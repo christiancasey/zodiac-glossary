@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './SignUp.module.css';
+import styles from '../Content.module.css'
 
 // Things have changed on this branch!
 

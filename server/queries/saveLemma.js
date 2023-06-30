@@ -261,6 +261,10 @@ const saveLemma = async (pool, lemma, username = '') => {
         continue;
       }
 
+      if (!crossLink.link || !crossLink.id) {
+        continue;
+      }
+
       // Prevent crash where user accientally deletes id in UI and triggers a foreign key error
       if (!crossLink.lemmaId) {
         console.log('Invalid lemmaId in crosslink error prevention');

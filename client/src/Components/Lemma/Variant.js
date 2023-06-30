@@ -11,6 +11,28 @@ const Variant = props => {
   const {user} = React.useContext(UserContext);
   
   const [style, setStyle] = React.useState({display: 'none'});
+
+  if (user && !user.token) {
+    return (
+      <div 
+        className={styles.row}
+      >
+        <h4>{i+1}</h4>
+        <div className={styles.row}>
+          <div className={styles.label}>{props.language === "akkadian" ? 'Normalized' : 'Transliteration'}</div>
+          <div className={styles.label} style={{fontStyle: (props.language === "akkadian" || 'italic')}}>{variant.transliteration}</div>
+        </div>
+        <div className={styles.row}>
+          <div className={styles.label}>{props.language === "akkadian" ? 'Transliteration' : 'Original'}</div>
+          <div className={styles.label}>{variant.original}</div>
+        </div>
+        <div className={styles.row}>
+          <div className={styles.label}>Comment</div>
+          <div className={styles.label}>{variant.comment}</div>
+        </div>
+      </div>
+    )
+  }
   
   return (
     <div 

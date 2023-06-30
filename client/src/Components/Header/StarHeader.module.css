@@ -37,11 +37,12 @@
   margin: -65vw 0 0 -108vw;
   opacity: 0.6;
   filter: drop-shadow(0 0 5px #FFD4);  /* blur on stars themselves drop-shadow(offset-x offset-y blur-radius color) */
+
+  /* DISABLED because it eats the processor on some machines */
   /* -webkit-animation: starSpin infinite 12000s linear;
   -moz-animation: starSpin infinite 12000s linear;
   animation: starSpin infinite 12000s linear; */
   
-  /* float: left; */
 }
 
 .zodiacLogotype {
@@ -80,10 +81,10 @@
   height: 2vw;
   width: 100vw;
   background: linear-gradient(0deg, #2D3B62AA, #2D3B6200);
-  /* background-color: linear-gradient(0deg, #F00, #FF0); */
-  /* background-color: #2D3B6233; */
-  z-index: 1;
-  
+  /* background: white; */
+  z-index: -1;
+  position: relative;
+  top: 0vw;
 }
 
 .playPause, .home {
@@ -259,3 +260,6 @@ h1, h2, h3, h4 {
 @-webkit-keyframes starSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 @-moz-keyframes starSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 @keyframes starSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+
+@keyframes shrink { from { height: 18vw } to { height: 4vw } }

@@ -2,7 +2,7 @@
   position: fixed;
   width: 100vw;
   height: calc(100% - 20vw);
-  top: 20vw;
+  /* top: 20vw; */
   overflow: scroll;
   
   padding: 0.5vw;
@@ -99,3 +99,53 @@ ol {
 @-moz-keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+
+.form {
+  display: table;
+  margin: 0;
+}
+.row {
+  font-size: inherit;
+  display: table-row;
+  margin: 0;
+  margin-top: 5px;
+}
+.label {
+  display: table-cell;
+  padding: 0.5vw 1vw 0 0;
+  vertical-align: top;
+}
+.input {
+  font: 1.2vw book-antiqua, 'Book Antiqua', serif;
+  display: table-cell;
+  width: 80vw;
+  background-color: #2D3B6288;
+  color: #FFDC;
+  border: 0.1vw solid #FFD8;
+  border-radius: 0.5vw;
+  margin: 0.2vw;
+  padding: 0.2vw;
+  outline: none;
+  float: left;
+  height: 2vw;
+  /* margin-top: 5px;
+  margin-right: 5px; */
+}
+
+.warning {
+  margin-top: 5px;
+  color: red;
+}
+
+.signUp {
+  margin-top: 10px;
+}
+
+a {
+  text-decoration: underline;
+}
+
+p {
+  margin: 0 !important;
+  padding: 0;
+}
