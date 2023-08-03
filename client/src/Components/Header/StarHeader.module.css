@@ -50,6 +50,8 @@
   width: 100vw;
   text-align: center;
   margin-top: 4vw;
+  margin-left: 0;
+  padding-left: 0;
   
   font: 14vw dual, "Dual", "Futura", sans-serif;
   letter-spacing: 0.2em;
@@ -76,8 +78,48 @@
   animation-delay: 0.6s;
 }
 
+.titleThe, .titleGlossary {
+  font: 2vw book-antiqua, 'Book Antiqua', serif;
+  font-style: italic;
+  letter-spacing: 0.1em;
+  color: #FFD;
+  text-shadow: 0 0 5px #2D3B62FF;
+
+  /* fadeIn animation */
+  opacity: 0;
+	-webkit-animation: fadeIn ease-in-out 1;
+	-moz-animation: fadeIn ease-in-out 1;
+	animation: fadeIn ease-in-out 1;
+
+	-webkit-animation-fill-mode: forwards;
+	-moz-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
+
+	-webkit-animation-duration: 0.4s;
+	-moz-animation-duration: 0.4s;
+	animation-duration: 0.4s;
+  
+  -webkit-animation-delay: 1.8s;
+  -moz-animation-delay: 1.8s;
+  animation-delay: 1.8s;
+}
+
+.titleThe {
+  position: absolute;
+  width: 100vw;
+  text-align: left;
+  padding: 4vw 0 0 9vw;
+}
+
+.titleGlossary {
+  position: absolute;
+  width: 100vw;
+  text-align: right;
+  padding: 12vw 7vw 0 0;
+}
+
 .headerBodyGradient {
-  position: fixed;
+  position: static;
   height: 2vw;
   width: 100vw;
   background: linear-gradient(0deg, #2D3B62AA, #2D3B6200);

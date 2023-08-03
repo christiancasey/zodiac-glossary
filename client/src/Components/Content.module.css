@@ -149,3 +149,9 @@ p {
   margin: 0 !important;
   padding: 0;
 }
+
+/* Need to figure out how to make checkboxes adjust to screen width */
+/* Too small on huge screens, too big on mobile */
+.checkbox {
+  /* transform: scale(1); */
+}

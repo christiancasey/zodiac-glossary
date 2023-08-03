@@ -196,7 +196,7 @@ const BasicInfo = props => {
         {user.token && (<tr>
           <td>
             <label className={styles.label} htmlFor="comment">
-              Comment
+              Internal Comment
             </label>
           </td>
           <td>

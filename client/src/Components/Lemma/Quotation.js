@@ -67,12 +67,12 @@ const Quotation = props => {
       <div className={styles.quotationsList}>
         <h4>{quotationIndex+1}</h4>
         <div className={styles.row}>
-          <div className={styles.label}>Original</div>
-          <div className={styles.label}>{quotation.original}</div>
+          <div className={styles.label}>{props.language === "akkadian" ? 'Normalized' : 'Transliteration'}</div>
+          <div className={styles.label}><span style={{fontStyle: 'italic'}}>{quotation.transliteration}</span></div>
         </div>
         <div className={styles.row}>
-          <div className={styles.label}>Transliteration</div>
-          <div className={styles.label}><span style={{fontStyle: 'italic'}}>{quotation.transliteration}</span></div>
+          <div className={styles.label}>{props.language === "akkadian" ? 'Transliteration' : 'Original'}</div>
+          <div className={styles.label}>{quotation.original}</div>
         </div>
         <div className={styles.row}>
           <div className={styles.label}>Translation</div>

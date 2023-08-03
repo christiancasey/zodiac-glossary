@@ -6,6 +6,14 @@ const replacements = [
   //   replacement: 'i',
   // },
   {
+    original: /[\-–—]/g,
+    replacement: '',
+  },
+  {
+    original: /[ꜣꜥ]/g,
+    replacement: 'a',
+  },
+  {
     original: /[᾽ι᾿῀῁῍῎῏῝῞῟῭΅`´῾]/g,
     replacement: '',
   },

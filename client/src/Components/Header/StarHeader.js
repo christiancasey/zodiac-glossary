@@ -94,9 +94,11 @@ const StarHeader = () => {
           alt="Star chart with zodiac constellations"
           onClick={playPause}
         />
+        <p className={styles.titleThe}>The</p>
         <h1 className={styles.zodiacLogotype}>
           Zodiac
         </h1>
+        <p className={styles.titleGlossary}>Glossary</p>
       </header>
       <div className={styles.headerBodyGradient}></div>
       <div className={styles.bodyBackground}></div>

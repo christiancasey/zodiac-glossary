@@ -43,10 +43,11 @@ const Lemma = props => {
     // On refresh or load from URL, lemmaId in the route gets changed to null by React Router
     // This fixes it by temporarily saving the most recent lemma id and using that when the route has null
     if (isNaN(lemmaId)) {
-        lemmaId = localStorage.getItem('currentLemmaId');
-        if (lemmaId) {
-          navigate('/' + lemmaId + location.search);
-        }
+      navigate('/' + (location.search || ''));
+        // lemmaId = localStorage.getItem('currentLemmaId');
+        // if (lemmaId) {
+        //   navigate('/' + lemmaId + location.search);
+        // }
     } else {
       getLemmaFromDB(setLemma, lemmaId);
       localStorage.setItem('currentLemmaId', lemmaId);
