@@ -10,10 +10,6 @@ const replacements = [
     replacement: '',
   },
   {
-    original: /[ꜣꜥ]/g,
-    replacement: 'a',
-  },
-  {
     original: /[᾽ι᾿῀῁῍῎῏῝῞῟῭΅`´῾]/g,
     replacement: '',
   },
@@ -85,7 +81,11 @@ const softenString = string => {
 
   softString = softString.trim();
   softString = softString.toLowerCase();
-  softString = softString.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+  softString = softString.normalize('NFD');
+
+  // Can't remember why I put this here, but it removes combining diacrtics
+  // I've commented it out because it matches š to s – CDC 2023-08-22
+  // softString = softString.replace(/[\u0300-\u036f]/g, ""); 
   
   for (let i = 0; i < replacements.length; i++) {
     softString = softString.replace(replacements[i].original, replacements[i].replacement);
