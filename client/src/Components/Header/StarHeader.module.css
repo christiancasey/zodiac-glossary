@@ -4,7 +4,7 @@
   position: sticky;
   top: 0;
   width: 100vw;
-  height: 18vw;
+  /* height: 18vw; */
   background: linear-gradient(0deg, #2D3B62FF, #28365DFF);
   overflow: hidden;
   overflow: visible;
@@ -115,18 +115,17 @@
   position: absolute;
   width: 100vw;
   text-align: right;
-  padding: 12vw 7vw 0 0;
+  padding: 12vw 6vw 0 0;
 }
 
 .headerBodyGradient {
-  position: static;
   height: 2vw;
   width: 100vw;
   background: linear-gradient(0deg, #2D3B62AA, #2D3B6200);
   /* background: white; */
   z-index: -1;
-  position: relative;
-  top: 0vw;
+  position: absolute;
+  top: 18vw;
 }
 
 .playPause, .home {

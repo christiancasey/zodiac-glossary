@@ -2,7 +2,8 @@
   position: fixed;
   width: 100vw;
   height: calc(100% - 20vw);
-  /* top: 20vw; */
+  top: 18vw;
+  /* margin-top: 18vw; */
   overflow: scroll;
   
   padding: 0.5vw;

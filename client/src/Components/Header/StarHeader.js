@@ -1,5 +1,5 @@
 import React from 'react';
-// import ReactTooltip from 'react-tooltip'; // Maybe add a tooltip to the pause button
+import ReactTooltip from 'react-tooltip';
 
 import { useNavigate } from "react-router-dom";
 // import { IoIosPlay, IoIosPause, } from 'react-icons/io';
@@ -98,7 +98,16 @@ const StarHeader = () => {
         <h1 className={styles.zodiacLogotype}>
           Zodiac
         </h1>
-        <p className={styles.titleGlossary}>Glossary</p>
+        <p className={styles.titleGlossary}>
+          Glossary
+          <sup
+            data-tip='This project is currently in a beta stage. Please forgive any errors.'
+            data-for="beta"
+          >
+            β
+          </sup>
+          <ReactTooltip id="beta" type="light" html={true} />
+        </p>
       </header>
       <div className={styles.headerBodyGradient}></div>
       <div className={styles.bodyBackground}></div>

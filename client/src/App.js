@@ -25,7 +25,7 @@ function App() {
         <StarHeader />
         <Routes>
           <Route path="/" element={<Content />}>
-            {/* <Route className={styles.lemma} index element={<Lemma />} /> */}
+            <Route className={styles.lemma} index element={<Lemma />} />
             <Route className={styles.lemma} path=":lemmaId" element={<Lemma />} />
           </Route>
           <Route path="/signup" element={<SignUp />} />

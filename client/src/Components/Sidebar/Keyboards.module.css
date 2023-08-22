@@ -9,8 +9,9 @@
   margin: auto;
   left: 30vw;
   top: 1vw;
-  width: 60vw;
+  width: 62vw;
   height: 30vw;
+  z-index: 1;
   
   
   overflow: scroll;

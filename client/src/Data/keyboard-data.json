@@ -10,9 +10,20 @@
     ]
   },
   {
+    "id": 10,
+    "script": "egyptian_trans",
+    "scriptLabel": "Egyptian Translit",
+    "keyboardType": "standard",
+    "keys": [
+      [ "ḳ", "w", "e", "r", "t", "y", "ỉ", "q", "p" ],
+      [ "ꜥ", "ꜣ", "s", "š", "d", "ḏ", "f", "g", "h", "ḥ", "j"], 
+      [ "z", "ḫ", "ẖ", "ś", "ṱ", "b", "n", "m", "k", "l" ] 
+    ]
+  },
+  {
     "id": 1,
     "script": "egyptian",
-    "scriptLabel": "Egyptian",
+    "scriptLabel": "Hieroglyphic",
     "keyboardType": "multipage",
     "pages": [
       {

@@ -48,6 +48,9 @@ const Lemma = props => {
         // if (lemmaId) {
         //   navigate('/' + lemmaId + location.search);
         // }
+        // else {
+        //   navigate('/' + (location.search || ''));
+        // }
     } else {
       getLemmaFromDB(setLemma, lemmaId);
       localStorage.setItem('currentLemmaId', lemmaId);
