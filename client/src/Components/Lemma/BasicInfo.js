@@ -17,6 +17,8 @@ const BasicInfo = props => {
   if (!lemma.editor || !lemma.editor.trim()) {
     lemma.editor = (user.user ? user.user.username : '');
   }
+
+  console.log(lemma)
   
   return (
     <div className={user.token ? styles.basic : styles.basicPublic}>
@@ -28,7 +30,6 @@ const BasicInfo = props => {
         </tr> */}
         {/* comment out the above when routing is finished */}
 
-        {/* Temporary: Editor field. Delete after user authentication is ready */}
         {user.token && (
         <tr>
         <td>
@@ -53,7 +54,6 @@ const BasicInfo = props => {
             />
           </td>
         </tr>)}
-        {/* Temporary: Delete when user authentication is working */}
 
         <tr style={{display: (user.token ? 'table-row' : 'none')}}>
           <td>
@@ -72,6 +72,48 @@ const BasicInfo = props => {
               type="checkbox"
               name="published"
               checked={lemma.published}
+              onChange={onChange}
+            />
+          </td>
+        </tr>
+        <tr style={{display: (user.token ? 'table-row' : 'none')}}>
+          <td>
+            <label
+              className={styles.label}
+              htmlFor="attention"
+              data-tip="Lemma contains errors."
+              data-for="attention"
+            >
+              Attention
+            </label>
+            <ReactTooltip id="attention" type="light" html={true} />
+          </td>
+          <td>
+            <input
+              type="checkbox"
+              name="attention"
+              checked={lemma.attention}
+              onChange={onChange}
+            />
+          </td>
+        </tr>
+        <tr style={{display: (user.token ? 'table-row' : 'none')}}>
+          <td>
+            <label
+              className={styles.label}
+              htmlFor="checked"
+              data-tip="Lemma has been checked by a 2nd editor."
+              data-for="checked"
+            >
+              Checked
+            </label>
+            <ReactTooltip id="checked" type="light" html={true} />
+          </td>
+          <td>
+            <input
+              type="checkbox"
+              name="checked"
+              checked={lemma.checked}
               onChange={onChange}
             />
           </td>
