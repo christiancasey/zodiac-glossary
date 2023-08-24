@@ -227,11 +227,11 @@ const Quotation = props => {
           className={styles.label}
           htmlFor={"line_"+quotation.id}
           data-tip="Part of source text where quote is found<br />Perhaps a line or column number"
-          data-for={"line_"+quotation.id}
+          data-for={"line_"+quotation.id+"-tooltip"}
         >
           Line/Column
         </label>
-        <ReactTooltip id={"line_"+quotation.id} type="light" html={true} />
+        <ReactTooltip id={"line_"+quotation.id+"-tooltip"} type="light" html={true} />
         <input
           type="text"
           className={styles.inputWide}

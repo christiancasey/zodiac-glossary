@@ -97,6 +97,25 @@ const LemmataList = props => {
     addNewLemma(props.setSelectedLemmaId, user.token);
     props.setChanged(true);
   };
+
+  // Keyboard shortcut
+  const handleKeyPressNew = e => {
+    // Meta keys
+    if (e.altKey || e.metaKey || e.ctrlKey) {
+      // New Lemma shortcuts (ctrl+n and cmd+n)
+      if (e.key === 'n') {
+        e.preventDefault();
+        addNewLemma(props.setSelectedLemmaId, user.token);
+        props.setChanged(true);
+      }
+    }
+  };
+  React.useEffect(() => {
+    document.addEventListener('keydown', handleKeyPressNew);
+    return () => {
+      document.removeEventListener('keydown', handleKeyPressNew);
+    };
+  });
   
   return (
     <>

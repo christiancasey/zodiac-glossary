@@ -51,6 +51,7 @@ const Meaning = props => {
         className={styles.inputMeaning}
         type="text"
         name={"meaning_"+meaning.id}
+        id={"meaning_"+meaning.id}
         placeholder="meaning"
         value={meaning.value}
         onChange={e => props.updateMeaning('value', e.target.value, meaning.id)}
@@ -60,6 +61,7 @@ const Meaning = props => {
         className={styles.inputMeaning}
         type="text"
         name={"category_"+meaning.id}
+        id={"category_"+meaning.id}
         placeholder="category"
         value={meaning.category}
         onChange={e => props.updateMeaning('category', e.target.value, meaning.id)}
@@ -78,6 +80,7 @@ const Meaning = props => {
         className={styles.inputMeaning}
         type="text"
         name={"comment_"+meaning.id}
+        id={"comment_"+meaning.id}
         placeholder={user.token ? "comment" : ''}
         value={(meaning.comment ? meaning.comment : '')}
         onChange={e => props.updateMeaning('comment', e.target.value, meaning.id)}

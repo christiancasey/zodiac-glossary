@@ -13,10 +13,10 @@ const Dropdown = ({ name, label, value, options, onChange }) => {
     return (
       <tr>
         <td>
-          <label className={styles.label} htmlFor={"dropdown_"+label}>{label}</label>
+          <div className={styles.label} htmlFor={"dropdown_"+label}>{label}</div>
         </td>
         <td>
-          <div>{options.filter(option => option.value === value)[0].label}</div>
+          <div id={"dropdown_"+label}>{options.filter(option => option.value === value)[0].label}</div>
         </td>
       </tr>
     );
@@ -28,7 +28,7 @@ const Dropdown = ({ name, label, value, options, onChange }) => {
         <label className={styles.label} htmlFor={"dropdown_"+label}>{label}</label>
       </td>
       <td>
-        <select className={styles.input} name={name} value={value} onChange={onChange}>
+        <select className={styles.input} name={name} id={"dropdown_"+label} value={value} onChange={onChange}>
           {options.map(option => {
             // Create an empty default for new data
             if (!option.value)

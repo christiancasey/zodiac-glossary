@@ -58,6 +58,7 @@ const LogIn = props => {
             <input
               id="username"
               name="username"
+              autoComplete="username"
               className={styles.input}
               type="text"
               placeholder="Username..."

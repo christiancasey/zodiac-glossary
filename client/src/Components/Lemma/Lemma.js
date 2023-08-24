@@ -77,7 +77,7 @@ const Lemma = props => {
     return () => {
       document.removeEventListener('keydown', handleKeyPress);
     };
-  });
+  }, [handleKeyPress]);
 
   const onChange = e => {
     if (e.target.type === "checkbox") {

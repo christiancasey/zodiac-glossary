@@ -99,14 +99,13 @@ const CrossLink = props => {
         </datalist>
       </div>
       <div className={styles.row}>
-        <label
+        <div
           className={styles.label}
-          htmlFor={"crossLink_sample_"+i}
         >
           Sample Link
-        </label>
+        </div>
         {lemma ? 
-          <QueryNavLink className={styles.label} to={'/'+crossLink}>
+          <QueryNavLink className={styles.label} to={'/'+crossLink}  target="_blank" rel="noopener noreferrer">
             <>&nbsp;{lemma.transliteration} | {lemma.original} | {lemma.primary_meaning} <IoIosOpen /></>
           </QueryNavLink>
         : <> | | </>}

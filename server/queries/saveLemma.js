@@ -370,7 +370,7 @@ const saveLemma = async (pool, lemma, username = '') => {
         VALUES ($1, $2, (to_timestamp($3 / 1000.0)))
       RETURNING lemma_id;
     `;
-
+    
     const values = [
       lemma.lemmaId,
       username,
