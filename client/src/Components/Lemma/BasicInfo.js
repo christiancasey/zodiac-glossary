@@ -13,24 +13,91 @@ const BasicInfo = props => {
   let onChange = props.onChange;
   const {user} = React.useContext(UserContext);
 
+  // Public view
+  if (!user.token) {
+    return (
+      <div className={styles.basicPublic}>
+        <h3>Basic</h3>
+        <table><tbody>
+          <Dropdown
+            name="language"
+            label="Language"
+            value={lemma.language}
+            options={languageOptions}
+            onChange={onChange} 
+          />
+          <Dropdown
+            name="partOfSpeech"
+            label="Part of Speech"
+            value={lemma.partOfSpeech}
+            options={partOfSpeechOptions}
+            onChange={onChange} 
+          />
+          <tr>
+            <td>
+              <div className={styles.label}>{lemma.language === "akkadian" ? 'Normalized' : 'Transliteration'}</div>
+            </td>
+            <td>
+              <div style={{fontStyle: 'italic'}}>{lemma.transliteration}</div>
+            </td>
+          </tr>
+          {lemma.language === "akkadian" && (<tr>
+            <td>
+              <div className={styles.label}>Literal Translation</div>
+            </td>
+            <td>
+              <div>{lemma.literal_translation2}</div>
+            </td>
+          </tr>)}
+          <tr>
+            <td>
+              <div className={styles.label}>{lemma.language === "akkadian" ? 'Transliteration' : 'Original'}</div>
+            </td>
+            <td>
+              <div>{lemma.original}</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div className={styles.label}>Literal Translation</div>
+            </td>
+            <td>
+              <div>{lemma.translation}</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div className={styles.label}>Primary Meaning</div>
+            </td>
+            <td>
+              <div>{lemma.primary_meaning}</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div className={styles.label}></div>
+            </td>
+            <td>
+              <div></div>
+            </td>
+          </tr>
+        </tbody></table>
+      </div>
+    );
+  }
+
   // If the editor field is blank, put in the username
   if (!lemma.editor || !lemma.editor.trim()) {
     lemma.editor = (user.user ? user.user.username : '');
   }
   
+  // Editor view
   return (
-    <div className={user.token ? styles.basic : styles.basicPublic}>
+    <div className={styles.basic}>
       <h3>Basic</h3>
       <table><tbody>
-        {/* <tr>
-          <td><label className={styles.label} htmlFor="lemmaId">Lemma ID</label></td>
-          <td><input className={styles.input} type="text" name="lemmaId" placeholder="0" value={lemma.lemmaId} onChange={(onChange)} disabled={true} /></td>
-        </tr> */}
-        {/* comment out the above when routing is finished */}
-
-        {user.token && (
         <tr>
-        <td>
+          <td>
             <label
               className={styles.label}
               htmlFor="editor"
@@ -52,9 +119,9 @@ const BasicInfo = props => {
               onChange={onChange}
             />
           </td>
-        </tr>)}
+        </tr>
 
-        <tr style={{display: (user.token ? 'table-row' : 'none')}}>
+        <tr>
           <td>
             <label
               className={styles.label}
@@ -76,7 +143,7 @@ const BasicInfo = props => {
             />
           </td>
         </tr>
-        <tr style={{display: (user.token ? 'table-row' : 'none')}}>
+        <tr>
           <td>
             <label
               className={styles.label}
@@ -98,7 +165,7 @@ const BasicInfo = props => {
             />
           </td>
         </tr>
-        <tr style={{display: (user.token ? 'table-row' : 'none')}}>
+        <tr>
           <td>
             <label
               className={styles.label}
@@ -157,7 +224,6 @@ const BasicInfo = props => {
               value={lemma.transliteration}
               onChange={onChange}
             />)}
-            {!user.token && (<div style={{fontStyle: 'italic'}}>{lemma.transliteration}</div>)}
           </td>
         </tr>
         {lemma.language === "akkadian" && (<tr>
@@ -176,7 +242,6 @@ const BasicInfo = props => {
               value={lemma.literal_translation2}
               onChange={onChange}
             />)}
-            {!user.token && (<div>{lemma.literal_translation2}</div>)}
           </td>
         </tr>)}
         <tr>
@@ -201,7 +266,6 @@ const BasicInfo = props => {
               value={lemma.original}
               onChange={onChange}
             />)}
-            {!user.token && (<div>{lemma.original}</div>)}
           </td>
         </tr>
         <tr>
@@ -239,7 +303,6 @@ const BasicInfo = props => {
               value={lemma.primary_meaning}
               onChange={onChange}
             />)}
-            {!user.token && (<div>{lemma.primary_meaning}</div>)}
           </td>
         </tr>
         {user.token && (<tr>

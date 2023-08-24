@@ -6,6 +6,7 @@ function LanguageItem(props) {
     <li className={styles.lemmaList}>
       <input 
         type="checkbox"
+        id={"language-selection-"+props.language.id}
         className={styles.checkbox}
         checked={props.language.active}
         onChange={() => props.selectLanguage(props.language.id)}

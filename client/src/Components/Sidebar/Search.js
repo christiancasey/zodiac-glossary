@@ -39,6 +39,7 @@ const Search = props => {
     <>
       <h2>Search</h2>
       <input
+        id="search"
         className={styles.inputSearch}
         type="text"
         placeholder="lemma..."

@@ -44,6 +44,7 @@ const DeleteLemma = props => {
         <div>
           <input
             type="text"
+            id="delete-confirm"
             className={styles.inputDelete}
             value={deleteInput}
             onChange={onChange}
