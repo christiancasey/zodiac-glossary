@@ -56,6 +56,7 @@ const LogIn = props => {
           <td><label className={styles.label} htmlFor="username">Username</label></td>
           <td>
             <input
+              id="username"
               name="username"
               className={styles.input}
               type="text"
@@ -69,6 +70,7 @@ const LogIn = props => {
           <td><label className={styles.label} htmlFor="password">Password</label></td>
           <td>
             <input
+              id="password"
               name="password"
               className={styles.input}
               type="password"

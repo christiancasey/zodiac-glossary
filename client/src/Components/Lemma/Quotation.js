@@ -141,15 +141,16 @@ const Quotation = props => {
           className={styles.label}
           htmlFor={"transliteration_"+quotation.id}
           data-tip="Akkadian: (normalized) transcription<br />Egyptian: Egyptological transliteration<br />Other: Roman transliteration"
-          data-for={"phonetic_"+quotation.id}
+          data-for={"phonetic_"+quotation.id+"-tooltip"}
         >
           {props.language === "akkadian" ? 'Normalized' : 'Transliteration'}
         </label>
-        <ReactTooltip id={"phonetic_"+quotation.id} type="light" html={true} />
+        <ReactTooltip id={"phonetic_"+quotation.id+"-tooltip"} type="light" html={true} />
         <textarea
           className={styles.textareaWide}
           style={{fontStyle: (props.language === "akkadian" || 'italic')}}
           name={"transliteration_"+quotation.id}
+          id={"transliteration_"+quotation.id}
           placeholder={props.language === "akkadian" ? 'normalized' : 'transliteration'}
           value={quotation.transliteration}
           onChange={e => props.updateQuotation("transliteration", e.target.value, quotation.id)} 
@@ -160,14 +161,15 @@ const Quotation = props => {
           className={styles.label}
           htmlFor={"original_"+quotation.id}
           data-tip="Akkadian: transliteration<br />Egyptian: hieroglyphic<br />Other: original text (Unicode)"
-          data-for={"original_"+quotation.id}
+          data-for={"original_"+quotation.id+"-tooltip"}
         >
           {props.language === "akkadian" ? 'Transliteration' : 'Original'}
         </label>
-        <ReactTooltip id={"original_"+quotation.id} type="light" html={true} />
+        <ReactTooltip id={"original_"+quotation.id+"-tooltip"} type="light" html={true} />
         <textarea
           className={styles.textareaWide}
           name={"original_"+quotation.id}
+          id={"original_"+quotation.id}
           placeholder={props.language === "akkadian" ? 'transliteration' : 'original'}
           value={quotation.original}
           onChange={e => props.updateQuotation("original", e.target.value, quotation.id)} 
@@ -178,6 +180,7 @@ const Quotation = props => {
         <textarea
           className={styles.textareaWide}
           name={"translation_"+quotation.id}
+          id={"translation_"+quotation.id}
           placeholder="original"
           value={quotation.translation}
           onChange={e => props.updateQuotation("translation", e.target.value, quotation.id)} 
@@ -188,6 +191,7 @@ const Quotation = props => {
         <select
           className={styles.inputWide}
           name={"meaning_"+quotation.id}
+          id={"meaning_"+quotation.id}
           value={(quotation.meaning_id ? quotation.meaning_id : 0)}
           // onChange={e => updateMeaning(e)}
           onChange={e => props.updateQuotation("meaning_id", e.target.value, quotation.id)}
@@ -206,6 +210,7 @@ const Quotation = props => {
           className={styles.inputWide}
           type="text"
           name={"source_"+quotation.id}
+          id={"source_"+quotation.id}
           placeholder="source"
           value={quotation.source}
           onChange={e => setSource(e)} 
@@ -231,6 +236,7 @@ const Quotation = props => {
           type="text"
           className={styles.inputWide}
           name={"line_"+quotation.id}
+          id={"line_"+quotation.id}
           placeholder="line or column"
           value={quotation.line}
           onChange={e => props.updateQuotation("line", e.target.value, quotation.id)} 
@@ -242,6 +248,7 @@ const Quotation = props => {
           className={styles.inputWide}
           type="text"
           name={"genre_"+quotation.id}
+          id={"genre_"+quotation.id}
           placeholder="genre"
           value={quotation.genre}
           onChange={e => props.updateQuotation("genre", e.target.value, quotation.id)}
@@ -259,6 +266,7 @@ const Quotation = props => {
           className={styles.inputWide}
           type="text"
           name={"provenance_"+quotation.id}
+          id={"provenance_"+quotation.id}
           placeholder="provenance"
           value={quotation.provenance}
           onChange={e => props.updateQuotation("provenance", e.target.value, quotation.id)} 
@@ -276,6 +284,7 @@ const Quotation = props => {
           className={styles.inputWide}
           type="text"
           name={"date_"+quotation.id}
+          id={"date_"+quotation.id}
           placeholder="date"
           value={quotation.date}
           onChange={e => props.updateQuotation("date", e.target.value, quotation.id)} 
@@ -287,6 +296,7 @@ const Quotation = props => {
           className={styles.inputWide}
           type="text"
           name={"publication_"+quotation.id}
+          id={"publication_"+quotation.id}
           placeholder="publication"
           value={quotation.publication}
           onChange={e => props.updateQuotation("publication", e.target.value, quotation.id)} 
@@ -306,6 +316,7 @@ const Quotation = props => {
           className={styles.inputWide}
           type="text"
           name={"page_"+quotation.id}
+          id={"page_"+quotation.id}
           placeholder="page number"
           value={quotation.page ? quotation.page : ''}
           onChange={e => props.updateQuotation("page", e.target.value, quotation.id)} 
@@ -320,6 +331,7 @@ const Quotation = props => {
           className={styles.inputWide}
           type="text"
           name={"link_"+quotation.id}
+          id={"link_"+quotation.id}
           placeholder="URL link to publication"
           value={quotation.link}
           onChange={e => props.updateQuotation("link", checkUrlForHttp(e.target.value), quotation.id)} 
@@ -330,14 +342,15 @@ const Quotation = props => {
           className={styles.label}
           htmlFor={"comment_"+quotation.id}
           data-tip="Strictly optional!<br />Additional comments about this quotation"
-          data-for={"comment_"+quotation.id}
+          data-for={"comment_"+quotation.id+"-tooltip"}
         >
           Comment
         </label>
-        <ReactTooltip id={"comment_"+quotation.id} type="light" html={true} />
+        <ReactTooltip id={"comment_"+quotation.id+"-tooltip"} type="light" html={true} />
         <textarea
           className={styles.textareaWide}
           name={"comment_"+quotation.id}
+          id={"comment_"+quotation.id}
           value={quotation.comment}
           onChange={e => props.updateQuotation("comment", e.target.value, quotation.id)} 
         />

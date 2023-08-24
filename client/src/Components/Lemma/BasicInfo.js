@@ -17,8 +17,6 @@ const BasicInfo = props => {
   if (!lemma.editor || !lemma.editor.trim()) {
     lemma.editor = (user.user ? user.user.username : '');
   }
-
-  console.log(lemma)
   
   return (
     <div className={user.token ? styles.basic : styles.basicPublic}>
@@ -37,16 +35,17 @@ const BasicInfo = props => {
               className={styles.label}
               htmlFor="editor"
               data-tip="Put your name here<br />any time you edit a lemma."
-              data-for="editor"
+              data-for="editor-tooltip"
             >
               Editor
             </label>
-            <ReactTooltip id="editor" type="light" html={true} />
+            <ReactTooltip id="editor-tooltip" type="light" html={true} />
           </td>
           <td>
             <input
               className={styles.input}
               type="text"
+              id="editor"
               name="editor"
               placeholder="editor"
               value={lemma.editor}
@@ -61,16 +60,17 @@ const BasicInfo = props => {
               className={styles.label}
               htmlFor="published"
               data-tip="If checked, this lemma will be visible to all site visitors."
-              data-for="published"
+              data-for="published-tooltip"
             >
               Published
             </label>
-            <ReactTooltip id="published" type="light" html={true} />
+            <ReactTooltip id="published-tooltip" type="light" html={true} />
           </td>
           <td>
             <input
               type="checkbox"
               name="published"
+              id="published"
               checked={lemma.published}
               onChange={onChange}
             />
@@ -82,16 +82,17 @@ const BasicInfo = props => {
               className={styles.label}
               htmlFor="attention"
               data-tip="Lemma contains errors."
-              data-for="attention"
+              data-for="attention-tooltip"
             >
               Attention
             </label>
-            <ReactTooltip id="attention" type="light" html={true} />
+            <ReactTooltip id="attention-tooltip" type="light" html={true} />
           </td>
           <td>
             <input
               type="checkbox"
               name="attention"
+              id="attention"
               checked={lemma.attention}
               onChange={onChange}
             />
@@ -103,16 +104,17 @@ const BasicInfo = props => {
               className={styles.label}
               htmlFor="checked"
               data-tip="Lemma has been checked by a 2nd editor."
-              data-for="checked"
+              data-for="checked-tooltip"
             >
               Checked
             </label>
-            <ReactTooltip id="checked" type="light" html={true} />
+            <ReactTooltip id="checked-tooltip" type="light" html={true} />
           </td>
           <td>
             <input
               type="checkbox"
               name="checked"
+              id="checked"
               checked={lemma.checked}
               onChange={onChange}
             />
@@ -138,11 +140,11 @@ const BasicInfo = props => {
               className={styles.label}
               htmlFor="transliteration"
               data-tip="Akkadian: (normalized) transcription<br />Egyptian: Egyptological transliteration<br />Other: Roman transliteration"
-              data-for="phonetic"
+              data-for="phonetic-tooltip"
             >
               {lemma.language === "akkadian" ? 'Normalized' : 'Transliteration'}
             </label>
-            <ReactTooltip id="phonetic" type="light" html={true} />
+            <ReactTooltip id="phonetic-tooltip" type="light" html={true} />
           </td>
           <td>
             {user.token && (<input
@@ -150,6 +152,7 @@ const BasicInfo = props => {
               style={{fontStyle: (lemma.language === "akkadian" || 'italic')}}
               type="text"
               name="transliteration"
+              id="transliteration"
               placeholder="transliteration"
               value={lemma.transliteration}
               onChange={onChange}
@@ -159,7 +162,7 @@ const BasicInfo = props => {
         </tr>
         {lemma.language === "akkadian" && (<tr>
           <td>
-            <label className={styles.label} htmlFor="translation">
+            <label className={styles.label} htmlFor="literal_translation2">
               Literal Translation
             </label>
           </td>
@@ -168,6 +171,7 @@ const BasicInfo = props => {
               className={styles.input}
               type="text"
               name="literal_translation2"
+              id="literal_translation2"
               placeholder="literal translation"
               value={lemma.literal_translation2}
               onChange={onChange}
@@ -181,17 +185,18 @@ const BasicInfo = props => {
               className={styles.label}
               htmlFor="original"
               data-tip="Akkadian: transliteration<br />Egyptian: hieroglyphic<br />Other: original text (Unicode)"
-              data-for="original"
+              data-for="original-tooltip"
             >
               {lemma.language === "akkadian" ? 'Transliteration' : 'Original'}
             </label>
-            <ReactTooltip id="original" type="light" html={true} />
+            <ReactTooltip id="original-tooltip" type="light" html={true} />
           </td>
           <td>
             {user.token && (<input
               className={styles.input}
               type="text"
               name="original"
+              id="original"
               placeholder="original"
               value={lemma.original}
               onChange={onChange}
@@ -210,6 +215,7 @@ const BasicInfo = props => {
               className={styles.input}
               type="text"
               name="translation"
+              id="translation"
               placeholder="literal translation"
               value={lemma.translation}
               onChange={onChange}
@@ -228,6 +234,7 @@ const BasicInfo = props => {
               className={styles.input}
               type="text"
               name="primary_meaning"
+              id="primary_meaning"
               placeholder="primary meaning"
               value={lemma.primary_meaning}
               onChange={onChange}
@@ -246,6 +253,7 @@ const BasicInfo = props => {
               className={styles.inputComment}
               type="text"
               name="comment"
+              id="comment"
               placeholder="comment"
               value={lemma.comment}
               onChange={onChange}

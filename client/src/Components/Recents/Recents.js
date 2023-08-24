@@ -59,12 +59,6 @@ const Recents = props => {
     .catch(error => console.error(error));
   }, [user]);
 
-  let today = new Date();
-  let zodiacStart = new Date("2023-01-01 10:00");
-  let nextMonday = new Date();
-  nextMonday.setDate(today.getDate() - today.getDay() + 8);
-  nextMonday.setHours(10, 0, 0, 0);
-
   lemmata.sort((a, b) => (a.checked < b.checked ? -1 : 1)); // put checked ones at the bottom
   lemmata.sort((a, b) => (a.attention > b.attention ? -1 : 1)); // put ones that need attention at the top
 

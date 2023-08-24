@@ -6,6 +6,7 @@ const replacements = [
   //   replacement: 'i',
   // },
   {
+    //eslint-disable-next-line
     original: /[\-–—]/g,
     replacement: '',
   },

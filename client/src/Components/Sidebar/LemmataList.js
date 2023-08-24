@@ -4,7 +4,7 @@ import Collapsible from "react-collapsible";
 import {MdExpandMore, MdExpandLess} from 'react-icons/md';
 import { IoIosAddCircle } from "react-icons/io";
 
-// import QueryNavLink from '../QueryNavLink'; // Replaced with button for the discard changes dialog – CDC 2023-05-16
+import QueryNavLink from '../QueryNavLink'; // Replaced with button for the discard changes dialog – CDC 2023-05-16
 import UserContext from '../../Contexts/UserContext';
 
 import { getLemmataList } from '../../Data/api';
@@ -72,7 +72,9 @@ const LemmataList = props => {
 
   // Replaces the old NavLink method
   // Allows for a confirm dialog to avoid discarding changes to open lemma
-  const navigateToLemma = (to) => {
+  const navigateToLemma = (e, to) => {
+    e.preventDefault();
+
     // Don't do anything if the user clicks the link to the lemma that is currently open
     if (currentLemmaId === to) {
       return;
@@ -117,25 +119,14 @@ const LemmataList = props => {
 
       {lemmataFiltered
         .map(lemma => (
-          // Changed this to implement the check for discard changes feature
-          // – CDC 2023-05-16
-          // <QueryNavLink 
-          //   className={({isActive}) => (isActive ? styles.lemmaListEntryActive : styles.lemmaListEntry)}
-          //   key={lemma.lemmaId}
-          //   to={lemma.lemmaId}
-          // >
-          //   <LemmataListItem lemma={lemma} />
-          // </QueryNavLink>
-
-          // Need to replace with a button and implement proper styling
-          // – CDC 2023-05-16
-          <a 
-            className={((currentLemmaId===lemma.lemmaId) ? styles.lemmaListEntryActive : styles.lemmaListEntry)}
+          <QueryNavLink 
+            className={({isActive}) => (isActive ? styles.lemmaListEntryActive : styles.lemmaListEntry)}
             key={lemma.lemmaId}
-            onClick={e => navigateToLemma(lemma.lemmaId)}
+            to={lemma.lemmaId}
+            onClick={e => navigateToLemma(e, lemma.lemmaId)}
           >
             <LemmataListItem lemma={lemma} />
-          </a>
+          </QueryNavLink>
       ))}
     </>
   );

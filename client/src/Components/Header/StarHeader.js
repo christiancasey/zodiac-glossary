@@ -94,20 +94,23 @@ const StarHeader = () => {
           alt="Star chart with zodiac constellations"
           onClick={playPause}
         />
-        <p className={styles.titleThe}>The</p>
+        <div className={styles.titleThe}>The</div>
         <h1 className={styles.zodiacLogotype}>
           Zodiac
         </h1>
-        <p className={styles.titleGlossary}>
+        <div className={styles.titleGlossary}>
           Glossary
-          <sup
+        </div>
+        <div className={styles.subtitle}>
+          A cross-cultural glossary of ancient astral science
+          <sub
             data-tip='This project is currently in a beta stage. Please forgive any errors.'
             data-for="beta"
           >
             β
-          </sup>
+          </sub>
           <ReactTooltip id="beta" type="light" html={true} />
-        </p>
+        </div>
       </header>
       <div className={styles.headerBodyGradient}></div>
       <div className={styles.bodyBackground}></div>
