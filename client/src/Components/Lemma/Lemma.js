@@ -59,6 +59,21 @@ const Lemma = props => {
     // Mark changed as false (don't alert user to save) any time a new lemma is selected
     setChanged(false);
   }, [params.lemmaId, user]);
+
+  // Warn if unsaved changes on refresh
+  // This code doesn't actually launch a dialog but triggers the browser to do so
+  const alertUser = (e) => {
+    if (changed) {
+      e.preventDefault();
+      e.returnValue = "";
+    }
+  };
+  React.useEffect(() => {
+    window.addEventListener("beforeunload", alertUser);
+    return () => {
+      window.removeEventListener("beforeunload", alertUser);
+    };
+  }, [changed]);
   
   // Keyboard shortcuts
   const handleKeyPress = e => {

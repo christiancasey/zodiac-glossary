@@ -40,14 +40,15 @@ const ExternalLink = props => {
           className={styles.label}
           htmlFor={"externalLink_URL_"+i}
           data-tip="Paste in a URL for a related online dictionary entry"
-          data-for={"externalLink_URL_"+i}
+          data-for={"externalLink_URL_"+i+"-tooltip"}
         >
           URL
         </label>
-        <ReactTooltip id={"externalLink_URL_"+i} type="light" html={true} />
+        <ReactTooltip id={"externalLink_URL_"+i+"-tooltip"} type="light" html={true} />
         <input
           className={styles.inputWide}
           name={"externalLink_URL_"+i}
+          id={"externalLink_URL_"+i}
           placeholder="URL to link to"
           value={props.externalLink.url}
           onChange={e => props.updateExternalLink('url', checkUrlForHttp(e.target.value), props.externalLink.id)} 
@@ -58,26 +59,26 @@ const ExternalLink = props => {
           className={styles.label}
           htmlFor={"externalLink_display_"+i}
           data-tip='Add display text for link (e.g. "TLG: κριός")'
-          data-for={"externalLink_display_"+i}
+          data-for={"externalLink_display_"+i+"-tooltip"}
         >
           Display Text
         </label>
-        <ReactTooltip id={"externalLink_display_"+i} type="light" html={true} />
+        <ReactTooltip id={"externalLink_display_"+i+"-tooltip"} type="light" html={true} />
         <input
           className={styles.inputWide}
           name={"externalLink_display_"+i}
+          id={"externalLink_display_"+i}
           placeholder="Text to show in link"
           value={props.externalLink.display}
           onChange={e => props.updateExternalLink('display', e.target.value, props.externalLink.id)} 
         />
       </div>
       <div className={styles.row}>
-        <label
+        <div
           className={styles.label}
-          htmlFor={"externalLink_sample_"+i}
         >
           Sample Link
-        </label>
+        </div>
         <a className={styles.label} target="_blank" rel="noopener noreferrer" href={checkUrlForHttp(props.externalLink.url)}>
           &nbsp;
           {props.externalLink.display}

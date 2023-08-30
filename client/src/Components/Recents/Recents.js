@@ -10,6 +10,10 @@ const LemmaCheck = props => {
   const {user} = React.useContext(UserContext);
 
   const checkLemmaChange = (lemmaId, checked, field = "checked") => {
+    // Don't mark the lemma as checked if the person clicking is the same as the editor
+    if (lemma.editor === user.user.username) {
+      checked = false;
+    }
     checkLemma(lemmaId, checked, field, user.token);
     setLemma(prevLemma => ({
       ...prevLemma,

@@ -16,10 +16,11 @@ const getLemma = async (pool, lemmaId) => {
 
   // Query DB and create lemma object
   const sqlLemma = `
-    SELECT lemma_id AS lemmaId, editor, published, original, translation, primary_meaning, transliteration, literal_translation2, comment, languages.value AS language, partsofspeech.value AS partofspeech, attention, checked
+    SELECT lemma_id AS lemmaId, editor, published, original, translation, primary_meaning, transliteration, literal_translation2, comment, languages.value AS language, partsofspeech.value AS partofspeech, attention, checked, loan_languages.value as loan_language
     FROM lemmata 
       JOIN languages USING (language_id) 
       JOIN partsofspeech USING (partofspeech_id)
+      JOIN languages loan_languages ON loan_languages.language_id = loan_language_id
     WHERE lemma_id = $1;
     `;
 

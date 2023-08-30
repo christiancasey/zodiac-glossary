@@ -18,8 +18,9 @@ const saveLemma = async (pool, lemma, username = '') => {
           editor = $9,
           literal_translation2 = $10,
           comment = $11,
-          checked = FALSE,
-          last_edit = (to_timestamp($12 / 1000.0))
+          checked = $12,
+          last_edit = (to_timestamp($13 / 1000.0)),
+          loan_language_id = (SELECT language_id FROM languages WHERE value = $14)
       WHERE lemma_id = $1;
       `;
 
@@ -35,7 +36,9 @@ const saveLemma = async (pool, lemma, username = '') => {
         (lemma.editor ? lemma.editor.trim() : ''),
         (lemma.literal_translation2 ? lemma.literal_translation2.trim() : ''),
         (lemma.comment ? lemma.comment.trim() : ''),
+        lemma.checked,
         Date.now(),
+        lemma.loan_language,
       ];
 
     pool.query(sqlLemma, values, (error, results) => {
@@ -79,7 +82,20 @@ const saveLemma = async (pool, lemma, username = '') => {
         // Reset the id of the lemma object with the new auto value from the DB
         if (!meaningUpdateResults.rows.length) {
           var results = await waitQuery(pool, sqlMeaningsInsert, values.slice(0,-1));
-          meaning.id = results.rows[0].meaning_id;
+          
+          // Need to update the meaning id in any quotations that used the old dummy uuid value
+          // Prevents bug where adding a meaning to a quotation in a new lemma doesn't save the value
+          // Because the new meaning is saved first and then ids no longer match when the quotation is saved
+          // – CDC 2023-08-30
+          const oldMeaningId = meaning.id;
+          const newMeaningId = results.rows[0].meaning_id;
+          for (quotation of lemma.quotations) {
+            if (quotation.meaning_id === oldMeaningId) {
+              quotation.meaning_id = newMeaningId;
+            }
+          }
+
+          meaning.id = newMeaningId;
         }
       } catch (error) {
         console.error('Error saving meaning', error, 'lemma ID', lemma.lemmaId);

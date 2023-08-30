@@ -73,14 +73,14 @@ const BasicInfo = props => {
               <div>{lemma.primary_meaning}</div>
             </td>
           </tr>
-          <tr>
-            <td>
-              <div className={styles.label}></div>
-            </td>
-            <td>
-              <div></div>
-            </td>
-          </tr>
+          {(lemma.loan_language === "none") ||
+          (<Dropdown
+            name="loan_language"
+            label="Loaned from"
+            value={lemma.loan_language}
+            options={languageOptions}
+            onChange={onChange} 
+          />)}
         </tbody></table>
       </div>
     );
@@ -214,7 +214,7 @@ const BasicInfo = props => {
             <ReactTooltip id="phonetic-tooltip" type="light" html={true} />
           </td>
           <td>
-            {user.token && (<input
+            <input
               className={styles.input}
               style={{fontStyle: (lemma.language === "akkadian" || 'italic')}}
               type="text"
@@ -223,7 +223,7 @@ const BasicInfo = props => {
               placeholder="transliteration"
               value={lemma.transliteration}
               onChange={onChange}
-            />)}
+            />
           </td>
         </tr>
         {lemma.language === "akkadian" && (<tr>
@@ -233,7 +233,7 @@ const BasicInfo = props => {
             </label>
           </td>
           <td>
-            {user.token && (<input
+            <input
               className={styles.input}
               type="text"
               name="literal_translation2"
@@ -241,7 +241,7 @@ const BasicInfo = props => {
               placeholder="literal translation"
               value={lemma.literal_translation2}
               onChange={onChange}
-            />)}
+            />
           </td>
         </tr>)}
         <tr>
@@ -257,7 +257,7 @@ const BasicInfo = props => {
             <ReactTooltip id="original-tooltip" type="light" html={true} />
           </td>
           <td>
-            {user.token && (<input
+            <input
               className={styles.input}
               type="text"
               name="original"
@@ -265,7 +265,7 @@ const BasicInfo = props => {
               placeholder="original"
               value={lemma.original}
               onChange={onChange}
-            />)}
+            />
           </td>
         </tr>
         <tr>
@@ -275,7 +275,7 @@ const BasicInfo = props => {
             </label>
           </td>
           <td>
-            {user.token && (<input
+            <input
               className={styles.input}
               type="text"
               name="translation"
@@ -283,8 +283,7 @@ const BasicInfo = props => {
               placeholder="literal translation"
               value={lemma.translation}
               onChange={onChange}
-            />)}
-            {!user.token && (<div>{lemma.translation}</div>)}
+            />
           </td>
         </tr>
         <tr>
@@ -305,7 +304,14 @@ const BasicInfo = props => {
             />)}
           </td>
         </tr>
-        {user.token && (<tr>
+        <Dropdown
+          name="loan_language"
+          label="Loaned from"
+          value={lemma.loan_language}
+          options={languageOptions}
+          onChange={onChange} 
+        />
+        <tr>
           <td>
             <label className={styles.label} htmlFor="comment">
               Internal Comment
@@ -322,7 +328,7 @@ const BasicInfo = props => {
               onChange={onChange}
             ></textarea>
           </td>
-        </tr>)}
+        </tr>
       </tbody></table>
     </div>
   );

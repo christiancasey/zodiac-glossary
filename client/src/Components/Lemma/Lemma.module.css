@@ -125,16 +125,16 @@
   border-radius: 10px;
 }
 .basic {
-  height: 44vw;
+  height: 46vw;
 }
 .basicPublic {
-  height: 26vw;
+  height: 28vw;
 }
 .meanings, .variants {
-  height: 21vw;
+  height: 22vw;
 }
 .meaningsPublic, .variantsPublic {
-  height: 12vw;
+  height: 13vw;
 }
 .quotations, .crossLinks, .deleteLemma {
   width: 60vw;
