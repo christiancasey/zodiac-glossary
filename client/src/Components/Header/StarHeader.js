@@ -3,7 +3,7 @@ import ReactTooltip from 'react-tooltip';
 
 import { useNavigate } from "react-router-dom";
 // import { IoIosPlay, IoIosPause, } from 'react-icons/io';
-import { IoIosHome, IoIosHelpCircle, IoIosClock, IoIosLogIn, IoIosLogOut, } from 'react-icons/io';
+import { IoIosHome, IoIosHelpCircle, IoIosClock, IoIosLogIn, IoIosLogOut, IoIosList, } from 'react-icons/io';
 
 import UserContext from '../../Contexts/UserContext';
 import LogIn from './LogIn.js';
@@ -64,6 +64,11 @@ const StarHeader = () => {
       {(user && user.token) ? (
         <a className={styles.home} href="/recents" target="_blank" rel="noopener noreferrer">
           <IoIosClock />
+        </a>
+      ) : null}
+      {(user && user.token) ? (
+        <a className={styles.home} href="/todo" target="_blank" rel="noopener noreferrer">
+          <IoIosList />
         </a>
       ) : null}
       {(user && user.token) ? null : (

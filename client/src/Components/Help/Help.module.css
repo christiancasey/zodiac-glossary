@@ -130,15 +130,15 @@ ul li:before {
 .input {
   font: 1.2vw book-antiqua, 'Book Antiqua', serif;
   display: table-cell;
-  width: 80vw;
+  width: 60vw;
   background-color: #2D3B6288;
   color: #FFDC;
   border: 0.1vw solid #FFD8;
   border-radius: 0.5vw;
-  margin: 0.2vw;
-  padding: 0.2vw;
+  margin: 0vw;
+  padding-left: 4px;
   outline: none;
-  float: left;
+  /* float: left; */
   height: 2vw;
   /* margin-top: 5px;
   margin-right: 5px; */

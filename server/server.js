@@ -50,6 +50,7 @@ app.get('/api/autocomplete/quotation_from_source', ac.quotationAutofillFromSourc
 
 // Todo List
 app.get('/api/todo/list', td.getTodoList);
+app.post('/api/todo/add', auth, td.addTodoListItem);
 
 // User authentication
 app.post('/api/users', users.createUser);
