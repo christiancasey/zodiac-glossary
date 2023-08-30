@@ -62,9 +62,25 @@ const LemmataList = props => {
     }
 
     // Use the field set with the 'Sort by' buttons to sort
-    tempLemmataFiltered.sort((a, b) => 
-      (a[lemmataSortField].toLowerCase() < b[lemmataSortField].toLowerCase() ? -1 : 1)
-    );
+    // Include some additional logic to select a different field when one is blank
+    tempLemmataFiltered.sort((a, b) => {
+      let first = a[lemmataSortField];
+      let second = b[lemmataSortField];
+
+      const sortFields = [ 'transliteration', 'original', 'primary_meaning' ];
+      if (!first || !second) { // shortcut for speed
+        for (let sortField of sortFields) {
+          if (!first)
+            first = a[sortField];
+          if (!second)
+            second = b[sortField];
+          if (first && second) // shortcut for speed
+            break;
+        }
+      }
+      
+      return (first.toLowerCase() < second.toLowerCase() ? -1 : 1);
+    });
 
     setLemmataFiltered(tempLemmataFiltered);
 
