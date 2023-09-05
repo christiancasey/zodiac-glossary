@@ -14,7 +14,7 @@ const getTodoList = (request, response) => {
 
 const addTodoListItem = (request, response) => {
 
-  console.log('addTodoListItem, content', request.body.newItem, 'by', request.decoded.username);
+  console.log('addTodoListItem, by:', request.decoded.username, 'content:', request.body.newItem);
 
   const sql = `INSERT INTO todo (item, added_by)
     VALUES ($1, (SELECT id FROM users WHERE username = $2));`;

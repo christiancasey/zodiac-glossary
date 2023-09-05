@@ -1,0 +1,39 @@
+footer {
+	position: fixed;
+	top: calc(100% - 5vw);
+  
+  /* fadeIn animation */
+  opacity: 0;
+	-webkit-animation: fadeIn ease-in-out 1;
+	-moz-animation: fadeIn ease-in-out 1;
+	animation: fadeIn ease-in-out 1;
+
+	-webkit-animation-fill-mode: forwards;
+	-moz-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
+
+	-webkit-animation-duration: 0.4s;
+	-moz-animation-duration: 0.4s;
+	animation-duration: 0.4s;
+  
+  -webkit-animation-delay: 1.8s;
+  -moz-animation-delay: 1.8s;
+  animation-delay: 1.8s;
+}
+
+.logoSpread {
+	display: table;
+	width: 100%;
+	table-layout: fixed;    /* For cells of equal size */
+}
+.logoItem {
+	display: table-cell;
+	text-align: center;
+}
+
+
+
+/* Fade in animation */
+@-webkit-keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@-moz-keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }

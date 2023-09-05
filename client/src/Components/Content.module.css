@@ -1,7 +1,7 @@
 .content {
   position: fixed;
   width: 100vw;
-  height: calc(100% - 20vw);
+  height: calc(100% - 25vw);
   top: 18vw;
   /* margin-top: 18vw; */
   overflow: scroll;

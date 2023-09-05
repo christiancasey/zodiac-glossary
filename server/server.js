@@ -17,10 +17,10 @@ app.use(express.json());
 app.get('/api', (request, response) => {
   let greeting = `<h1>The Zodiac Glossary API</h1>
     <p>This API is for working directly with the Zodiac Glossary data.</p>
-    <p>All data related to this project are freely publicly available. There is nothing to be gained by tinkering with the API.</p>
+    <p>All data related to this project are freely publicly accessible. You are welcome to use this API as you wish, but documentation is currently not available.</p>
     <p>Please <a href="https://zodiac.fly.dev">return to the homepage</a> to continue using the Zodiac Glossary.</p>
     <p>For help or inquiries, write to <a href="mailto:christian.casey@fu-berlin.de">christian.casey@fu-berlin.de</a>.</p>
-    <p>Version 1.40</p>`;
+    <p>Version 1.50</p>`;
   response.send(greeting);
 });
 

@@ -19,6 +19,7 @@ const CrossLinks = props => {
             crossLink={crossLink.link} 
             i={crossLink.id}
             lemmataList={props.lemmataList}
+            currentLemma={props.currentLemma}
             updateCrossLink={props.updateCrossLink}
             deleteCrossLink={props.deleteCrossLink}
           />

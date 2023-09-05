@@ -461,6 +461,7 @@ const Lemma = props => {
         <CrossLinks
           crossLinks={lemma.crossLinks}
           lemmataList={lemmataList}
+          currentLemma={lemma}
           updateCrossLink={updateCrossLink}
           addNewCrossLink={addNewCrossLink}
           deleteCrossLink={deleteCrossLink}
@@ -468,6 +469,7 @@ const Lemma = props => {
         
         <ExternalLinks
           externalLinks={lemma.externalLinks}
+          lemma={lemma}
           updateExternalLink={updateExternalLink}
           addNewExternalLink={addNewExternalLink}
           deleteExternalLink={deleteExternalLink}

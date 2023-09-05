@@ -1,5 +1,5 @@
 import React from "react";
-import { IoIosTrash } from "react-icons/io";
+import { IoIosTrash, IoIosDownload } from "react-icons/io";
 
 import UserContext from '../../Contexts/UserContext';
 

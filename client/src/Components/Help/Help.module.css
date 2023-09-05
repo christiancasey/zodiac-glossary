@@ -1,7 +1,7 @@
 .content {
   position: fixed;
   width: 100vw;
-  height: calc(100% - 20vw);
+  height: calc(100% - 25vw);
   top: 20vw;
   overflow: scroll;
   
@@ -84,8 +84,9 @@ ol, li {
 ol {
   margin: 5px 0 20px 0;
 }
-ul li:before {
+ul li::before {
   content: '\1F7CA';
+  content: '\2605';
   margin: 0 1em;
 }
 .done {

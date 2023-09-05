@@ -10,7 +10,7 @@ import styles from './Lemma.module.css';
 
 
 const CrossLink = props => {
-  const lemmata = props.lemmataList;
+  let lemmata = props.lemmataList;
   const i = props.i;
   const {user} = React.useContext(UserContext);
   const [crossLink, setCrossLink] = React.useState(props.crossLink);
@@ -42,6 +42,19 @@ const CrossLink = props => {
       // setLemma(getLemmaById(lemmata, event.target.value));
       lemma = getLemmaById(lemmata, props.crossLink);
     }
+  }
+
+  // Filter current lemma out of list of possible Cross Links
+  // Also filter out any Cross Links that have already been added
+  lemmata = lemmata.filter(cursorLemma => cursorLemma.lemmaId !== props.currentLemma.lemmaId);
+  for (let cursorCrossLink of props.currentLemma.crossLinks) {
+    lemmata = lemmata.filter(cursorLemma => 
+      (
+        cursorLemma.lemmaId !== cursorCrossLink.lemmaId
+        &&
+        cursorLemma.lemmaId !== cursorCrossLink.link
+      )
+    );
   }
 
   if (!user.token) {
@@ -105,7 +118,7 @@ const CrossLink = props => {
           Sample Link
         </div>
         {lemma ? 
-          <QueryNavLink className={styles.label} to={'/'+crossLink}  target="_blank" rel="noopener noreferrer">
+          <QueryNavLink className={styles.label} to={'/'+crossLink} target="_blank" rel="noopener noreferrer">
             <>&nbsp;{lemma.transliteration} | {lemma.original} | {lemma.primary_meaning} <IoIosOpen /></>
           </QueryNavLink>
         : <> | | </>}
