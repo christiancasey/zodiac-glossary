@@ -164,12 +164,12 @@ const Lemma = props => {
     setChanged(true);
   };
 
-  const addNewMeaning = e => {
+  const addNewMeaning = (e, newMeaningData = null) => {
     e.preventDefault();
     
     const newMeaning = {
       id: uuidv4(),
-      value: '',
+      value: (newMeaningData ? newMeaningData.value : ''),
       category: '',
       comment: '',
     };
@@ -213,13 +213,13 @@ const Lemma = props => {
     setChanged(true);
   };
 
-  const addNewVariant = e => {
+  const addNewVariant = (e, newVariantData = null) => {
     e.preventDefault();
     
     const newVariant = {
       id: uuidv4(),
-      original: '',
-      transliteration: '', 
+      original: (newVariantData ? newVariantData.original : ''),
+      transliteration: (newVariantData ? newVariantData.transliteration : ''), 
       comment: '',
     };
     
@@ -434,7 +434,7 @@ const Lemma = props => {
 
         <BasicInfo lemma={lemma} onChange={onChange} />
         <Meanings
-          meanings={lemma.meanings}
+          lemma={lemma}
           meaningsCategories={meaningsCategories}
           updateMeaning={updateMeaning}
           addNewMeaning={addNewMeaning}
@@ -442,8 +442,7 @@ const Lemma = props => {
         />
         
         <Variants
-          variants={lemma.variants}
-          language={lemma.language}
+          lemma={lemma}
           updateVariant={updateVariant}
           addNewVariant={addNewVariant}
           deleteVariant={deleteVariant}

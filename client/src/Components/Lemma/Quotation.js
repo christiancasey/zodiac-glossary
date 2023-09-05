@@ -181,7 +181,7 @@ const Quotation = props => {
           className={styles.textareaWide}
           name={"translation_"+quotation.id}
           id={"translation_"+quotation.id}
-          placeholder="original"
+          placeholder="translation"
           value={quotation.translation}
           onChange={e => props.updateQuotation("translation", e.target.value, quotation.id)} 
         />
