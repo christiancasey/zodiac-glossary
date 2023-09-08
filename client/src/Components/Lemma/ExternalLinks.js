@@ -4,6 +4,8 @@ import { IoIosAddCircle } from "react-icons/io";
 import ExternalLink from './ExternalLink';
 import UserContext from '../../Contexts/UserContext';
 
+import { unicodeGreek2BetaCode } from "../../Functions/unicodeGreek2BetaCode";
+
 import styles from './Lemma.module.css';
 
 const ExternalLinks = props => {
@@ -11,6 +13,8 @@ const ExternalLinks = props => {
 
   const original = props.lemma.original;
   const transliteration = props.lemma.transliteration;
+
+  unicodeGreek2BetaCode(original)
   
   return (
     <div className={styles.crossLinks}>
@@ -42,7 +46,10 @@ const ExternalLinks = props => {
           <li><a target="_blank" rel="noopener noreferrer" href={"https://www.perseus.tufts.edu/hopper/resolveform?type=exact&lookup=&lang=greek"}>
             Perseus Project—Greek
           </a></li>
-          <li><a target="_blank" rel="noopener noreferrer" href={"http://www.perseus.tufts.edu/hopper/resolveform?type=exact&lookup=" + original + "&lang=la"}>
+          {/* <li><a target="_blank" rel="noopener noreferrer" href={"http://www.perseus.tufts.edu/hopper/resolveform?type=exact&lookup=" + original + "&lang=la"}>
+            Perseus Project—Latin
+          </a></li> */}
+          <li><a target="_blank" rel="noopener noreferrer" href={"https://www.perseus.tufts.edu/hopper/morph?l=" + original + "&la=la"}>
             Perseus Project—Latin
           </a></li>
           {/* <li><a target="_blank" rel="noopener noreferrer" href="http://aaew2.bbaw.de/tla/servlet/BwlSearch?u=guest&f=0&l=0&db=1">

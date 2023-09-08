@@ -87,12 +87,11 @@ ol {
 .done {
   text-decoration: line-through;
 }
-ul li::before {
+li::before {
   content: '\1F7CA';
   content: '\2605';
   margin: 0 1em;
   text-decoration: none !important;
-  text-decoration: wavy;
 }
 
 .container {
