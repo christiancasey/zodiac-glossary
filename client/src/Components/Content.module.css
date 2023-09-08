@@ -1,3 +1,12 @@
+@font-face {
+  font-family: dual;
+  src: url(../Fonts/dual.woff);
+}
+@font-face {
+  font-family: symbola;
+  src: url(../Fonts/symbola.woff);
+}
+
 .content {
   position: fixed;
   width: 100vw;
@@ -11,7 +20,7 @@
   background-color: #0000;
   color: #FFD;
   
-  font: 1.4vw book-antiqua, 'Book Antiqua', serif;
+  font: 1.4vw symbola, symbola, book-antiqua, 'Book Antiqua', serif;
   text-shadow: 0 0 3px #FFD2;
   
   opacity: 0;
@@ -33,11 +42,6 @@
   
   /* text-transform: uppercase; */
   /* font-weight: bold; */
-}
-
-@font-face {
-  font-family: dual;
-  src: url(../Fonts/dual.woff);
 }
 
 h1, h2, h3, h4 {
@@ -117,7 +121,7 @@ ol {
   vertical-align: top;
 }
 .input {
-  font: 1.2vw book-antiqua, 'Book Antiqua', serif;
+  font: 1.2vw symbola, book-antiqua, 'Book Antiqua', serif;
   display: table-cell;
   width: 80vw;
   background-color: #2D3B6288;

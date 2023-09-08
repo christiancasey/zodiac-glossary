@@ -18,7 +18,7 @@
   vertical-align: top;
 }
 .input, .inputSearch, .inputMeaning, .inputTransliteration, .inputWide, .inputTransliterationWide, .inputKeyboard, .textareaWide, .inputComment {
-  font: 1.2vw book-antiqua, 'Book Antiqua', serif;
+  font: 1.2vw symbola, book-antiqua, 'Book Antiqua', serif;
   display: table-cell;
   width: 11vw;
   background-color: #2D3B6288;
@@ -42,7 +42,7 @@
   width: 8.5vw;
 }
 .inputSearch {
-  font: 1.2vw book-antiqua, 'Book Antiqua', serif;
+  font: 1.2vw symbola, book-antiqua, 'Book Antiqua', serif;
   background-color: #2D3B6288;
   color: #FFDC;
   border: 0.1vw solid #FFD8;
@@ -81,7 +81,7 @@
   height: 6vw;
 }
 .inputDelete {
-  font: 1.2vw book-antiqua, 'Book Antiqua', serif;
+  font: 1.2vw symbola, book-antiqua, 'Book Antiqua', serif;
   display: table-cell;
   width: 58vw;
   background-color: #2D3B6288;
@@ -227,7 +227,7 @@
   border: none;
   outline: none;
   margin-top: 0.5vw;
-  font: 1vw book-antiqua, 'Book Antiqua', serif;
+  font: 1vw symbola, book-antiqua, 'Book Antiqua', serif;
   text-shadow: 0 0 3px #FFD2;
 }
 .sortButtons:hover {
@@ -240,7 +240,7 @@
   border: none;
   outline: none;
   margin-top: 0.5vw;
-  font: 1.2vw book-antiqua, 'Book Antiqua', serif;
+  font: 1.2vw symbola, book-antiqua, 'Book Antiqua', serif;
   text-shadow: 0 0 3px #FFD2;
 }
 .addNewLemma:hover {

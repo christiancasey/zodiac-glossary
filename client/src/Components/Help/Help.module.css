@@ -10,7 +10,7 @@
   background-color: #0000;
   color: #FFD;
   
-  font: 1.4vw book-antiqua, 'Book Antiqua', serif;
+  font: 1.4vw symbola, book-antiqua, 'Book Antiqua', serif;
   text-shadow: 0 0 3px #FFD2;
   
   opacity: 0;
@@ -84,13 +84,15 @@ ol, li {
 ol {
   margin: 5px 0 20px 0;
 }
+.done {
+  text-decoration: line-through;
+}
 ul li::before {
   content: '\1F7CA';
   content: '\2605';
   margin: 0 1em;
-}
-.done {
-  text-decoration: line-through;
+  text-decoration: none !important;
+  text-decoration: wavy;
 }
 
 .container {
@@ -129,7 +131,7 @@ ul li::before {
   vertical-align: top;
 }
 .input {
-  font: 1.2vw book-antiqua, 'Book Antiqua', serif;
+  font: 1.2vw symbola, book-antiqua, 'Book Antiqua', serif;
   display: table-cell;
   width: 60vw;
   background-color: #2D3B6288;

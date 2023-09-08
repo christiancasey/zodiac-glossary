@@ -79,7 +79,7 @@
 }
 
 .titleThe, .titleGlossary, .subtitle {
-  font: 2vw book-antiqua, 'Book Antiqua', serif;
+  font: 2vw symbola, book-antiqua, 'Book Antiqua', serif;
   font-style: italic;
   letter-spacing: 0.1em;
   color: #FFD;
@@ -202,7 +202,7 @@
   background-color: #2D3B62F0;
   color: #FFD;
   
-  font: 1.4vw book-antiqua, 'Book Antiqua', serif;
+  font: 1.4vw symbola, book-antiqua, 'Book Antiqua', serif;
   text-shadow: 0 0 3px #FFD2;
   
   padding: 0.5vw 0.5vw;
@@ -243,7 +243,7 @@ h1, h2, h3, h4 {
 }
 
 .input {
-  font: 1.2vw book-antiqua, 'Book Antiqua', serif;
+  font: 1.2vw symbola, book-antiqua, 'Book Antiqua', serif;
   display: table-cell;
   width: 14vw;
   background-color: #2D3B6288;
@@ -270,7 +270,7 @@ h1, h2, h3, h4 {
 
 .username {
   color: #ffdd;
-  font: 1.3vw book-antiqua, 'Book Antiqua', serif;
+  font: 1.3vw symbola, book-antiqua, 'Book Antiqua', serif;
   text-shadow: 0 0 3px #ffd2;
   float: left;
   margin-top: 0.2vw;
@@ -284,7 +284,7 @@ h1, h2, h3, h4 {
   outline: none;
   margin-top: 0.5vw;
   padding: 0.5vw;
-  font: 1.2vw book-antiqua, 'Book Antiqua', serif;
+  font: 1.2vw symbola, book-antiqua, 'Book Antiqua', serif;
   text-shadow: 0 0 3px #FFD2;
 }
 .loginButton:hover, .signupButton:hover {

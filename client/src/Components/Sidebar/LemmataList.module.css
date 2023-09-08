@@ -6,7 +6,7 @@
   border: none;
   outline: none;
   margin-top: 0.5vw;
-  font: 1vw book-antiqua, 'Book Antiqua', serif;
+  font: 1vw symbola, book-antiqua, 'Book Antiqua', serif;
   text-shadow: 0 0 3px #FFD2;
 }
 .sortButtons:hover {
@@ -19,7 +19,7 @@
   border: none;
   outline: none;
   margin-top: 0.5vw;
-  font: 1.2vw book-antiqua, 'Book Antiqua', serif;
+  font: 1.2vw symbola, book-antiqua, 'Book Antiqua', serif;
   text-shadow: 0 0 3px #FFD2;
 }
 .addNewLemma:hover {
