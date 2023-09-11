@@ -87,7 +87,7 @@ ol {
 .done {
   text-decoration: line-through;
 }
-li::before {
+.stars li::before {
   content: '\1F7CA';
   content: '\2605';
   margin: 0 1em;

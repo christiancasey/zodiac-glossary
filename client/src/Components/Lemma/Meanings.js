@@ -11,7 +11,7 @@ const Meanings = props => {
   const [importable, setImportable] = React.useState(decideImportable());
   
   // Helper function to decide whether the import button should be visible of not
-  // If the list is empty, sure it should be obviously
+  // If the list is empty, it should be obviously (shortcut)
   // Alternatively, if the list already contains the main variant, hide the button
   // Otherwise, show it
   function decideImportable() {
@@ -42,6 +42,7 @@ const Meanings = props => {
             i={i}
             updateMeaning={props.updateMeaning}
             deleteMeaning={props.deleteMeaning}
+            updateCategory={props.updateCategory}
             meaningsCategories={props.meaningsCategories}
           />
         )

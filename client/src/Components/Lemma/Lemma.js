@@ -151,6 +151,25 @@ const Lemma = props => {
     });
     setChanged(true);
   };
+console.log(lemma)
+  const updateCategory = (updatedCategory, meaningId, categoryId) => {
+    setLemma(prevLemma => {
+      return {
+        ...prevLemma,
+        meanings: prevLemma.meanings.map(meaning => {
+          if (meaning.id === meaningId) {
+            meaning.categories.map(category => {
+              if (category.category_id === categoryId) {
+                category.category = updatedCategory;
+              }
+              return category;
+            });
+          }
+          return meaning;
+        })
+      }
+    })
+  }
 
   const deleteMeaning = id => {
     setLemma(prevLemma => {
@@ -439,6 +458,7 @@ const Lemma = props => {
           updateMeaning={updateMeaning}
           addNewMeaning={addNewMeaning}
           deleteMeaning={deleteMeaning}
+          updateCategory={updateCategory}
         />
         
         <Variants

@@ -43,21 +43,21 @@ const ExternalLinks = props => {
           <li><a target="_blank" rel="noopener noreferrer" href="http://stephanus.tlg.uci.edu/Iris/inst/lexica.jsp">
             Thesaurus Linguae Graecae
           </a></li>
-          <li><a target="_blank" rel="noopener noreferrer" href={"https://www.perseus.tufts.edu/hopper/resolveform?type=exact&lookup=&lang=greek"}>
+          {/* <li><a target="_blank" rel="noopener noreferrer" href={"https://www.perseus.tufts.edu/hopper/resolveform?type=exact&lookup=&lang=greek"}>
+            Perseus Project—Greek
+          </a></li> */}
+          <li><a target="_blank" rel="noopener noreferrer" href={"https://www.perseus.tufts.edu/hopper/morph?l=" + original + "&la=greek"}>
             Perseus Project—Greek
           </a></li>
+          {/* <li><a target="_blank" rel="noopener noreferrer" href={"https://www.perseus.tufts.edu/hopper/morph?l=" + unicodeGreek2BetaCode(original) + "&la=greek"}>
+            Perseus Project—Greek
+          </a></li> */}
           {/* <li><a target="_blank" rel="noopener noreferrer" href={"http://www.perseus.tufts.edu/hopper/resolveform?type=exact&lookup=" + original + "&lang=la"}>
             Perseus Project—Latin
           </a></li> */}
           <li><a target="_blank" rel="noopener noreferrer" href={"https://www.perseus.tufts.edu/hopper/morph?l=" + original + "&la=la"}>
             Perseus Project—Latin
           </a></li>
-          {/* <li><a target="_blank" rel="noopener noreferrer" href="http://aaew2.bbaw.de/tla/servlet/BwlSearch?u=guest&f=0&l=0&db=1">
-            Thesaurus Linguae Aegyptiae (Old)
-          </a></li> */}
-          {/* <li><a target="_blank" rel="noopener noreferrer" href="https://thesaurus-linguae-aegyptiae.de/search">
-            Thesaurus Linguae Aegyptiae (New)
-          </a></li> */}
           <li><a target="_blank" rel="noopener noreferrer" href={"https://thesaurus-linguae-aegyptiae.de/search/lemma?script=hieratic&_script=on&_script=on&transcription.text=" + transliteration + "&transcription.enc=unicode&wordClass.type=excl_names&root=&translation.text=&translation.lang=en&bibliography="}>
             Thesaurus Linguae Aegyptiae
           </a></li>

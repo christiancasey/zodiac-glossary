@@ -53,7 +53,7 @@ function HelpCopy(props) {
       <p>A place to find guidance on entering data for members of the <a href="https://www.geschkult.fu-berlin.de/en/e/zodiac/index.html" target="_blank" rel="noopener noreferrer">Zodiac Project</a>.</p>
 
       <h2>General Notes</h2>
-      <ul>
+      <ul className={styles.stars}>
         <li>
           Prefer British English spellings.
         </li>

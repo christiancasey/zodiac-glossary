@@ -51,6 +51,17 @@ const getLemma = async (pool, lemmaId) => {
       }
     })
     .catch(error => console.error(`\nError in getLemma.js\nCouldn't fetch Meanings for lemmaId: ${lemmaId}\n${error}`));
+  // Add CATEGORIES to meanings object
+  const sqlCategories = `SELECT * FROM meaning_categories WHERE meaning_id = $1 ORDER BY category_id;`;
+  for (meaning of lemma.meanings) {
+    // categories = [];
+    await waitQuery(pool, sqlCategories, [meaning.id])
+      .then(({ rows: queryCategories }) => {
+        console.log(meaning.id, queryCategories);
+        meaning.categories = queryCategories;
+      })
+      .catch(error => console.error(`\nError in getLemma.js\nCouldn't fetch Categories for lemmaId: ${lemmaId}, meaning_id: ${meaning.id}\n${error}`));
+  }
 
   // Add VARIANTS to lemma object
   const sqlVariants = `SELECT * FROM variants WHERE lemma_id = $1 ORDER BY variant_id;`;

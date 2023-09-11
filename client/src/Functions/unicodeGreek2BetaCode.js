@@ -27,8 +27,6 @@ export function unicodeGreek2BetaCode(unicodeGreek) {
 	betaCode = betaCode.replace(/[χ]/g, "x");
 	betaCode = betaCode.replace(/[ψ]/g, "y");
 	betaCode = betaCode.replace(/[ω]/g, "w");
-	
-	
-	console.log('Unicode', unicodeGreek);
-	console.log('Beta Code', betaCode);
+
+	return betaCode;
 }

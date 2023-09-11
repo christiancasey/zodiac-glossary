@@ -1,6 +1,8 @@
 import React from "react";
 import { IoIosTrash } from "react-icons/io";
 
+import Categories from "./Categories";
+
 import UserContext from '../../Contexts/UserContext';
 
 import styles from './Lemma.module.css';
@@ -30,11 +32,13 @@ const Meaning = props => {
           <div className={styles.label}>Comment</div>
           <div className={styles.label}>{meaning.comment}</div>
         </div>
+        {meaning.categories.length ? <Categories categories={meaning.categories} /> : null}
       </div>
     )
   }
 
   return (
+    <>
     <div 
       className={styles.row}
       onMouseEnter={e => {
@@ -85,8 +89,21 @@ const Meaning = props => {
         value={(meaning.comment ? meaning.comment : '')}
         onChange={e => props.updateMeaning('comment', e.target.value, meaning.id)}
       />
+      
+      {meaning.categories.length ? 
+        <Categories
+          categories={meaning.categories} 
+          meaning={meaning}
+          meaningsCategories={props.meaningsCategories}
+          updateCategory={props.updateCategory}
+        /> 
+        : null}
+
       <button className={styles.delete} style={style} onClick={() => props.deleteMeaning(meaning.id)}><IoIosTrash /></button>
+        
     </div>
+    
+    </>
   );
 };
 

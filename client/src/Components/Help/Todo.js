@@ -32,7 +32,7 @@ const Todo = props => {
     <div className={styles.content}>
       <div className={styles.container}>
         <h1>Todo</h1>
-        <ul>
+        <ul className={styles.stars}>
           {user.token && (
             <li key={"new"}>
               <input 
@@ -47,11 +47,10 @@ const Todo = props => {
             </li>
           )}
           {todoList.map(todo => (
-            <li
-              className={(todo.complete ? styles.done : "false")}
-              key={todo.id}
-            >
-              {todo.item}
+            <li key={todo.id}>
+              <span className={(todo.complete ? styles.done : "false")}>
+                {todo.item}
+              </span>
             </li>
           ))}
         </ul>
