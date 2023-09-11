@@ -136,7 +136,8 @@ const Lemma = props => {
                   // I just can't seem to get the stupid lemmata list to update reliably
                   // CDC 2022-11-30
   }
-  
+  //////////////////////////////////////////////////////////////////////////////
+  // MEANINGS
   const updateMeaning = (field, updatedMeaning, id) => {
     setLemma(prevLemma => {
       return {
@@ -151,25 +152,6 @@ const Lemma = props => {
     });
     setChanged(true);
   };
-console.log(lemma)
-  const updateCategory = (updatedCategory, meaningId, categoryId) => {
-    setLemma(prevLemma => {
-      return {
-        ...prevLemma,
-        meanings: prevLemma.meanings.map(meaning => {
-          if (meaning.id === meaningId) {
-            meaning.categories.map(category => {
-              if (category.category_id === categoryId) {
-                category.category = updatedCategory;
-              }
-              return category;
-            });
-          }
-          return meaning;
-        })
-      }
-    })
-  }
 
   const deleteMeaning = id => {
     setLemma(prevLemma => {
@@ -182,7 +164,9 @@ console.log(lemma)
     });
     setChanged(true);
   };
-
+  
+  //////////////////////////////////////////////////////////////////////////////
+  // CATEGORIES
   const addNewMeaning = (e, newMeaningData = null) => {
     e.preventDefault();
     
@@ -191,6 +175,7 @@ console.log(lemma)
       value: (newMeaningData ? newMeaningData.value : ''),
       category: '',
       comment: '',
+      categories: [],
     };
     
     setLemma(prevLemma => {
@@ -205,6 +190,68 @@ console.log(lemma)
     setChanged(true);
   };
 
+  const updateCategory = (updatedCategory, meaningId, categoryId) => {
+    setLemma(prevLemma => {
+      return {
+        ...prevLemma,
+        meanings: prevLemma.meanings.map(meaning => {
+          if (meaning.id === meaningId) {
+            meaning.categories.map(category => {
+              if (category.category_id === categoryId) {
+                category.category = updatedCategory;
+              }
+              return category;
+            });
+          }
+          return meaning;
+        }),
+      }
+    });
+    setChanged(true);
+  };
+
+  const deleteCategory = (meaningId, categoryId) => {
+    setLemma(prevLemma => {
+      return {
+        ...prevLemma,
+        meanings: prevLemma.meanings.map(meaning => {
+          if (meaning.id === meaningId) {
+            meaning.categories = meaning.categories.filter(category => category.category_id !== categoryId);
+          }
+          return meaning;
+        }),
+      }
+    });
+    setChanged(true);
+  };
+
+  const addNewCategory = (meaningId, newCategoryData = null) => {
+    
+    const newCategory = {
+      category_id: uuidv4(),
+      category: '',
+    };
+
+    setLemma(prevLemma => {
+      return {
+        ...prevLemma,
+        meanings: prevLemma.meanings.map(meaning => {
+          if (meaning.id === meaningId) {
+            meaning.categories = [
+              ...meaning.categories,
+              newCategory,
+            ];
+          }
+          return meaning;
+        }),
+      }
+    });
+
+    setChanged(true);
+  };
+
+  //////////////////////////////////////////////////////////////////////////////
+  // VARIANTS
   const updateVariant = (key, updatedVariant, id) => {
     setLemma(prevLemma => {
       return {
@@ -253,7 +300,8 @@ console.log(lemma)
     });
     setChanged(true);
   };
-
+  //////////////////////////////////////////////////////////////////////////////
+  // QUOTATIONS
   const updateQuotation = (key, updatedQuotation, id) => {
     setLemma(prevLemma => {
       return {
@@ -459,6 +507,8 @@ console.log(lemma)
           addNewMeaning={addNewMeaning}
           deleteMeaning={deleteMeaning}
           updateCategory={updateCategory}
+          deleteCategory={deleteCategory}
+          addNewCategory={addNewCategory}
         />
         
         <Variants

@@ -57,7 +57,6 @@ const getLemma = async (pool, lemmaId) => {
     // categories = [];
     await waitQuery(pool, sqlCategories, [meaning.id])
       .then(({ rows: queryCategories }) => {
-        console.log(meaning.id, queryCategories);
         meaning.categories = queryCategories;
       })
       .catch(error => console.error(`\nError in getLemma.js\nCouldn't fetch Categories for lemmaId: ${lemmaId}, meaning_id: ${meaning.id}\n${error}`));

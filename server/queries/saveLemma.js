@@ -100,6 +100,53 @@ const saveLemma = async (pool, lemma, username = '') => {
       } catch (error) {
         console.error('Error saving meaning', error, 'lemma ID', lemma.lemmaId);
       }
+
+      // Update all categories to the DB
+      try {
+        const sqlCategoriesUpdate = `
+          UPDATE meaning_categories
+            SET
+              meaning_id = $1,
+              category = $2
+            WHERE category_id = $3
+          RETURNING *;
+        `;
+        const sqlCategoriesInsert = `
+          INSERT INTO meaning_categories (meaning_id, category)
+            VALUES ($1, $2)
+          RETURNING category_id;
+        `;
+        
+        for (category of meaning.categories) {
+
+          const values = [
+            meaning.id,
+            (category.category ? category.category.trim() : ''),
+            isNaN(parseInt(category.category_id)) ? 0 : parseInt(category.category_id),
+          ];
+
+          var categoryUpdateResults = await waitQuery(pool, sqlCategoriesUpdate, values);
+
+          if (!categoryUpdateResults.rows.length) {
+            var results = await waitQuery(pool, sqlCategoriesInsert, values.slice(0,-1));
+            category.category_id = results.rows[0].category_id;
+          }
+        }
+
+        // Delete from DB any categories no longer in the object
+        var categoryCleanUpResults = await waitQuery(pool, 'SELECT * FROM meaning_categories WHERE meaning_id = $1', [meaning.id]);
+        let categoryIds = meaning.categories.map(category => category.category_id);
+        for (category of categoryCleanUpResults.rows) {
+          if (!categoryIds.includes(category.category_id)) {
+            pool.query('DELETE FROM meaning_categories WHERE category_id = $1', [category.category_id], (error, results) => {
+              if (error) throw error;
+            });
+          }
+        }
+
+      } catch (error) {
+        console.error('Error saving category', error, 'category ID', meaning.category.category_id);
+      }
     }
 
     // Clean up meanings in DB
@@ -110,6 +157,11 @@ const saveLemma = async (pool, lemma, username = '') => {
     for (meaning of meaningCleanUpResults.rows) {
       if (!meaningIds.includes(meaning.meaning_id)) {
         pool.query('DELETE FROM meanings WHERE meaning_id = $1', [meaning.meaning_id], (error, results) => {
+          if (error) throw error;
+        });
+
+        // Delete all related categories too
+        pool.query('DELETE FROM meaning_categories WHERE meaning_id = $1', [meaning.meaning_id], (error, results) => {
           if (error) throw error;
         });
       }

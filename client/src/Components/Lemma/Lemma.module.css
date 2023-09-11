@@ -17,7 +17,7 @@
   padding: 0.5vw 1vw 0 0;
   vertical-align: top;
 }
-.input, .inputSearch, .inputMeaning, .inputTransliteration, .inputWide, .inputTransliterationWide, .inputKeyboard, .textareaWide, .inputComment {
+.input, .inputSearch, .inputMeaning, .inputTransliteration, .inputWide, .inputTransliterationWide, .inputKeyboard, .textareaWide, .inputComment, .inputCategory {
   font: 1.2vw symbola, book-antiqua, 'Book Antiqua', serif;
   display: table-cell;
   width: 11vw;
@@ -77,6 +77,9 @@
 .inputMeaning {
   width: 22.5vw;
 }
+.inputCategory {
+  width: 20vw;
+}
 .textareaWide {
   height: 6vw;
 }
@@ -93,6 +96,7 @@
   outline: none;
   margin-bottom: 1vw;
 }
+
 
 .input:disabled, .inputSearch:disabled, .inputMeaning:disabled, .inputTransliteration:disabled, .inputWide:disabled, .inputTransliterationWide:disabled, .inputKeyboard:disabled {
   color: #FFEF;
@@ -157,7 +161,7 @@
 .crossLinksList {
   margin-bottom: 1vw;
 }
-.delete, .add {
+.delete, .add, .button {
   color: #ffef;
   background: #fff0;
   border: none;

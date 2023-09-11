@@ -15,7 +15,9 @@ const Quotation = props => {
   const quotationIndex = props.quotationIndex;
   const quotation = props.quotation;
   const meaning = props.meanings.find(meaning => meaning.id === quotation.meaning_id);
-  const meaningString = meaning ? meaning.value + (meaning.category ? ' (' + meaning.category + ')' : '') : '';
+  
+  // Removed now that Meanings can have more than one category – CDC 2023-09-11
+  // const meaningString = meaning ? meaning.value + (meaning.category ? ' (' + meaning.category + ')' : '') : '';
   
   const {user} = React.useContext(UserContext);
   
@@ -82,7 +84,7 @@ const Quotation = props => {
         </div>
         <div className={styles.row}>
           <div className={styles.label}>Meaning</div>
-          <div className={styles.label}>{meaningString}</div>
+          <div className={styles.label}>{meaning}</div>
         </div>
         <div className={styles.row}>
           <div className={styles.label}>Source</div>
@@ -201,7 +203,7 @@ const Quotation = props => {
           <option key={'empty'} value={0}></option>
           {props.meanings.map((item, key) => (
             <option key={key} value={item.id}>
-              {item.value + (item.category ? ' (' + item.category + ')' : '')}
+              {item.value}
             </option>
           ))}
         </select>
@@ -358,9 +360,7 @@ const Quotation = props => {
         />
       </div>
       <div className={styles.row}>
-        <div style={{display: (user.token ? 'inline' : 'none')}}>
-          <button className={styles.add} style={style} onClick={() => props.deleteQuotation(quotation.id)}><IoIosTrash /></button>
-        </div>
+        <button className={styles.add} style={style} onClick={() => props.deleteQuotation(quotation.id)}><IoIosTrash /></button>
       </div>
     </div>
   );

@@ -4,13 +4,20 @@ const pool = require('./pool');
 // AUTOCOMPLETE QUERIES
 ////////////////////////////////////////////////////////////////////////////////
 
-const meaningCategories = (request, response) => {
-  const sql = `SELECT category FROM meanings WHERE category <> '' GROUP BY category ORDER BY category;`;
-  pool.query(sql, (error, results) => {
-    if (error) throw error;
-    const list = results.rows.map(meaning => meaning.category);
-    response.status(200).json(list);
-  });
+const meaningCategories = async (request, response) => {
+  try {
+
+    const sql = `SELECT category FROM meaning_categories WHERE category <> '' GROUP BY category ORDER BY category;`;
+
+    pool.query(sql, (error, results) => {
+      if (error) throw error;
+      const list = results.rows.map(meaning => meaning.category);
+      response.status(200).json(list);
+    });
+
+  } catch (error) {
+    console.error('Error getting list of categories:', error);
+  }
 };
 
 const quotationSource = (request, response) => {
