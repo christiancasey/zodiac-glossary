@@ -9,7 +9,6 @@ const Categories = props => {
   const {user} = React.useContext(UserContext);
 
   if (user && !user.token) {
-		// let categoryList = props.categories.reduce((list, category) => list + ', ' + category.category, '').substring(2);
 		let categoryList = (props.categories.length ? props.categories.map(category => category.category).join(', ') : null);
     return (
 			<div className={styles.row}>

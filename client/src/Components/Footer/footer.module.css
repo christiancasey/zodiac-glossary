@@ -1,6 +1,9 @@
 footer {
 	position: fixed;
 	top: calc(100% - 5vw);
+	height: 6vw;
+	background-color: #2D3B62EE;
+	padding: 0.5vw;
   
   /* fadeIn animation */
   opacity: 0;

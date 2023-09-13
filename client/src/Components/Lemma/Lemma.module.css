@@ -202,10 +202,10 @@
 .sidebar, .lemma {
   height: calc(100% - 2vw);
   width: 64vw;
-  
+
   overflow: scroll;
   float: left;
-  margin: 1vw;
+  margin: 1vw 1vw 6vw 1vw;
   
   padding: 0 0.5vw;
   background-color: #2D3B62CC;

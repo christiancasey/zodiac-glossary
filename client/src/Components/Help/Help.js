@@ -26,7 +26,7 @@ function About(props) {
     <>
       <h1>About the Zodiac Glossary</h1>
 
-      <p>Welcome to the Zodiac Glossary, an integral component of the ERC grant-backed endeavor known as ZODIAC – Ancient Astral Science in Transformation. Our base of operations is situated within the Freie Universität Berlin.</p>
+      <p>Welcome to the Zodiac Glossary, an integral component of the <a href="https://erc.europa.eu/" target="_blank" rel="noopener noreferrer">ERC grant-backed endeavor</a> known as <a href="https://www.geschkult.fu-berlin.de/e/zodiac/index.html" target="_blank" rel="noopener noreferrer">ZODIAC – Ancient Astral Science in Transformation</a>. Our base of operations is situated within the <a href="https://www.fu-berlin.de/" target="_blank" rel="noopener noreferrer">Freie Universität Berlin</a>.</p>
 
       <h2>Our Purpose</h2>
       <p>Zodiac Glossary stands as a beacon of scholarly inquiry, dedicated to unraveling the complexities ingrained within ancient astral science. Our focus lies in meticulously curating and cross-referencing astral terms spanning diverse ancient languages – Akkadian, Aramaic, Egyptian, Greek, Hebrew, Latin, and Sanskrit. Our aim is to illuminate the intricate pathways through which zodiacal and other astral concepts were transmitted between ancient cultures.</p>

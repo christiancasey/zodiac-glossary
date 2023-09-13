@@ -196,7 +196,6 @@ const Quotation = props => {
           name={"meaning_"+quotation.id}
           id={"meaning_"+quotation.id}
           value={(quotation.meaning_id ? quotation.meaning_id : 0)}
-          // onChange={e => updateMeaning(e)}
           onChange={e => props.updateQuotation("meaning_id", e.target.value, quotation.id)}
         >
           <option key={'empty'} value={0}></option>
