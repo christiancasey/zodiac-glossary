@@ -122,6 +122,7 @@ const deleteLemma = (request, response) => {
         console.log(error);
     });
 
+    console.log('Deleted lemma, lemma ID:', lemmaId);
     response.status(202).json(request.query);
   } catch (error) {
     console.log(error);

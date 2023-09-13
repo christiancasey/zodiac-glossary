@@ -15,9 +15,8 @@ const Quotation = props => {
   const quotationIndex = props.quotationIndex;
   const quotation = props.quotation;
   const meaning = props.meanings.find(meaning => meaning.id === quotation.meaning_id);
-  
-  // Removed now that Meanings can have more than one category – CDC 2023-09-11
-  // const meaningString = meaning ? meaning.value + (meaning.category ? ' (' + meaning.category + ')' : '') : '';
+  // Removed now that Meanings can have more than one category
+  const meaningString = meaning ? meaning.value + (meaning.category ? ' (' + meaning.category + ')' : '') : '';
   
   const {user} = React.useContext(UserContext);
   
@@ -84,7 +83,7 @@ const Quotation = props => {
         </div>
         <div className={styles.row}>
           <div className={styles.label}>Meaning</div>
-          <div className={styles.label}>{meaning}</div>
+          <div className={styles.label}>{meaningString}</div>
         </div>
         <div className={styles.row}>
           <div className={styles.label}>Source</div>

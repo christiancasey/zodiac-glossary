@@ -19,8 +19,9 @@ const saveLemma = async (pool, lemma, username = '') => {
           literal_translation2 = $10,
           comment = $11,
           checked = $12,
-          last_edit = (to_timestamp($13 / 1000.0)),
-          loan_language_id = (SELECT language_id FROM languages WHERE value = $14)
+          attention = $13,
+          last_edit = (to_timestamp($14 / 1000.0)),
+          loan_language_id = (SELECT language_id FROM languages WHERE value = $15)
       WHERE lemma_id = $1;
       `;
 
@@ -37,6 +38,7 @@ const saveLemma = async (pool, lemma, username = '') => {
         (lemma.literal_translation2 ? lemma.literal_translation2.trim() : ''),
         (lemma.comment ? lemma.comment.trim() : ''),
         lemma.checked,
+        lemma.attention,
         Date.now(),
         lemma.loan_language,
       ];

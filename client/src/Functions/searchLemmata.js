@@ -86,7 +86,8 @@ const softenString = string => {
 
   // Can't remember why I put this here, but it removes combining diacrtics
   // I've commented it out because it matches š to s – CDC 2023-08-22
-  // softString = softString.replace(/[\u0300-\u036f]/g, ""); 
+  // Update, have the replacements skip 030c, the combining caron character – CDC 2023-09-13
+  softString = softString.replace(/[\u0300-\u030b\u030d-\u036f]/g, "");
   
   for (let i = 0; i < replacements.length; i++) {
     softString = softString.replace(replacements[i].original, replacements[i].replacement);
@@ -101,6 +102,7 @@ export function searchLemma(lemma, search) {
   let match = false;
 
   search = softenString(search);
+  // console.log(Array.from(search))
 
   // Secret feature, allows to filter by editor – CDC 2023-02-08
   match = match || softenString('editor:' + lemma.editor).includes(search);

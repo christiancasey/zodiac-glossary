@@ -16,9 +16,7 @@ const Meaning = props => {
   
   if (user && !user.token) {
     return (
-      <div 
-        className={styles.row}
-      >
+      <div className={styles.row}>
         <h4>{i+1}</h4>
         <div className={styles.row}>
           <div className={styles.label}>Meaning</div>
