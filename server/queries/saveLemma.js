@@ -74,7 +74,8 @@ const saveLemma = async (pool, lemma, username = '') => {
         (meaning.value ? meaning.value.trim() : ''),
         (meaning.category ? meaning.category.trim().toLowerCase() : ''),
         (meaning.comment ? meaning.comment.trim() : ''),
-        isNaN(parseInt(meaning.id)) ? 0 : parseInt(meaning.id),
+        // isNaN(parseInt(meaning.id)) ? 0 : parseInt(meaning.id),
+        (typeof meaning.id === 'number' ? meaning.id : 0),
       ];
 
       try {
@@ -118,22 +119,26 @@ const saveLemma = async (pool, lemma, username = '') => {
             VALUES ($1, $2)
           RETURNING category_id;
         `;
-        
+
+        // console.log(meaning.categories)
         for (category of meaning.categories) {
 
           const values = [
             meaning.id,
             (category.category ? category.category.trim() : ''),
-            isNaN(parseInt(category.category_id)) ? 0 : parseInt(category.category_id),
+            (typeof category.category_id === 'number' ? category.category_id : 0),
           ];
 
-          var categoryUpdateResults = await waitQuery(pool, sqlCategoriesUpdate, values);
-
-          if (!categoryUpdateResults.rows.length) {
+          if (typeof category.category_id !== 'string') {
+            var categoryUpdateResults = await waitQuery(pool, sqlCategoriesUpdate, values);
+            // console.log('Results of update:', categoryUpdateResults.rows)
+          } else {
             var results = await waitQuery(pool, sqlCategoriesInsert, values.slice(0,-1));
+            // console.log('Results of insert:', results.rows)
             category.category_id = results.rows[0].category_id;
           }
         }
+        // console.log(meaning.categories)
 
         // Delete from DB any categories no longer in the object
         var categoryCleanUpResults = await waitQuery(pool, 'SELECT * FROM meaning_categories WHERE meaning_id = $1', [meaning.id]);
@@ -196,7 +201,8 @@ const saveLemma = async (pool, lemma, username = '') => {
         (variant.original ? variant.original.trim() : ''),
         (variant.transliteration ? variant.transliteration.trim() : ''),
         (variant.comment ? variant.comment.trim() : ''),
-        isNaN(parseInt(variant.id)) ? 0 : parseInt(variant.id),
+        // isNaN(parseInt(variant.id)) ? 0 : parseInt(variant.id),
+        (typeof variant.id === 'number' ? variant.id : 0),
       ];
 
       try {
@@ -276,7 +282,8 @@ const saveLemma = async (pool, lemma, username = '') => {
         (quotation.link ? quotation.link.trim() : ''),
         (isNaN(parseInt(quotation.meaning_id)) || !quotation.meaning_id) ? 0 : parseInt(quotation.meaning_id),
         (quotation.comment ? quotation.comment.trim() : ''),
-        isNaN(parseInt(quotation.id)) ? 0 : parseInt(quotation.id),
+        // isNaN(parseInt(quotation.id)) ? 0 : parseInt(quotation.id),
+        (typeof quotation.id === 'number' ? quotation.id : 0),
       ];
 
       var quotationUpdateResults = await waitQuery(pool, sqlQuotationsUpdate, values);

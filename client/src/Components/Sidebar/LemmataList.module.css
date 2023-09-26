@@ -59,3 +59,16 @@
   min-width: 20vw;
   max-width: 28vw;
 }
+
+
+.selectLanguages {
+  color: #ffef;
+  background: #fff0;
+  border: none;
+  outline: none;
+  margin-top: 0.5vw;
+  float: right;
+}
+.selectLangauges:hover {
+  filter: drop-shadow(0 0 3px #ffe8);
+}

@@ -14,7 +14,7 @@ const CrossLink = props => {
   const i = props.i;
   const {user} = React.useContext(UserContext);
   const [crossLink, setCrossLink] = React.useState(props.crossLink);
-  
+
   // Changed to a normal variable to ensure it updates before the component.
   // Before, things were taking to long to load, leaving sample links blank – CDC 2023-04-25
   // const [lemma, setLemma] = React.useState(getLemmaById(lemmata, props.crossLink)); 
@@ -36,27 +36,16 @@ const CrossLink = props => {
   }, [props.crossLink, crossLink]);
   
   function updateCrossLink(event, id) {
-    if (event.target.value) {
-      props.updateCrossLink(event.target.value, id);
-      setCrossLink(event.target.value);
+    const updatedCrossLink = parseInt(event.target.value);
+    if (updatedCrossLink) {
+      props.updateCrossLink(updatedCrossLink, id);
+      setCrossLink(updatedCrossLink);
       // setLemma(getLemmaById(lemmata, event.target.value));
       lemma = getLemmaById(lemmata, props.crossLink);
     }
   }
 
-  // Filter current lemma out of list of possible Cross Links
-  // Also filter out any Cross Links that have already been added
-  lemmata = lemmata.filter(cursorLemma => cursorLemma.lemmaId !== props.currentLemma.lemmaId);
-  for (let cursorCrossLink of props.currentLemma.crossLinks) {
-    lemmata = lemmata.filter(cursorLemma => 
-      (
-        cursorLemma.lemmaId !== cursorCrossLink.lemmaId
-        &&
-        cursorLemma.lemmaId !== cursorCrossLink.link
-      )
-    );
-  }
-
+  // Public view, placed before filter to shorten load time –CDC 2023-09-19
   if (!user.token) {
     if (!lemma || !lemma.published)
       return <></>;
@@ -70,6 +59,19 @@ const CrossLink = props => {
         </QueryNavLink>
       </div>
     )
+  }
+
+  // Filter current lemma out of list of possible Cross Links
+  // Also filter out any Cross Links that have already been added
+  lemmata = lemmata.filter(cursorLemma => cursorLemma.lemmaId !== props.currentLemma.lemmaId);
+  for (let cursorCrossLink of props.currentLemma.crossLinks) {
+    lemmata = lemmata.filter(cursorLemma => 
+      (
+        cursorLemma.lemmaId !== cursorCrossLink.lemmaId
+        &&
+        cursorLemma.lemmaId !== cursorCrossLink.link
+      )
+    );
   }
 
   return (
@@ -93,14 +95,14 @@ const CrossLink = props => {
         </label>
         <ReactTooltip id={"crossLink_"+i+"-tooltip"} type="light" html={true} />
         <input 
-          list="lemmata_list" 
+          list={"lemmata_list" + i}
           className={styles.inputWide}
           name={"crossLink_"+i}
           id={"crossLink_"+i}
           defaultValue={crossLink}
           onChange={event => updateCrossLink(event, i)}
         />
-        <datalist id="lemmata_list">
+        <datalist id={"lemmata_list" + i}>
           {lemmata.map((lemma, j) => (
             <option
               key={j}

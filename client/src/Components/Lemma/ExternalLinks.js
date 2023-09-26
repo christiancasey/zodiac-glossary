@@ -12,7 +12,6 @@ const ExternalLinks = props => {
   const {user} = React.useContext(UserContext);
 
   const original = props.lemma.original;
-  const transliteration = props.lemma.transliteration;
 
   unicodeGreek2BetaCode(original)
   
@@ -23,7 +22,8 @@ const ExternalLinks = props => {
         return (
           <ExternalLink 
             key={externalLink.id} 
-            externalLink={externalLink} 
+            externalLink={externalLink}
+            lemma={props.lemma}
             i={i} 
             updateExternalLink={props.updateExternalLink}
             deleteExternalLink={props.deleteExternalLink}
@@ -58,7 +58,10 @@ const ExternalLinks = props => {
           <li><a target="_blank" rel="noopener noreferrer" href={"https://www.perseus.tufts.edu/hopper/morph?l=" + original + "&la=la"}>
             Perseus Project—Latin
           </a></li>
-          <li><a target="_blank" rel="noopener noreferrer" href={"https://thesaurus-linguae-aegyptiae.de/search/lemma?script=hieratic&_script=on&_script=on&transcription.text=" + transliteration + "&transcription.enc=unicode&wordClass.type=excl_names&root=&translation.text=&translation.lang=en&bibliography="}>
+          {/* <li><a target="_blank" rel="noopener noreferrer" href={"https://thesaurus-linguae-aegyptiae.de/search/lemma?script=hieratic&_script=on&_script=on&transcription.text=" + props.lemma.transliteration + "&transcription.enc=unicode&wordClass.type=excl_names&root=&translation.text=&translation.lang=en&bibliography="}>
+            Thesaurus Linguae Aegyptiae
+          </a></li> */}
+          <li><a target="_blank" rel="noopener noreferrer" href={"https://thesaurus-linguae-aegyptiae.de/search"}>
             Thesaurus Linguae Aegyptiae
           </a></li>
           <li><a target="_blank" rel="noopener noreferrer" href="https://www.dwl.aegyptologie.lmu.de/suche.php">

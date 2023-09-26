@@ -15,8 +15,9 @@ const Quotation = props => {
   const quotationIndex = props.quotationIndex;
   const quotation = props.quotation;
   const meaning = props.meanings.find(meaning => meaning.id === quotation.meaning_id);
-  // Removed now that Meanings can have more than one category
-  const meaningString = meaning ? meaning.value + (meaning.category ? ' (' + meaning.category + ')' : '') : '';
+
+  let categoryList = ((meaning && meaning.categories.length) ? ' (' + meaning.categories.map(category => category.category).join(', ') + ')' : '');
+  const meaningString = meaning ? meaning.value + categoryList : '';
   
   const {user} = React.useContext(UserContext);
   
@@ -199,11 +200,16 @@ const Quotation = props => {
           onChange={e => props.updateQuotation("meaning_id", e.target.value, quotation.id)}
         >
           <option key={'empty'} value={0}></option>
-          {props.meanings.map((item, key) => (
+          {props.meanings.map((item, key) => {
+            let categoryList = (item.categories.length ? ' (' + item.categories.map(category => category.category).join(', ') + ')' : '');
+            return (
             <option key={key} value={item.id}>
-              {item.value}
+              {item.value + categoryList}
             </option>
-          ))}
+          //   <option key={key} value={item.id}>
+          //   {item.value + (item.category ? ' (' + item.category + ')' : '')}
+          // </option>
+          )})}
         </select>
       </div>
       <div className={styles.row}>

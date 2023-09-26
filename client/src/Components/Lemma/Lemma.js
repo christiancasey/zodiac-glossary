@@ -394,7 +394,7 @@ const Lemma = props => {
     const newExternalLink = {
       id: uuidv4(),
       url: '',
-      display: '',
+      display: lemma.original,
     }
     
     setLemma(prevLemma => {

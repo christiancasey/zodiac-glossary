@@ -50,6 +50,23 @@ const Sidebar = props => {
     return languages;
   };
   
+  function selectAllLanguages(selectAll) {
+    let newLanguages = languages.map(language => {
+      language.active = selectAll;
+      return language;
+    });
+    setLanguages(newLanguages);
+
+    // Add language values to search params while keeping existing search value
+    let newSearchParams = Object.fromEntries([...searchParams]);
+    for (const language of newLanguages) {
+      if (language.value !== 'none') {
+        newSearchParams[language.value] = language.active;
+      }
+    }
+    setSearchParams(newSearchParams);
+  }
+
   function selectLanguage(id) {
     let newLanguages = languages.map(language => {
       if (language.id === id)
@@ -59,6 +76,7 @@ const Sidebar = props => {
         };
       return language;
     });
+    setLanguages(newLanguages);
     
     // Add language values to search params while keeping existing search value
     let newSearchParams = Object.fromEntries([...searchParams]);
@@ -69,13 +87,12 @@ const Sidebar = props => {
     }
     setSearchParams(newSearchParams);
     
-    setLanguages(newLanguages);
   }
   
   return (
     <nav className={styles.sidebar}>
       <Search />
-      <LanguageList languages={languages} selectLanguage={selectLanguage} />
+      <LanguageList languages={languages} selectLanguage={selectLanguage} selectAllLanguages={selectAllLanguages} />
       <LemmataList languages={languages} setSelectedLemmaId={setSelectedLemmaId} contentLemma={props.contentLemma} lemmataList={props.lemmataList} setLemmataList={props.setLemmataList} changed={props.changed} setChanged={props.setChanged} />
     </nav>
   );

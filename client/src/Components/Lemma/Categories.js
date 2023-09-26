@@ -30,6 +30,7 @@ const Categories = props => {
 				<Category
 					key={category.category_id}
 					category={category}
+					categories={props.categories}
 					meaning={props.meaning}
 					meaningsCategories={props.meaningsCategories}
 					updateCategory={props.updateCategory}
@@ -47,6 +48,13 @@ export default Categories;
 const Category = props => {
 	const category = props.category;
   const [style, setStyle] = React.useState({display: 'block'});
+
+	// Filter out already used categories to avoid entering duplicates
+	// let meaningsCategories = props.meaningsCategories.slice();
+	let meaningsCategories = props.meaningsCategories;
+	for (let cursorCategory of props.categories) {
+		meaningsCategories = meaningsCategories.filter(categoryName => categoryName !== cursorCategory.category);
+	}
 
 	return (
 		<div 
@@ -66,16 +74,16 @@ const Category = props => {
 				className={styles.inputCategory}
 				placeholder="new category"
 				value={category.category}
-				list="meaning_categories"
+				list={"meaning_categories" + category.category_id}
 				onChange={e => props.updateCategory(e.target.value, props.meaning.id, category.category_id)}
 			/>
-			<datalist id="meaning_categories">
-				{props.meaningsCategories.map((category, key) => (
-					<option
+			<datalist id={"meaning_categories" + category.category_id}>
+				{meaningsCategories.map((category, key) => {
+					return (<option
 						key={key}
 						value={category}
-					/>
-				))}
+					/>)
+				})}
 			</datalist>
 			<button className={styles.delete} style={style} onClick={e => props.deleteCategory(props.meaning.id, category.category_id)}><IoIosTrash /></button>
 		</div>

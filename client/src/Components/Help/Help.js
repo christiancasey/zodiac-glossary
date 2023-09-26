@@ -42,6 +42,20 @@ function About(props) {
 
       <h2>Contact Information</h2>
       <p>For inquiries, collaborative opportunities, or contributions to our ongoing research, kindly reach out to us at <a href="mailto:christian.casey@fu-berlin.de">christian.casey@fu-berlin.de</a>. You are also welcome to <a href="https://zodiac.fly.dev/signup">signup as a contributor</a>. (NB all new users must be manually approved before gaining editor access.)</p>
+
+      <h2>Some Important Notes</h2>
+      <ul className={styles.stars}>
+        <li>
+          Ancient constellations may not (and probably don't) correspond to modern constellation names (e.g. as defined in the <a href="https://en.wikipedia.org/wiki/IAU_designated_constellations" target="_blank" rel="noopener noreferrer">IAU list of designated constellations</a>).
+          Where constellation names are included in the lemmata, this is done to aid discovery.
+          It should not be understood to mean that the modern name and the ancient one refer to precisely the same thing.
+        </li>
+        <li>
+          Loan words may represent ad hoc instances of code switching.
+          We don't specifically mark such cases, as it is difficult to determine whether a given word was established as a loan based on the limited evidence of surviving written sources.
+        </li>
+        <li>Sumerian loans into Akkadian are not marked. "Akkadian", as defined in the Glossary, should be understood to include Sumerian lexemes.</li>
+      </ul>
     </>
   )
 }
