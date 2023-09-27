@@ -1,9 +1,10 @@
 .content {
-  position: fixed;
+  /* position: fixed; */
   width: 100vw;
-  height: calc(100% - 25vw);
-  top: 20vw;
+  /* height: calc(100% - 25vw); */
+  top: 5vw;
   overflow: scroll;
+  margin-bottom: 5vw;
   
   padding: 0.5vw;
   

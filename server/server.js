@@ -58,6 +58,7 @@ app.post('/api/users/login', users.loginUser);
 app.get('/api/users/profile', auth, users.getUser);
 
 app.get('*', (request, response) => {
+  console.log(request)
   response.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
 });
 

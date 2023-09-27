@@ -160,3 +160,11 @@ p {
 .checkbox {
   /* transform: scale(1); */
 }
+
+
+.stars li::before {
+  content: '\1F7CA';
+  content: '\2605';
+  margin: 0 1em;
+  text-decoration: none !important;
+}

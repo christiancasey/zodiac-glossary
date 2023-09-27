@@ -9,6 +9,7 @@ import Lemma from './Components/Lemma/Lemma';
 import SignUp from './Components/SignUp/SignUp';
 import Help from './Components/Help/Help';
 import Todo from './Components/Help/Todo';
+import Contributors from './Components/Contributors/Contributors';
 import Recents from './Components/Recents/Recents';
 import Footer from './Components/Footer/Footer';
 
@@ -33,7 +34,9 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/help" element={<Help />} />
           <Route path="/todo" element={<Todo />} />
+          <Route path="/people" element={<Contributors />} />
           <Route path="/recents" element={<Recents />} />
+          {/* <Route path="*" element={<Lemma />} /> */}
         </Routes>
         <Footer />
       </div>

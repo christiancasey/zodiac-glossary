@@ -45,12 +45,7 @@ const Lemma = props => {
     if (isNaN(lemmaId)) {
       // navigate('/' + (location.search || ''));
       lemmaId = localStorage.getItem('currentLemmaId');
-      if (lemmaId) {
-        navigate('/' + lemmaId + location.search);
-      }
-      else {
-        navigate('/' + (location.search || ''));
-      }
+      navigate('/' + (lemmaId || '') + (location.search || ''));
     } else {
       getLemmaFromDB(setLemma, lemmaId);
       localStorage.setItem('currentLemmaId', lemmaId);
