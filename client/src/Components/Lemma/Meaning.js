@@ -31,7 +31,7 @@ const Meaning = props => {
           <div className={styles.label}>Comment</div>
           <div className={styles.label}>{meaning.comment}</div>
         </div>
-        {meaning.categories.length ? <Categories categories={meaning.categories} /> : null}
+        {(meaning.categories && meaning.categories.length) ? <Categories categories={meaning.categories} /> : null}
       </div>
     )
   }

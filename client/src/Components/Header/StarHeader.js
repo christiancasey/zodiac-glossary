@@ -61,9 +61,9 @@ const StarHeader = () => {
       <a className={styles.home} href="/help" target="_blank" rel="noopener noreferrer">
         <IoIosHelpCircle />
       </a>
-      {/* <a className={styles.home} href="/people" target="_blank" rel="noopener noreferrer">
+      <a className={styles.home} href="/people" target="_blank" rel="noopener noreferrer">
         <IoIosPeople />
-      </a> */}
+      </a>
       {(user && user.token) ? (
         <a className={styles.home} href="/recents" target="_blank" rel="noopener noreferrer">
           <IoIosClock />

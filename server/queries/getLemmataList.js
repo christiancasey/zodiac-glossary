@@ -1,5 +1,3 @@
-const parseDate = require('postgres-date');
-
 const getLemmataList = (pool, token) => {
 
   return new Promise((resolve, reject) => {
@@ -15,9 +13,6 @@ const getLemmataList = (pool, token) => {
     if (!token || token === 'null') {
       sql = sql + ' WHERE published = TRUE';
     }
-
-    // Order for use in Recents; doesn't affect anything else
-    sql += ' ORDER BY last_edit DESC;';
 
     pool.query(sql, (error, { rows: lemmataMeanings }) => {
       if (!error) {

@@ -2,6 +2,7 @@ const Pool = require('pg').Pool;
 require('dotenv').config();
 
 const bcrypt = require('bcryptjs');
+const { response } = require("express");
 const jwt = require('jsonwebtoken');
 
 var pool;
@@ -86,8 +87,35 @@ const getUser = async (request, response) => {
   }
 };
 
+const getContributions = async (request, response) => {
+  const contributionSQL = `SELECT lemma_id, username, original, translation, transliteration, primary_meaning FROM edit_history
+  RIGHT JOIN lemmata USING (lemma_id)
+  WHERE published = TRUE
+  GROUP BY lemma_id, username
+  ORDER BY username, lemma_id;`;
+
+  const contributorSQL = `SELECT username, first_name, last_name FROM edit_history 
+  JOIN users USING (username) 
+  GROUP BY username, first_name, last_name
+  ORDER BY last_name;`;
+
+  try {
+    const contributionsMatch = await pool.query(contributionSQL);
+    const contributorsMatch = await pool.query(contributorSQL);
+
+    if (!(contributionsMatch.rows.length && contributorsMatch.rows.length))
+      throw new Error();
+
+    response.send({ contributors: contributorsMatch.rows, contributions: contributionsMatch.rows });
+
+  } catch (error) {
+    response.status(400).send();
+  }
+};
+
 module.exports = {
   createUser,
   loginUser,
   getUser,
+  getContributions,
 };

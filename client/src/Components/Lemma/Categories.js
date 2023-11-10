@@ -3,13 +3,16 @@ import { IoIosTrash, IoIosAddCircle } from "react-icons/io";
 
 import UserContext from '../../Contexts/UserContext';
 
+
+import { getMeaningCategories } from "../../Data/autocomplete";
+
 import styles from './Lemma.module.css';
 
 const Categories = props => {
   const {user} = React.useContext(UserContext);
 
   if (user && !user.token) {
-		let categoryList = (props.categories.length ? props.categories.map(category => category.category).join(', ') : null);
+		let categoryList = ((props.categories && props.categories.length) ? props.categories.map(category => category.category).join(', ') : null);
     return (
 			<div className={styles.row}>
 				<div className={styles.label}>Categories</div>
@@ -49,11 +52,22 @@ const Category = props => {
 	const category = props.category;
   const [style, setStyle] = React.useState({display: 'block'});
 
-	// Filter out already used categories to avoid entering duplicates
-	// let meaningsCategories = props.meaningsCategories.slice();
-	let meaningsCategories = props.meaningsCategories;
-	for (let cursorCategory of props.categories) {
-		meaningsCategories = meaningsCategories.filter(categoryName => categoryName !== cursorCategory.category);
+	// Reload Categories in this component so that selection dropdown updates
+  let [meaningsCategories, setMeaningsCategories] = React.useState([]);
+
+  React.useEffect(() => {
+    getMeaningCategories(setMeaningsCategoriesFilter);
+  }, []);
+	
+	// Middleman function to filter the results passed from the API before updating state variable
+	function setMeaningsCategoriesFilter(list) {
+
+		// Filter out already used categories to avoid entering duplicates
+		for (let cursorCategory of props.categories) {
+			list = list.filter(categoryName => categoryName !== cursorCategory.category);
+		}
+		
+		setMeaningsCategories(list);
 	}
 
 	return (

@@ -16,7 +16,7 @@ const Quotation = props => {
   const quotation = props.quotation;
   const meaning = props.meanings.find(meaning => meaning.id === quotation.meaning_id);
 
-  let categoryList = ((meaning && meaning.categories.length) ? ' (' + meaning.categories.map(category => category.category).join(', ') + ')' : '');
+  let categoryList = ((meaning && meaning.categories && meaning.categories.length) ? ' (' + meaning.categories.map(category => category.category).join(', ') + ')' : '');
   const meaningString = meaning ? meaning.value + categoryList : '';
   
   const {user} = React.useContext(UserContext);

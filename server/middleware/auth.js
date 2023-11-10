@@ -3,9 +3,10 @@ const jwt = require('jsonwebtoken');
 const auth = async (request, response, next) => {
 	try {
 		const token = request.header('Authorization').replace('Bearer ', '');
+		if (!token)
+			throw new Error('Invalid token');
+		
 		const decoded = jwt.verify(token, 'animalitos');
-
-		// console.log('Authentication middleware', decoded);
 
 		request.token = token;
 		request.decoded = decoded;

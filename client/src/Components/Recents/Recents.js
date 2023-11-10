@@ -2,7 +2,7 @@ import React from 'react';
 
 import styles from './Recents.module.css';
 
-import { getLemmataListPromise, checkLemma } from '../../Data/api';
+import { getRecentsListPromise, checkLemma } from '../../Data/api';
 import UserContext from '../../Contexts/UserContext';
 
 const LemmaCheck = props => {
@@ -21,6 +21,8 @@ const LemmaCheck = props => {
     }));
     // props.updateNumChecked(lemmaId, checked);
   };
+
+  const dateFormat = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' };
 
   return (
     <li key={lemma.lemmaId}>
@@ -44,9 +46,9 @@ const LemmaCheck = props => {
         href={"/"+lemma.lemmaId} 
         target="_blank" 
         rel="noopener noreferrer"
-        onClick={e => checkLemmaChange(lemma.lemmaId, true)}
+        // onClick={e => checkLemmaChange(lemma.lemmaId, true)}
       >
-        — {lemma.editor} | {lemma.transliteration} | {lemma.original} | {lemma.primary_meaning}
+        — {lemma.timestamp.toLocaleDateString("de", dateFormat)} | {lemma.editor} | {lemma.transliteration} | {lemma.original} | {lemma.primary_meaning}
       </a>
     </li>
   )
@@ -58,13 +60,14 @@ const Recents = props => {
   const [lemmata, setLemmata] = React.useState([]);
 
   React.useEffect(() => {
-    getLemmataListPromise(user.token)
+    getRecentsListPromise(user.token)
     .then(lemmata => setLemmata(lemmata))
     .catch(error => console.error(error));
   }, [user]);
 
+  lemmata.sort((a, b) => (a.timestamp > b.timestamp ? -1 : 1)); // sort by order created, desc
+  lemmata.sort((a, b) => (a.attention > b.attention ? -1 : 1)); // put ones that need attention at the top  
   lemmata.sort((a, b) => (a.checked < b.checked ? -1 : 1)); // put checked ones at the bottom
-  lemmata.sort((a, b) => (a.attention > b.attention ? -1 : 1)); // put ones that need attention at the top
 
   return (
     <div className={styles.content}>

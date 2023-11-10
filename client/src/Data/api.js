@@ -175,34 +175,30 @@ export function getEditHistory(lemmaId, token = '') {
   })
 }
 
-// React.useEffect(() => {
-//   getLemmataListPromise(user.token)
-//   .then(lemmata => setLemmata(lemmata))
-//   .catch(error => console.error(error));
-// }, []);
 
-// // Streamlines the use of state functions in components
-// export function getLemmataListPromise(token = '') {
-//   let url = '/api/lemmata/list';
-//   const params = new URLSearchParams({token});
-//   url += '?' + params.toString();
+// Basically mirrors getLemmataListPromise(), but returns something slightly different
+// Need a separate function to avoid bogging down the main uses of getLemmataListPromise()
+export function getRecentsListPromise(token = '') {
+  let url = '/api/recents/list';
+  const params = new URLSearchParams({token});
+  url += '?' + params.toString();
 
-//   return new Promise((resolve, reject) => {
-
-//     fetch(url, {
-//       headers: {
-//         'Accept': 'application/json',
-//         'Content-Type': 'application/json',
-//         'Authorization': 'Bearer ' + token,
-//       },
-//       method: "GET",
-//     })
-//     .then(response => response.json())
-//     .then(data => data.map(lemma => {
-//       lemma.last_edit = new Date(lemma.last_edit);
-//       return lemma;
-//     }))
-//     .then(data => resolve(data))
-//     .catch(error => reject(error));
-//   });
-// }
+  return new Promise((resolve, reject) => {
+    fetch(url, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+      },
+      method: "GET",
+    })
+    .then(response => response.json())
+    .then(data => data.map(lemma => {
+      lemma.timestamp = new Date(lemma.timestamp);
+      lemma.last_edit = new Date(lemma.last_edit);
+      return lemma;
+    }))
+    .then(data => resolve(data))
+    .catch(error => reject(error));
+  });
+}

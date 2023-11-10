@@ -8,6 +8,7 @@ const lemmata = require('./lemmata');
 const users = require('./users');
 const ac = require('./autocomplete');
 const td = require('./todo');
+const recents = require('./queries/recents');
 
 const auth = require('./middleware/auth');
 
@@ -52,13 +53,18 @@ app.get('/api/autocomplete/quotation_from_source', ac.quotationAutofillFromSourc
 app.get('/api/todo/list', td.getTodoList);
 app.post('/api/todo/add', auth, td.addTodoListItem);
 
+// Recents List
+app.get('/api/recents/list', auth, recents.getLemmataList);
+
 // User authentication
 app.post('/api/users', users.createUser);
 app.post('/api/users/login', users.loginUser);
 app.get('/api/users/profile', auth, users.getUser);
 
+app.get('/api/contributors', users.getContributions);
+
 app.get('*', (request, response) => {
-  console.log(request)
+  // console.log(request)
   response.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
 });
 
