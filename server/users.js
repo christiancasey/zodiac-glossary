@@ -29,7 +29,7 @@ if (process.env.LOCAL_DEV === "true") {
 ////////////////////////////////////////////////////////////////////////////////
 
 const createUser = async (request, response) => {
-  const { first_name, last_name, email, username, password } = request.body;
+  const { first_name, last_name, email, website, username, password } = request.body;
   const hashedPassword = await bcrypt.hash(password, 8);
 
   try {
@@ -40,8 +40,8 @@ const createUser = async (request, response) => {
     }
 
     await pool.query(
-      'INSERT INTO users (first_name, last_name, email, username, password) VALUES ($1, $2, $3, $4, $5) RETURNING *', 
-      [first_name, last_name, email, username, hashedPassword], 
+      'INSERT INTO users (first_name, last_name, email, website, username, password) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *', 
+      [first_name, last_name, email, website, username, hashedPassword], 
       (error, results) => {
         if (error) throw error;
         response.status(201).send(results.rows[0]);
@@ -88,15 +88,15 @@ const getUser = async (request, response) => {
 };
 
 const getContributions = async (request, response) => {
-  const contributionSQL = `SELECT lemma_id, username, original, translation, transliteration, primary_meaning FROM edit_history
+  const contributionSQL = `SELECT lemma_id, username, published, original, translation, transliteration, primary_meaning FROM edit_history
   RIGHT JOIN lemmata USING (lemma_id)
-  WHERE published = TRUE
-  GROUP BY lemma_id, username
+  ` + (request.token ? '' : 'WHERE published = TRUE') + `
+  GROUP BY lemma_id, username, published
   ORDER BY username, lemma_id;`;
 
-  const contributorSQL = `SELECT username, first_name, last_name FROM edit_history 
+  const contributorSQL = `SELECT username, first_name, last_name, website FROM edit_history 
   JOIN users USING (username) 
-  GROUP BY username, first_name, last_name
+  GROUP BY username, first_name, last_name, website
   ORDER BY last_name;`;
 
   try {

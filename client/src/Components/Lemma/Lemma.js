@@ -53,7 +53,27 @@ const Lemma = props => {
 
     // Mark changed as false (don't alert user to save) any time a new lemma is selected
     setChanged(false);
+
+    // Disable all back navigation for the time being
+    // Redo this so that it launches an alert and confirms the action before proceeeding
+    // CDC 2023-11-15
+    window.history.pushState(null, document.title, window.location.href);
+    window.addEventListener('popstate', function (event){
+        window.history.pushState(null, document.title,  window.location.href);
+    });
+
   }, [params.lemmaId, user]);
+
+  // Set the page title to give information about the current lemma if available
+  React.useEffect(() => {
+    if (lemma) {
+      let titleString = '';
+      titleString = lemma.translation || titleString;
+      titleString = lemma.transliteration || titleString;
+      titleString = lemma.original || titleString;
+      document.title = titleString || 'The Zodiac Glossary';
+    }
+  }, [lemma]);
 
   // Warn if unsaved changes on refresh
   // This code doesn't actually launch a dialog but triggers the browser to do so
@@ -80,6 +100,19 @@ const Lemma = props => {
         setChanged(false);
         saveLemma();
       }
+    }
+    
+    // Trying to prevent the stupid back button from erasing half-entered lemmata
+    if (e.keyCode === 166 || e.keyCode === 167) {
+      e.preventDefault();
+    }
+    if (e.key === 'BrowserBack' || e.key === 'BrowserForward') {
+      e.preventDefault();
+      console.log('Browser nav button press blocked')
+    }
+    if ((e.key === 'ArrowLeft' && e.metaKey) || (e.key === 'ArrowRight' && e.metaKey)) {
+      e.preventDefault();
+      console.log('Browser nav with cmd left/right blocked')
     }
   };
   React.useEffect(() => {

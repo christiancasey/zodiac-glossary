@@ -8,6 +8,7 @@ import { getQuotationFields, getQuotationFromSource } from "../../Data/autocompl
 import { checkUrlForHttp } from "../../Functions/checkUrlForHttp";
 
 import NewlineText from "../NewLineText";
+import PublicLabelledText from "../PublicLabelledText";
 
 import styles from './Lemma.module.css';
 
@@ -70,60 +71,35 @@ const Quotation = props => {
     return (
       <div className={styles.quotationsList}>
         <h4>{quotationIndex+1}</h4>
-        <div className={styles.row}>
-          <div className={styles.label}>{props.language === "akkadian" ? 'Normalized' : 'Transliteration'}</div>
-          <div className={styles.label}><span style={{fontStyle: 'italic'}}><NewlineText text={quotation.transliteration} /></span></div>
-        </div>
-        <div className={styles.row}>
-          <div className={styles.label}>{props.language === "akkadian" ? 'Transliteration' : 'Original'}</div>
-          <div className={styles.label}><NewlineText text={quotation.original} /></div>
-        </div>
-        <div className={styles.row}>
-          <div className={styles.label}>Translation</div>
-          <div className={styles.label}><NewlineText text={quotation.translation} /></div>
-        </div>
-        <div className={styles.row}>
-          <div className={styles.label}>Meaning</div>
-          <div className={styles.label}>{meaningString}</div>
-        </div>
-        <div className={styles.row}>
-          <div className={styles.label}>Source</div>
-          <div className={styles.label}>{quotation.source}</div>
-        </div>
-        <div className={styles.row}>
-          <div className={styles.label}>Line/Column</div>
-          <div className={styles.label}>{quotation.line}</div>
-        </div>
-        <div className={styles.row}>
-          <div className={styles.label}>Genre</div>
-          <div className={styles.label}>{quotation.genre}</div>
-        </div>
-        <div className={styles.row}>
-          <div className={styles.label}>Provenance</div>
-          <div className={styles.label}>{quotation.provenance}</div>
-        </div>
-        <div className={styles.row}>
-          <div className={styles.label}>Date</div>
-          <div className={styles.label}>{quotation.date}</div>
-        </div>
-        <div className={styles.row}>
-          <div className={styles.label}>Publication</div>
-          <div className={styles.label}>
-            {quotation.link ? (
+
+        <PublicLabelledText
+          label={(props.language === "akkadian" ? 'Normalized' : 'Transliteration')}
+          content={<NewlineText text={quotation.transliteration} style={{fontStyle: 'italic'}} />}
+        />
+        <PublicLabelledText
+          label={(props.language === "akkadian" ? 'Transliteration' : 'Original')}
+          content={<NewlineText text={quotation.original} />}
+        />
+        <PublicLabelledText 
+          label={'Translation'} 
+          content={<NewlineText text={quotation.translation} />} 
+        />
+        <PublicLabelledText label={'Meaning'} content={meaningString} />
+        <PublicLabelledText label={'Source'} content={quotation.source} />
+        <PublicLabelledText label={'Line/Column'} content={quotation.line} />
+        <PublicLabelledText label={'Genre'} content={quotation.genre} />
+        <PublicLabelledText label={'Provenance'} content={quotation.provenance} />
+        <PublicLabelledText label={'Date'} content={quotation.date} />
+        <PublicLabelledText 
+          label={'Publication'} 
+          content={quotation.link ? (
               <a href={quotation.link} target="_blank" rel="noopener noreferrer">
                 {quotation.publication} <IoIosOpen />
               </a>
-            ) : quotation.publication }
-          </div>
-        </div>
-        <div className={styles.row}>
-          <div className={styles.label}>Page Number</div>
-          <div className={styles.label}>{quotation.page}</div>
-        </div>
-        <div className={styles.row}>
-          <div className={styles.label}>Comment</div>
-          <div className={styles.label}>{quotation.comment}</div>
-        </div>
+            ) : quotation.publication}
+        />
+        <PublicLabelledText label={'Page Number'} content={quotation.page} />
+        <PublicLabelledText label={'Comment'} content={quotation.comment} />
       </div>
     );
   }

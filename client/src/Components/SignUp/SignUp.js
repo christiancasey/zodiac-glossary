@@ -7,17 +7,21 @@ import styles from '../Content.module.css'
 // eslint-disable-next-line
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 // eslint-disable-next-line
+const WEBSITE_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
+// eslint-disable-next-line
 const PASSWORD_REGEX = /\w{20,}/;
 
 const SignUp = props => {
   const [firstName, setFirstName] = React.useState('');
   const [lastName, setLastName] = React.useState('');
   const [email, setEmail] = React.useState('');
+  const [website, setWebsite] = React.useState('');
   const [username, setUserName] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [confirm, setConfirm] = React.useState('');
   
   const [validEmail, setValidEmail] = React.useState(false);
+  const [validWebsite, setValidWebsite] = React.useState(false);
   const [validPassword, setValidPassword] = React.useState(false);
   const [validMatch, setValidMatch] = React.useState(false);
 
@@ -28,6 +32,10 @@ const SignUp = props => {
   React.useEffect(() => {
     setValidEmail(EMAIL_REGEX.test(email));
   }, [email]);
+
+  React.useEffect(() => {
+    setValidWebsite(WEBSITE_REGEX.test(website));
+  }, [website]);
 
   React.useEffect(() => {
     setValidPassword(PASSWORD_REGEX.test(password));
@@ -43,12 +51,13 @@ const SignUp = props => {
       lastName &&
       username &&
       validEmail &&
+      validWebsite &&
       validPassword &&
       validMatch
     );
     // console.log(flag);
     setEnableSubmit(flag);
-  }, [firstName, lastName, username, validEmail, validPassword, validMatch]);
+  }, [firstName, lastName, username, validEmail, validWebsite, validPassword, validMatch]);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -64,6 +73,7 @@ const SignUp = props => {
         first_name: firstName.trim(),
         last_name: lastName.trim(),
         email: email.trim(),
+        website: website.trim(),
         username: username.trim(),
         password: password.trim(),
       }),
@@ -85,7 +95,7 @@ const SignUp = props => {
       <div className={styles.container}>
         <h1>Sign Up</h1>
         <div>
-          <p>Note that this feature is currently only available to members of the <a href="https://www.geschkult.fu-berlin.de/en/e/zodiac/index.html" target="_blank" rel="noopener noreferrer">Zodiac Project</a>.</p>
+          {/* <p>Note that this feature is currently only available to members of the <a href="https://www.geschkult.fu-berlin.de/en/e/zodiac/index.html" target="_blank" rel="noopener noreferrer">Zodiac Project</a>.</p> */}
           <p>All new registrations require direct approval from the Zodiac team.</p>
           <p>You will receive an email informing you whether your registration has been approved.</p>
         </div>
@@ -131,6 +141,19 @@ const SignUp = props => {
           </div>
 
           <div className={styles.row}>
+            <label className={styles.label} htmlFor="website">Website</label>
+            <input
+              className={styles.input}
+              type="website"
+              id="website"
+              placeholder="website"
+              value={website}
+              onChange={e => {setWebsite(e.target.value.trim())}}
+              required
+            />
+          </div>
+
+          <div className={styles.row}>
             <label className={styles.label} htmlFor="username">Username</label>
             <input
               className={styles.input}
@@ -171,6 +194,9 @@ const SignUp = props => {
 
           <p className={styles.warning} style={(!email || validEmail ? {display: 'none'} : null)}>
             Invalid email address.
+          </p>
+          <p className={styles.warning} style={(!website || validWebsite ? {display: 'none'} : null)}>
+            Invalid website URL (must begin with http(s)://...).
           </p>
           <p className={styles.warning} style={(!password || validPassword ? {display: 'none'} : null)}>
             Passwords must contain at least twenty alphanumeric characters.<br />

@@ -9,10 +9,12 @@ import { getContributions } from "../../Data/contributors";
 import UserContext from '../../Contexts/UserContext';
 
 const Contributors = props => {
+  const {user} = React.useContext(UserContext);
+
   const [contributors, setContributors] = React.useState([]);
 
   React.useEffect(() => {
-    getContributions()
+    getContributions(user.token)
     .then(data => {
       // Add contributions list to each contributor object
       data.contributors = data.contributors.map(contributor => {
@@ -41,8 +43,10 @@ const Contributors = props => {
 const Contributions = props => {
   return (
     <li>
-      {props.contributor.first_name}&nbsp;
-      {props.contributor.last_name}
+      <a href={props.contributor.website} target="_blank" rel="noopener noreferrer">
+        {props.contributor.first_name}&nbsp;
+        {props.contributor.last_name}
+      </a>
       <Collapsible 
         trigger={<MdExpandMore />}
         triggerWhenOpen={<MdExpandLess />}
@@ -58,7 +62,8 @@ const Contributions = props => {
                 target="_blank" 
                 rel="noopener noreferrer"
               >
-                {lemma.transliteration} | {lemma.original} | {lemma.primary_meaning}
+                {lemma.published && (<span>{lemma.transliteration} | {lemma.original} | {lemma.primary_meaning}</span>)}
+                {!lemma.published && (<span style={{fontStyle: 'italic'}}> – {lemma.transliteration} | {lemma.original} | {lemma.primary_meaning}</span>)}
               </a>
               </li>
             )

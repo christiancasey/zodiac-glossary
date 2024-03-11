@@ -24,6 +24,12 @@ export const partOfSpeechOptions = [
   { id: 11,	value: 'unknown',		   label: '❌ Unknown'},
 ];
 
+export const loanTypes = [
+  { id: 0, value: 'none', label: '' },
+  { id: 1, value: 'loan', label: 'Loan word' },
+  { id: 2, value: 'calque',  label: 'Calque (literal translation)' },
+  { id: 3, value: 'quote', label: 'Code switching (quote)' },
+];
 
 
 

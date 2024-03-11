@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactTooltip from 'react-tooltip';
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 // import { IoIosPlay, IoIosPause, } from 'react-icons/io';
 import { IoIosHome, IoIosHelpCircle, IoIosClock, IoIosLogIn, IoIosLogOut, IoIosList, IoIosPeople, } from 'react-icons/io';
 
@@ -16,6 +16,7 @@ import zodiacConstellations from '../../Graphics/zodiac_constellations.svg';
 const StarHeader = () => {
   const {user, setUser} = React.useContext(UserContext);
   let navigate = useNavigate();
+  let location = useLocation();
   const [loginVisible, setLoginVisible] = React.useState(false);
 
   let startStyle;
@@ -52,25 +53,25 @@ const StarHeader = () => {
   const goHome = () => {
     navigate('/');
   }
-  
+
   return (
     <>
       <button className={styles.home} onClick={goHome}>
         <IoIosHome />
       </button>
-      <a className={styles.home} href="/help" target="_blank" rel="noopener noreferrer">
+      <a className={styles.home} href="/help" target={location.pathname === '/help' ? '' : "_blank"} rel="noopener noreferrer">
         <IoIosHelpCircle />
       </a>
-      <a className={styles.home} href="/people" target="_blank" rel="noopener noreferrer">
+      <a className={styles.home} href="/people" target={location.pathname === '/people' ? '' : "_blank"} rel="noopener noreferrer">
         <IoIosPeople />
       </a>
       {(user && user.token) ? (
-        <a className={styles.home} href="/recents" target="_blank" rel="noopener noreferrer">
+        <a className={styles.home} href="/recents" target={location.pathname === '/recents' ? '' : "_blank"} rel="noopener noreferrer">
           <IoIosClock />
         </a>
       ) : null}
       {(user && user.token) ? (
-        <a className={styles.home} href="/todo" target="_blank" rel="noopener noreferrer">
+        <a className={styles.home} href="/todo" target={location.pathname === '/todo' ? '' : "_blank"} rel="noopener noreferrer">
           <IoIosList />
         </a>
       ) : null}

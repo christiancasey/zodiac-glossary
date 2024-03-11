@@ -130,13 +130,13 @@
   border-radius: 10px;
 }
 .basic {
-  height: 46vw;
+  height: 48vw;
 }
 .basicPublic {
   height: 28vw;
 }
 .meanings, .variants {
-  height: 22vw;
+  height: 23vw;
 }
 .meaningsPublic, .variantsPublic {
   height: 13vw;

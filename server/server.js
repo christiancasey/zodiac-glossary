@@ -50,7 +50,7 @@ app.get('/api/autocomplete/quotations', ac.quotationSource);
 app.get('/api/autocomplete/quotation_from_source', ac.quotationAutofillFromSource);
 
 // Todo List
-app.get('/api/todo/list', td.getTodoList);
+app.get('/api/todo/list', auth, td.getTodoList);
 app.post('/api/todo/add', auth, td.addTodoListItem);
 
 // Recents List
@@ -61,7 +61,7 @@ app.post('/api/users', users.createUser);
 app.post('/api/users/login', users.loginUser);
 app.get('/api/users/profile', auth, users.getUser);
 
-app.get('/api/contributors', users.getContributions);
+app.get('/api/contributors', auth, users.getContributions);
 
 app.get('*', (request, response) => {
   // console.log(request)

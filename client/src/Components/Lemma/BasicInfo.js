@@ -2,9 +2,10 @@ import React from 'react';
 import ReactTooltip from 'react-tooltip';
 
 import Dropdown from '../Dropdown';
+import PublicLabelledText from "../PublicLabelledText";
 import UserContext from '../../Contexts/UserContext';
 
-import { languageOptions, partOfSpeechOptions } from '../../Data/options';
+import { languageOptions, partOfSpeechOptions, loanTypes } from '../../Data/options';
 
 import styles from './Lemma.module.css';
 
@@ -33,54 +34,34 @@ const BasicInfo = props => {
             options={partOfSpeechOptions}
             onChange={onChange} 
           />
-          <tr>
-            <td>
-              <div className={styles.label}>{lemma.language === "akkadian" ? 'Normalized' : 'Transliteration'}</div>
-            </td>
-            <td>
-              <div style={{fontStyle: 'italic'}}>{lemma.transliteration}</div>
-            </td>
-          </tr>
-          {lemma.language === "akkadian" && (<tr>
-            <td>
-              <div className={styles.label}>Literal Translation</div>
-            </td>
-            <td>
-              <div>{lemma.literal_translation2}</div>
-            </td>
-          </tr>)}
-          <tr>
-            <td>
-              <div className={styles.label}>{lemma.language === "akkadian" ? 'Transliteration' : 'Original'}</div>
-            </td>
-            <td>
-              <div>{lemma.original}</div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div className={styles.label}>Literal Translation</div>
-            </td>
-            <td>
-              <div>{lemma.translation}</div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div className={styles.label}>Primary Meaning</div>
-            </td>
-            <td>
-              <div>{lemma.primary_meaning}</div>
-            </td>
-          </tr>
+          <PublicLabelledText
+            label={lemma.language === "akkadian" ? 'Normalized' : 'Transliteration'}
+            content={lemma.transliteration}
+            style={{fontStyle: 'italic'}}
+          />
+          {lemma.language === "akkadian" && (
+            <PublicLabelledText label={'Literal Translation'} content={lemma.literal_translation2} />
+          )}
+          <PublicLabelledText label={lemma.language === "akkadian" ? 'Transliteration' : 'Original'} content={lemma.original} />
+          <PublicLabelledText label={'Literal Translation'} content={lemma.translation} />
+          <PublicLabelledText label={'Primary Meaning'} content={lemma.primary_meaning} />
           {(lemma.loan_language === "none") ||
-          (<Dropdown
+          (<>
+          <Dropdown
             name="loan_language"
-            label="Loaned from"
+            label="Source Language"
             value={lemma.loan_language}
             options={languageOptions}
             onChange={onChange} 
-          />)}
+          />
+          <Dropdown
+            name="loan_type"
+            label="Type of Loan"
+            value={lemma.loan_type}
+            options={loanTypes}
+            onChange={onChange} 
+          />
+          </>)}
         </tbody></table>
       </div>
     );
@@ -306,11 +287,46 @@ const BasicInfo = props => {
         </tr>
         <Dropdown
           name="loan_language"
-          label="Loaned from"
+          label="Source Language"
           value={lemma.loan_language}
           options={languageOptions}
           onChange={onChange} 
         />
+        <Dropdown
+          name="loan_type"
+          label="Type of Loan"
+          value={lemma.loan_type}
+          options={loanTypes}
+          onChange={onChange} 
+        />
+        {/* Do we really need this? Ask about it in glossary meeting on 09.02.2024 */}
+        {/* <tr>
+          <td>
+            <label 
+              className={styles.label} 
+              htmlFor="dropdown_loan_type"
+              data-tip="What sort of loan? Normal"
+              data-for="type-of-loan-tooltip"
+            >
+              Type of Loan
+            </label>
+            <ReactTooltip id="type-of-loan-tooltip" type="light" html={true} />
+          </td>
+          <td>
+            <select className={styles.input} name="loan_type" id={"dropdown_loan_type"} value={lemma.loan_type} onChange={onChange}>
+              {loanTypes.map(option => {
+                // Create an empty default for new data
+                if (!option.value)
+                  return (
+                    <option disabled key={option.id} value={option.value}>{option.label}</option>
+                  );
+                return (
+                  <option key={option.id} value={option.value}>{option.label}</option>
+                );
+              })}
+            </select>
+          </td>
+        </tr> */}
         <tr>
           <td>
             <label className={styles.label} htmlFor="comment">

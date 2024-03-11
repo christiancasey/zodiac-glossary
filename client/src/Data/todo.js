@@ -1,6 +1,11 @@
-export function getTodoList(setTodoList) {
+export function getTodoList(setTodoList, user = {}) {
   let url = '/api/todo/list';
   fetch(url, {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + user.token,
+    },
     method: "GET",
   })
   .then(res => res.json())

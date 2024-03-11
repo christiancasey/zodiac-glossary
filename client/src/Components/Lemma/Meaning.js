@@ -2,6 +2,7 @@ import React from "react";
 import { IoIosTrash } from "react-icons/io";
 
 import Categories from "./Categories";
+import PublicLabelledText from "../PublicLabelledText";
 
 import UserContext from '../../Contexts/UserContext';
 
@@ -18,19 +19,9 @@ const Meaning = props => {
     return (
       <div className={styles.row}>
         <h4>{i+1}</h4>
-        <div className={styles.row}>
-          <div className={styles.label}>Meaning</div>
-          <div className={styles.label}>{meaning.value}</div>
-        </div>
-        {/* Commented out because of the new categories 1->n setup – CDC 2023-09-11 */}
-        {/* <div className={styles.row}>
-          <div className={styles.label}>Category</div>
-          <div className={styles.label}>{meaning.category}</div>
-        </div> */}
-        <div className={styles.row}>
-          <div className={styles.label}>Comment</div>
-          <div className={styles.label}>{meaning.comment}</div>
-        </div>
+        
+        <PublicLabelledText label={'Meaning'} content={meaning.value} />
+        <PublicLabelledText label={'Comment'} content={meaning.comment} />
         {(meaning.categories && meaning.categories.length) ? <Categories categories={meaning.categories} /> : null}
       </div>
     )

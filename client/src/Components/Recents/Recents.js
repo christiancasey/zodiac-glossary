@@ -22,7 +22,7 @@ const LemmaCheck = props => {
     // props.updateNumChecked(lemmaId, checked);
   };
 
-  const dateFormat = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+  const dateFormat = { year: 'numeric', month: 'numeric', day: 'numeric' };
 
   return (
     <li key={lemma.lemmaId}>
@@ -59,15 +59,44 @@ const Recents = props => {
 
   const [lemmata, setLemmata] = React.useState([]);
 
+  // Sort function to separate this out and make debugging easier
+  // Can be refactored away as desired
+  const sortLemmata = lemmata => {
+
+    // Original method
+    // l.sort((a, b) => (a.timestamp > b.timestamp ? -1 : 1)); // sort by order created, desc
+    // l.sort((a, b) => (a.attention > b.attention ? -1 : 1)); // put ones that need attention at the top  
+    // l.sort((a, b) => (a.checked < b.checked ? -1 : 1)); // put checked ones at the bottom
+
+    let l = lemmata.slice(0);
+
+    // l = l.filter((lemma, index) => index % 30 === 0); // Decimate the list for debugging
+
+    // Convert the timestamp into a tiny number for sorting
+    // Needed to deal with the way Firefox mishandles multiple sorts
+    l = l.map(lemma => {
+      let timevalue = lemma.timestamp - 1577836800000; // milliseconds since 2020
+      timevalue = timevalue / 1000 / 60 / 60 / 24 / 365 / 100; // convert to years / 100
+      timevalue = 1 - timevalue; // Sort in descending order
+      lemma.timevalue = timevalue;
+      return lemma;
+    })
+    
+    // Function that mathematically converts checkbox combo into sortable integer
+    // Needed to deal with Firefox's pathological handling of the sort function
+    const sortFunction = a => (1 - a.attention) + a.checked * 2 + a.timevalue;
+
+    l.sort((a, b) => sortFunction(a) < sortFunction(b) ? -1 : 1);
+
+    setLemmata(l);
+  }
+
   React.useEffect(() => {
     getRecentsListPromise(user.token)
-    .then(lemmata => setLemmata(lemmata))
+    .then(lemmata => sortLemmata(lemmata))
     .catch(error => console.error(error));
   }, [user]);
 
-  lemmata.sort((a, b) => (a.timestamp > b.timestamp ? -1 : 1)); // sort by order created, desc
-  lemmata.sort((a, b) => (a.attention > b.attention ? -1 : 1)); // put ones that need attention at the top  
-  lemmata.sort((a, b) => (a.checked < b.checked ? -1 : 1)); // put checked ones at the bottom
 
   return (
     <div className={styles.content}>

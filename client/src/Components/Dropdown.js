@@ -16,7 +16,9 @@ const Dropdown = ({ name, label, value, options, onChange }) => {
           <div className={styles.label} htmlFor={"dropdown_"+label}>{label}</div>
         </td>
         <td>
-          <div id={"dropdown_"+label}>{options.filter(option => option.value === value)[0].label}</div>
+          <div className={styles.label}>
+            <div id={"dropdown_"+label}>{options.filter(option => option.value === value)[0].label}</div>
+          </div>
         </td>
       </tr>
     );

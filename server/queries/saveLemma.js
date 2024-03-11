@@ -21,7 +21,8 @@ const saveLemma = async (pool, lemma, username = '') => {
           checked = $12,
           attention = $13,
           last_edit = (to_timestamp($14 / 1000.0)),
-          loan_language_id = (SELECT language_id FROM languages WHERE value = $15)
+          loan_language_id = (SELECT language_id FROM languages WHERE value = $15),
+          loan_type = $16
       WHERE lemma_id = $1;
       `;
 
@@ -41,6 +42,7 @@ const saveLemma = async (pool, lemma, username = '') => {
         lemma.attention,
         Date.now(),
         lemma.loan_language,
+        lemma.loan_type,
       ];
 
     pool.query(sqlLemma, values, (error, results) => {

@@ -6,7 +6,7 @@ export function getContributions(token = '') {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token,
+        'Authorization': (token ? 'Bearer ' + token : ''),
       },
       method: "GET",
     })

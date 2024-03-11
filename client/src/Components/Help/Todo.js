@@ -12,7 +12,7 @@ const Todo = props => {
   const {user} = React.useContext(UserContext);
 
   React.useEffect(() => {
-    getTodoList(setTodoList);
+    getTodoList(setTodoList, user);
   }, []);
 
   const updateNewItem = event => {

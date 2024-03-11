@@ -3,6 +3,8 @@ import { IoIosTrash } from "react-icons/io";
 
 import UserContext from '../../Contexts/UserContext';
 
+import PublicLabelledText from "../PublicLabelledText";
+
 import styles from './Lemma.module.css';
 
 const Variant = props => {
@@ -18,18 +20,14 @@ const Variant = props => {
         className={styles.row}
       >
         <h4>{i+1}</h4>
-        <div className={styles.row}>
-          <div className={styles.label}>{props.language === "akkadian" ? 'Normalized' : 'Transliteration'}</div>
-          <div className={styles.label} style={{fontStyle: (props.language === "akkadian" || 'italic')}}>{variant.transliteration}</div>
-        </div>
-        <div className={styles.row}>
-          <div className={styles.label}>{props.language === "akkadian" ? 'Transliteration' : 'Original'}</div>
-          <div className={styles.label}>{variant.original}</div>
-        </div>
-        <div className={styles.row}>
-          <div className={styles.label}>Comment</div>
-          <div className={styles.label}>{variant.comment}</div>
-        </div>
+
+        <PublicLabelledText
+          label={props.language === "akkadian" ? 'Normalized' : 'Transliteration'}
+          content={variant.transliteration}
+          style={{fontStyle: (props.language === "akkadian" || 'italic')}}
+        />
+        <PublicLabelledText label={props.language === "akkadian" ? 'Transliteration' : 'Original'} content={variant.original} />
+        <PublicLabelledText label={'Comment'} content={variant.comment} />
       </div>
     )
   }
