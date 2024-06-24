@@ -56,6 +56,11 @@ function About(props) {
         </li>
         <li>Sumerian loans into Akkadian are not marked. "Akkadian", as defined in the Glossary, should be understood to include Sumerian lexemes.</li>
       </ul>
+
+      <h2>Open Data</h2>
+      <p>
+        <a href="https://github.com/christiancasey/zodiac-glossary/tree/main/backups/public">Archive versions of the dataset are periodically created and made available in the form of timestamped SQL Dumps</a>.
+      </p>
     </>
   )
 }

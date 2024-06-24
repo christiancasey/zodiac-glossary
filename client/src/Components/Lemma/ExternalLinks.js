@@ -58,6 +58,9 @@ const ExternalLinks = props => {
           <li><a target="_blank" rel="noopener noreferrer" href={"https://www.perseus.tufts.edu/hopper/morph?l=" + original + "&la=la"}>
             Perseus Project—Latin
           </a></li>
+          <li><a target="_blank" rel="noopener noreferrer" href={"https://publikationen.badw.de/de/thesaurus/lemmata"}>
+            Thesaurus Linguae Latinae
+          </a></li>
           {/* <li><a target="_blank" rel="noopener noreferrer" href={"https://thesaurus-linguae-aegyptiae.de/search/lemma?script=hieratic&_script=on&_script=on&transcription.text=" + props.lemma.transliteration + "&transcription.enc=unicode&wordClass.type=excl_names&root=&translation.text=&translation.lang=en&bibliography="}>
             Thesaurus Linguae Aegyptiae
           </a></li> */}
