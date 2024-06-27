@@ -4,6 +4,7 @@ import ReactTooltip from 'react-tooltip';
 import { useNavigate, useLocation } from "react-router-dom";
 // import { IoIosPlay, IoIosPause, } from 'react-icons/io';
 import { IoIosHome, IoIosHelpCircle, IoIosClock, IoIosLogIn, IoIosLogOut, IoIosList, IoIosPeople, } from 'react-icons/io';
+import { GiAlarmClock, } from 'react-icons/gi';
 
 import UserContext from '../../Contexts/UserContext';
 import LogIn from './LogIn.js';
@@ -67,7 +68,7 @@ const StarHeader = () => {
       </a>
       {(user && user.token) ? (
         <a className={styles.home} href="/recents" target={location.pathname === '/recents' ? '' : "_blank"} rel="noopener noreferrer">
-          <IoIosClock />
+          <GiAlarmClock />
         </a>
       ) : null}
       {(user && user.token) ? (

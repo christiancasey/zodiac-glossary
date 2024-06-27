@@ -31,5 +31,9 @@ export const loanTypes = [
   { id: 3, value: 'quote', label: 'Code switching (quote)' },
 ];
 
-
-
+export const searchFieldTypes = [
+  { id: 0, value: 'none',         label: '',               inputType: '', },
+  { id: 1, value: 'editor',       label: 'Editor',         inputType: 'text', },
+  { id: 2, value: 'language',     label: 'Language',       inputType: 'text', },
+  { id: 3, value: 'partOfSpeech', label: 'Part of Speech', inputType: 'dropdown', },
+];
