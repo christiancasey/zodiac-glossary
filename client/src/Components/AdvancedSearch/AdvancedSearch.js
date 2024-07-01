@@ -16,20 +16,11 @@ const AdvancedSearchEntry = props => {
     props.onChange(e);
   };
 
-  const deleteSearchTerm = s => {
-    console.log(s)
-  };
-
-  const test = () => {
-    console.log('test')
-  }
-  
-  console.log('eest')
-
   return (
     <tr>
+      {/* <td>{props.termNumber}</td> */}
       <td>
-        <button className={styles.delete} onClick={e => deleteSearchTerm(props.termNumber)}><IoIosTrash /></button>
+        <button className={styles.delete} onClick={e => props.deleteSearchTerm(props.termNumber)}><IoIosTrash /></button>
       </td>
       <td>
         <select className={styles.input} name="search_field" id="search_field" value={props.type} onChange={onChange}>
@@ -78,13 +69,17 @@ const AdvancedSearchInput = props => {
     setSearchTerms(prevSearchTerms => {
       return [
         ...prevSearchTerms,
-        { termNumber: prevSearchTerms.length+1, type: 'none', term: '' }
+        { termNumber: Math.max(...prevSearchTerms.map(term=>term.termNumber))+1, type: 'none', term: '' }
       ];
     })
   };
 
   const deleteSearchTerm = termNumber => {
     console.log('Delete term: ' + termNumber)
+
+    setSearchTerms(prevSearchTerms => {
+      return prevSearchTerms.filter(term => term.termNumber != termNumber);
+    })
   };
 
   return (
