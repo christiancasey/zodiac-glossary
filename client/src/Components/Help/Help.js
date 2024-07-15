@@ -77,6 +77,11 @@ function HelpCopy(props) {
           Prefer British English spellings.
         </li>
         <li>
+          Use standard transliteration systems. 
+          For Hebrew, use <a href="https://alittlehebrew.com/transliterate/" target="_blank" rel="noopener noreferrer">alittlehebrew.com</a> with the "SBL Academic" setting.
+          For Sanskrit, use <a href="https://www.aksharamukha.com/converter" target="_blank" rel="noopener noreferrer">Aksharamukha: Script Converter</a>.
+        </li>
+        <li>
           You can add new issues at any time to the <a href="https://github.com/christiancasey/zodiac-glossary/issues" target="_blank" rel="noopener noreferrer">github issues page</a>.
         </li>
         <li>
