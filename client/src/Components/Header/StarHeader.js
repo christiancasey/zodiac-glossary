@@ -3,7 +3,7 @@ import ReactTooltip from 'react-tooltip';
 
 import { useNavigate, useLocation } from "react-router-dom";
 // import { IoIosPlay, IoIosPause, } from 'react-icons/io';
-import { IoIosHome, IoIosHelpCircle, IoIosClock, IoIosLogIn, IoIosLogOut, IoIosList, IoIosPeople, } from 'react-icons/io';
+import { IoIosHome, IoIosHelpCircle, IoIosLogIn, IoIosLogOut, IoIosList, IoIosPeople, } from 'react-icons/io';
 import { GiAlarmClock, } from 'react-icons/gi';
 
 import UserContext from '../../Contexts/UserContext';

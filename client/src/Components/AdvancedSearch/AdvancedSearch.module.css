@@ -74,7 +74,7 @@ a {
   text-decoration: none !important;
   color: inherit;
 }
-a:hover {
+a:hover, a:focus {
   /* text-decoration: underline !important; */
   filter: drop-shadow(0 0 3px #ffe8);
 }
@@ -176,6 +176,6 @@ a {
 .delete {
   float: right;
 }
-.delete:hover, .add:hover {
+.delete:hover, .delete:focus, .add:hover {
   filter: drop-shadow(0 0 3px #ffe8);
 }
