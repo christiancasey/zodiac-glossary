@@ -14,7 +14,17 @@ const advancedSearch = require('./queries/advancedSearch');
 const auth = require('./middleware/auth');
 const { getCrosslinks } = require('./queries/crossLinks');
 
-app.use(express.static(path.resolve(__dirname, '../client/build')));
+app.use(express.static(path.resolve(__dirname, '../client/build'), {
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('index.html')) {
+      // Entry page: never cache, so users always get the newest app
+      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    } else {
+      // Hashed JS/CSS: filenames change every build, so cache them forever
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    }
+  }
+}));
 app.use(express.json());
 
 app.get('/api', (request, response) => {
@@ -73,6 +83,7 @@ app.post('/api/advanced_search', auth, advancedSearch.runAdvancedSearch);
 
 
 app.get('*', (request, response) => {
+  response.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
   response.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
 });
 
