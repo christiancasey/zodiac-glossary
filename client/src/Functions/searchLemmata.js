@@ -82,7 +82,7 @@ const softenString = string => {
 
   softString = softString.trim();
   softString = softString.toLowerCase();
-  softString = softString.normalize('NFD');
+  softString = (softString || '').normalize('NFD');
 
   // Can't remember why I put this here, but it removes combining diacrtics
   // I've commented it out because it matches š to s – CDC 2023-08-22
