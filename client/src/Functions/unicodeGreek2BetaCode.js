@@ -1,6 +1,6 @@
 export function unicodeGreek2BetaCode(unicodeGreek) {
 	let betaCode = unicodeGreek
-	betaCode = betaCode.normalize("NFD");// separates combined characters into parts
+	betaCode = (betaCode || '').normalize("NFD");// separates combined characters into parts
 	betaCode = betaCode.replace(/[\u0300-\u036f]/g, "");
 	betaCode = betaCode.replace(/[᾽ι᾿῀῁῍῎῏῝῞῟῭΅`´῾]/g, "");
 	betaCode = betaCode.replace(/[α]/g, "a");
